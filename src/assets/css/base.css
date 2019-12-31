@@ -1,0 +1,65 @@
+/*公共常用样式*/
+.flex{display:flex}
+.flex-bet{display:flex;;justify-content: space-between;align-items: center;}
+.flex-bett{display:flex;justify-content: space-between;}
+.flex-aro{display:flex;justify-content: space-around;align-items: center;}
+.flex-cen{display: flex;justify-content: center;align-items: center;}
+.flex-cen-col{display: flex;justify-content: center;align-items: center;flex-direction: column;}
+.flex-jus{display: flex;justify-content: center;}
+.flex-ali{display: flex;align-items: center;}
+.flex-col{display: flex;flex-direction: column;}
+.flex-row{display: flex;flex-direction: row-reverse;}
+.flex1{flex:1;}
+.clearfix::before,.clearfix::after{content: "\0020";display: block;height: 0;overflow: hidden;} 
+.clearfix::after,clear:both,.clearfix{zoom: 1;}
+.fl{float:left;}
+.fr{float:right;}
+.con-fixed{position: fixed;width:100%;height:100%;left:0;top:0;}
+.nowrap{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+.wrap{width:92.53%;margin:0 auto;}
+/*页面初始样式*/
+html,body{width: 100%;height: 100%;overflow-x: hidden;user-select: none; -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
+body{max-width: 750px;margin: 0 auto;}
+/* #app{width: 100%;height:100%;overflow-x: hidden;}  */
+body img{max-width: 100%;}
+.container{width: 100%;}
+[v-cloak]{display: none;}
+/*修改mintUI的样式*/
+.mint-toast-text{font-size: .12rem !important;}
+.mint-msgbox-message{line-height: 1.5em !important;}  
+.mint-popup{width: 100%;}
+.picker-toolbar{display: flex;justify-content: space-between;}
+.picker-toolbar p{font-size: .2rem;;padding:0 10px;height: .4rem;line-height: .4rem;color: #333;}
+.picker-toolbar p.confirm{color: rgba(22,107,206,1);}
+.mint-toast,.mint-indicator-wrapper{z-index: 99999 !important;}
+.mint-indicator-wrapper{padding: .4rem .6rem !important;}
+.mint-toast-text{font-size: .24rem !important;}
+.mint-toast{padding: .2rem !important;}
+/*修改swiper的默认样式*/
+.swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
+.swiper-pagination-bullet-active{background: #3DA6FF !important;}
+/*特殊字体*/
+/* @font-face
+  font-family DIN
+  src url(../fonts/DINAlternateBold.ttf) */
+
+/*关键帧动画*/
+/*弹窗效果*/
+.fadeShow{animation:fadeShow .4s forwards;}
+@keyframes fadeShow{
+  0%{transform:scale(.1);opacity:0;}
+  90%{transform:scale(1.1);opacity:1;}
+  100%{transform:scale(1);opacity:1;}
+}      
+/*上下晃动*/
+.wobble{animation:wobble 2s infinite alternate;}
+@keyframes wobble {
+  0%{transform:translateY(-.1rem) rotateY(5deg);}
+  100%{transform:translateY(.1rem) rotateY(-5deg);}
+}
+/*从下往上弹出*/
+.bottom-top{animation:bottom-top .3s;}
+@keyframes bottom-top {
+  0%{transform:translateY(100%);}
+  100%{transform:translateY(0);}
+}
