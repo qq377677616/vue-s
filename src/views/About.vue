@@ -38,6 +38,14 @@ export default {
       myMp3: "" //合成后的mp3
     };
   },
+  created() {
+    this.$dialog.alert({
+      title: '测试页面',
+      message: '此页面为测试页面，点击确认退出'
+    }).then(() => {
+      this.$router.replace('/')
+    });
+  },
   mounted() {
     // getPostTest({ bis_id: 8 }).then(res => {
     //   console.log("res", res)
