@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       pageTitle: "拖拽排序",
-      pressDelay: 500,
+      pressDelay: 500,//长按多久时间触发拖拽
       categoryList: [
         { name:'经济发展', $index: 0},   
         { name:'公共安全', $index: 1},   
@@ -71,6 +71,7 @@ export default {
   .sort{padding-top: .92rem;box-sizing: border-box;}
   .category{padding:.3rem 0 .1rem;font-size: 0;text-align: center;}
   .category .dl{text-align: left;}
+  /* body>>>.dd{text-align: center !important;} */
   .category dd,.category .dd{position: relative;text-align: left;}
   .category dd,.category .dd{width:17%;padding-bottom: .24rem;;border-radius: 50%;display: inline-block;margin:.1rem 3.5%;text-align: center;}
   .category dd img,.category .dd img{width:1rem;}

@@ -110,6 +110,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/picker.vue'], resolve)    
   },
   {
+    path:'/lang',
+    name: 'lang',
+    component: resolve => require(['../views/pages-list/lang.vue'], resolve)    
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    

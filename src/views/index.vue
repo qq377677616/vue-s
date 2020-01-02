@@ -24,7 +24,6 @@ export default {
         { name: "生成海报", url: "/poster" },
         { name: "生成二维码", url: "/code" },
         { name: "省市区日期选择", url: "/picker" },
-        // { name: "中英文切换", url: "" },
         { name: "合成gif动图", url: "/create-gif" },
         // { name: "charts图表", url: "" },
         // { name: "数字滚动", url: "" },
@@ -32,6 +31,7 @@ export default {
         { name: "地图", url: "/map" },
         { name: "A~Z索引滚动列表", url: "/mail-list" },
         { name: "vuex", url: "/vuex" },
+        { name: "多语言", url: "/lang" },
         { name: "下一版本见...", url: "" }
       ]
     }
@@ -59,6 +59,6 @@ export default {
   p.name{width:4.2em;margin:.2rem auto;border:1px solid green;}
   .index{background:linear-gradient(135deg,#027C60 0%, #A8271E 100%);padding-bottom: 1rem;box-sizing: border-box;}
   ul{height: calc(90vh - 1rem);overflow: auto;-webkit-overflow-scrolling:touch;}
-  ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:.2rem auto;background: #fff;font-size: .28rem;}
+  ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:.15rem auto;background: #fff;font-size: .28rem;}
   ul li.dis{color:#bbb;}
 </style>

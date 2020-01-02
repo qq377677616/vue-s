@@ -49,7 +49,6 @@ export default {
         // Indicator.close()  
         //let _app = document.getElementById("app")  
         let _poster = document.getElementById("poster")
-        console.log("_poster", _poster.offsetWidth);
         //html2canvas(this.$refs.imageWrapper,{
         html2canvas(_poster, {
           useCORS: true, // 【重要】开启跨域配置
