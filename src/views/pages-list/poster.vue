@@ -6,7 +6,7 @@
         <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/images/poster_01.png" alt=""> -->
         <img src="../../assets/images/poster_01.png" alt="">
         <div class="text flex-bet">
-          <div class="left">这是一些介绍文字这是一些介绍文字这是一些介绍文字这是一些介绍文字这是一些介绍文字这是。</div>
+          <div class="left">这是一些介绍文字这是一些介绍文字这是一些介绍文字这是<span>88.56</span>一些介绍文字这是一些介绍文字这是。</div>
           <div class="right">
             <p>扬帆</p>
             <img src="https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132" alt="">
@@ -82,6 +82,7 @@ export default {
   .poster-box .text{padding:.4rem .3rem;background: #fff;margin-top: -1.5rem;position: relative;z-index: 5;}
   .poster-box img{width:105%;}
   .poster-box .left{flex:2;}
+  .poster-box .left span{font-size: 20px;color:red;}
   .poster-box .right{flex:1;text-align: center;}
   .poster-box .right p{font-size: .36rem;padding-bottom: .1rem;}
   .poster-box .right img{width:70%;border-radius: 50%;}

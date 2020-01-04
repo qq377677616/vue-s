@@ -1,4 +1,4 @@
-/*从地址栏获取传参*/
+//从地址栏获取传参
 export function GetQueryString(name) {
   var after = window.location.hash.split("?")[1];
   if (after) {
@@ -31,17 +31,16 @@ export function setPageScrollTop(scrollTop) {
   document.body.scrollTop = scrollTop
   document.documentElement.scrollTop = scrollTop
 }
-
 //创建script标签并加载
 export function loadScript(src, callback) {
-  var s = document.createElement("script")
-  s.async = false
-  s.src = src
+  var _script = document.createElement("script")
+  _script.async = false
+  _script.src = src
   var evtName = null
   var evtListener = null
   function logic() {
-    s.parentNode.removeChild(s)
-    s.removeEventListener(evtName, evtListener, false)
+    _script.parentNode.removeChild(_script)
+    _script.removeEventListener(evtName, evtListener, false)
     callback && callback()
   }
   evtName = "load"
@@ -55,8 +54,8 @@ export function loadScript(src, callback) {
   //   evtName = "load"
   //   evtListener = logic
   // }
-  s.addEventListener(evtName, evtListener, false)
-  document.body.appendChild(s)
+  _script.addEventListener(evtName, evtListener, false)
+  document.body.appendChild(_script)
 }
 //保留n位小数
 export function retainedDecimal(x, n, math) {
@@ -89,7 +88,7 @@ export function retainedDecimal(x, n, math) {
   }
   return s_x
 }
-// js浮点数精度--两数相加
+//js浮点数精度--两数相加
 export function accAdd(num1, num2) {
   var r1, r2, m;
   try {
@@ -106,7 +105,7 @@ export function accAdd(num1, num2) {
   // return (num1*m+num2*m)/m;
   return Math.round(num1 * m + num2 * m) / m;
 }
-// js浮点数精度--两数相减
+//js浮点数精度--两数相减
 export function accSub(num1, num2) {
   var r1, r2, m;
   try {

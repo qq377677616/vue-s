@@ -1,3 +1,4 @@
+import { REQUEST_URL, REQUEST_PROXY_URL } from 'api/config'
 const path = require('path');
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -17,14 +18,14 @@ module.exports = {
       .set('api',resolve('src/api'))
   },
   devServer: {
-    port: 7777,// 端口
+    port: 5555,// 端口
     proxy: {
-      '/api': {
-        target: 'https://api.topsales.net.cn/open', //对应自己的接口
+      [REQUEST_PROXY_URL]: {
+        target: REQUEST_URL, //对应自己的接口
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': ''
+          [`^${REQUEST_PROXY_URL}`]: ''
         }
       }
     }

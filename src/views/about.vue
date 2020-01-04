@@ -22,7 +22,7 @@ import {
   getProjectConfig,
   getPostTest,
   getTest
-} from "api/request.js";
+} from "api/api.js";
 export default {
   name: "",
   data() {
@@ -39,50 +39,30 @@ export default {
     };
   },
   created() {
-    this.$dialog.alert({
-      title: '测试页面',
-      message: '此页面为测试页面，点击确认退出'
-    }).then(() => {
-      this.$router.replace('/')
-    });
+    this.alerts()
   },
   mounted() {
-    // getPostTest({ bis_id: 8 }).then(res => {
-    //   console.log("res", res)
-    // })
-    getProjectConfig().then(res => {
-      console.log(res.data.data.status);
-      let _data = JSON.parse(decodeURIComponent(res.data.data.content.info));
-      console.log(_data);
-    });
-  },
-  mounted() {
-    getTest({
-      "X-Access-Token":
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjcsIm5vdyI6MTU3NzY4NDU4Mjg4OSwic3RycyI6WyJjb21wYW55X3Njb3BlIiwiZ2w4c2wiXSwidHlwZSI6MiwidXUiOiIxN2NiMWZmOC0wZWQyLTQ0MTEtODA1YS0xMTMyNzU2NGY4OTYifQ.aJfiTZoPrpzUJKfRbnJ_d7nN-iZbLQmv7iK7j0KMNm4"
-    }).then(res => {
-      console.log("res", res);
+    getPostTest({ bis_id: 8 }).then(res => {
+      console.log("【测试接口返回】", res)
+    })
+    getIpLocation({ callbackName: 'QQmap', output:'jsonp' }).then(res => {
+      console.log("【定位信息的返回】", res);
     });
   },
   computed: {
-    // accSub(num1,num2){
-    //   var r1,r2,m,n;
-    //   try{
-    //     r1 = num1.toString().split('.')[1].length;
-    //   }catch(e){
-    //       r1 = 0;
-    //   }
-    //   try{
-    //       r2=num2.toString().split(".")[1].length;
-    //   }catch(e){
-    //       r2=0;
-    //   }
-    //   m=Math.pow(10,Math.max(r1,r2));
-    //   n=(r1>=r2)?r1:r2;
-    //   return (Math.round(num1*m-num2*m)/m).toFixed(n);
-    // }
+
   },
   methods: {
+    alerts() {
+      if (process.env.NODE_ENV === 'production') {
+        this.$dialog.alert({
+          title: '测试页面',
+          message: '此页面为测试页面，点击确认退出'
+        }).then(() => {
+          this.$router.replace('/')
+        });
+      }
+    },
     accSub(num1, num2) {
       var r1, r2, m, n;
       try {

@@ -1,20 +1,27 @@
 import wx from 'weixin-js-sdk'
-// import { loadScript } from './util'
+import { loadScript } from './util'
 import VConsole from 'vconsole'
-import { PROJECT_CONFIG, PROJECT_CONFIG_URL, SHARECONFIG } from 'api/config'
-import { getProjectConfig, getWxConfig } from 'api/request.js'
-_configStart()
+import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG } from 'api/config'
+import { getProjectConfig, getWxConfig } from 'api/api.js'
 
 //获取微信配置参数信息
-function _configStart() {
-  getWxConfig().then(res => {
-    console.log("【微信注册信息】", res)
-    _getPageConfig(res.data)
-  }).catch(err => {
-    console.log("【微信注册信息4个参数获取失败】", err)
-    _configStart()
-  })
-}
+var re_request_num = 0;
+(function _configStart() {
+  if (PROJECT_CONFIG.wx_jssdk_type) {
+    getWxConfig().then(res => {
+      console.log("【微信注册信息】", res)
+      _getPageConfig(res.data)
+    }).catch(err => {
+      console.log("【微信注册信息4个参数获取失败】", err)
+      if ( re_request_num < 10) {
+        re_request_num++
+        _configStart()
+      }
+    })
+  } else {
+    loadScript(WXCONFIG_SCRIPT_URL, () => { _getPageConfig(window['wx_config']) })
+  }
+})()
 //获取页面配置信息
 function _getPageConfig(config) {
   if (!PROJECT_CONFIG_URL) {
@@ -64,15 +71,6 @@ function _mtaInit(sid) {
   let s = document.getElementsByTagName("script")[0]
   s.parentNode.insertBefore(mta, s)
 }
-//分享信息方法
-// function wxConfigInit() {
-//   //加载配置微信jssdk参数标签    
-//   loadScript("https://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&type=js&isonlyopenid=true", () => {    
-//   // loadScript("http://test123.flyh5.cn/api.php?a=get_token", () => {    
-//     //配置微信jssdk   
-//     _wxConfig()           
-//   })
-// }
 //微信jssdk注册配置
 function _wxConfig(config) {
   // try{
@@ -82,7 +80,6 @@ function _wxConfig(config) {
   //   console.log(err)
   //   return
   // }
-  console.log("【微信jssdk注册参数】")
   wx.config({
     // debug: window.openJssdkDebug,
     appId: config.appId,
