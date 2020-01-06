@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-event body">
+  <div class="vue-event body" @touchmove.prevent>
     <My-Header :title="pageTitle"></My-Header>
     <div class="full-screen flex-cen">
       <v-touch @swipeup="swipeup" @swipedown="swipedown" @swipeleft="swipeleft" @swiperight="swiperight" @pressup="pressup" class="vue-event-box flex-cen">对我进行<br/>长按<br/>向上<br/>向下<br/>向左<br/>向右<br/>滑动触摸</v-touch>

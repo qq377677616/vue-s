@@ -1,5 +1,5 @@
 //从地址栏获取传参
-export function GetQueryString(name) {
+export function getQueryString(name) {
   var after = window.location.hash.split("?")[1];
   if (after) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");

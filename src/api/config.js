@@ -8,6 +8,8 @@ const WXCONFIG_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?auth_ap
 const WXCONFIG_SCRIPT_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&type=js&isonlyopenid=true'
 //项目接口请求地址
 const REQUEST_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
+//后端授权链接
+const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
 //本地请求代理请求地址
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址
@@ -38,7 +40,8 @@ export {
   WXCONFIG_SCRIPT_URL,    
   REQUEST_URL,     
   REQUEST_PROXY_URL,
-  PROJECT_CONFIG_URL,  
+  PROJECT_CONFIG_URL, 
+  AUTH_URL,
   SHARECONFIG,
   PROJECT_CONFIG   
 }

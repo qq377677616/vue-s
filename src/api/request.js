@@ -46,7 +46,7 @@ service.interceptors.response.use(response => {
   if (response.status == ERR_Ok || response.data.status == ERR_Ok || response.data.data.status == ERR_Ok) {
     return response
   } else {
-    return { status: 1001, message: `返回数据状态status字段不为${ERR_Ok}` }
+    return { status: 1001, message: `返回数据状态status状态不为${ERR_Ok}` }
   }
 })
 

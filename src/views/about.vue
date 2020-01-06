@@ -1,9 +1,23 @@
 <template>
-  <div class="body about">
+  <div class="body about" @touchmove.prevent>
     <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
-    <div class="times">录制时间：{{times}}s</div>
-    <button @click="soundRecording_start">点击录制</button>
-    <button @click="soundRecording_stop(0)">停止录制{{accSub(0.03, 0.01)}}</button>
+    <div class="times bt-fd">录制时间：{{times}}s</div>
+    <div class="times tb-fd">录制时间：{{times}}s</div>
+    <div class="times lr-fd">录制时间：{{times}}s</div>
+    <div class="times rl-fd">录制时间：{{times}}s</div>
+    <div class="times wobble">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <div class="times sc-fd">录制时间：{{times}}s</div>
+    <button @click="soundRecording_start" class="fadeShow">点击录制</button>
+    <button @click="soundRecording_stop(0)" class="rs-fd">停止录制{{accSub(0.03, 0.01)}}</button>
     <!-- <button @click="synthesis">合成音频</button> -->
     <audio :src="myMp3" controls></audio>
     <tab></tab>
@@ -16,13 +30,7 @@ import wx from "weixin-js-sdk";
 import Shake from "assets/js/shake.js";
 import Tab from "components/tab.vue";
 import MyHeader from "components/header.vue";
-import {
-  getIpLocation,
-  getWxConfig,
-  getProjectConfig,
-  getPostTest,
-  getTest
-} from "api/api.js";
+import { getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api.js";
 export default {
   name: "",
   data() {
@@ -227,7 +235,7 @@ export default {
 .times {
   text-align: center;
   font-size: 0.5rem;
-  padding: 2rem 0 0.3rem;
+  padding: .3rem 0 0.3rem;
 }
 button {
   display: block;

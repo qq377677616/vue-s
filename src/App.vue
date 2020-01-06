@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition :name="transitionName"><router-view class="router-view"/></transition>
-    <my-audio v-if="PROJECT_CONFIG.is_background_music"></my-audio>
+    <my-audio v-show="PROJECT_CONFIG.is_background_music"></my-audio>
   </div>
 </template>
 
@@ -57,5 +57,7 @@ export default {
   .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100vw;min-height:100vh;}
   .right-left-enter,.left-right-leave-to{transform: translateX(100%);opacity: 0;}
   .right-left-leave-to,.left-right-enter{transform: translateX(-100%);opacity: 0;}
+  .bottom-top-enter,.top-bottom-leave-to{transform: translateY(60%) scale(1);opacity: 0;}
+  .bottom-top-leave-to,.top-bottom-enter{transform: translateY(-60%) scale(.8);opacity: 0;}
   .full-screen{width:100vw;height:calc(100vh - .92rem);}
 </style>

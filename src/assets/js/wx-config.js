@@ -1,7 +1,7 @@
 import wx from 'weixin-js-sdk'
 import { loadScript } from './util'
 import VConsole from 'vconsole'
-import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG } from 'api/config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
 import { getProjectConfig, getWxConfig } from 'api/api.js'
 
 //获取微信配置参数信息
@@ -34,6 +34,7 @@ function _getPageConfig(config) {
       document.title = _data.docTitle
       SHARECONFIG.Title = _data.shareTitle
       SHARECONFIG.Desc = _data.shareContent
+      SHARECONFIG.ShareUrl = AUTH_URL || _data.project_url
       SHARECONFIG.ShareImage = _data.shareImg 
       _openDebugging(_data['online-date'], _data['offline-date'])
       _wxConfig(config)

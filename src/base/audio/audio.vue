@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { shareConfig } from 'api/request'
+import { getProjectConfig } from 'api/api'
 export default {
   data() {
     return {
@@ -21,8 +21,8 @@ export default {
     }
   },
   mounted() {
-    // this.shareConfig()
-    this.getMusicUrl()
+    this.shareConfig()
+    // this.getMusicUrl()
   },
   created() {
 
@@ -40,19 +40,17 @@ export default {
         }
       }, 500)
     },
-    // shareConfig() {
-    //   shareConfig().then(res => {
-    //     if (res.error == 200) {
-    //       this.musicSrc = res.data.music
-    //       this.autoPlayAudio("audio")
-    //     } else {
-    //       this.autoPlayAudio("audio")
-    //     }
-    //   }).catch(err => {
-    //     console.log(err)
-    //     this.autoPlayAudio("audio")
-    //   })
-    // },
+    shareConfig() {
+      getProjectConfig().then(res => {
+        let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
+        this.musicSrc = _data.res_music
+        console.log("_data.res_music", _data.res_music)
+        this.autoPlayAudio("audio")
+      }).catch(err => {
+        console.log(err)
+        this.autoPlayAudio("audio")
+      })
+    },
     autoPlayAudio(audioId) {
       let _audio = document.getElementById(audioId)
       _audio.oncanplay = () => {
