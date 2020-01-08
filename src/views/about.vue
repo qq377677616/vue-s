@@ -1,23 +1,10 @@
 <template>
-  <div class="body about" @touchmove.prevent>
+  <div class="body about">
     <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
-    <div class="times bt-fd">录制时间：{{times}}s</div>
-    <div class="times tb-fd">录制时间：{{times}}s</div>
-    <div class="times lr-fd">录制时间：{{times}}s</div>
-    <div class="times rl-fd">录制时间：{{times}}s</div>
-    <div class="times wobble">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <div class="times sc-fd">录制时间：{{times}}s</div>
-    <button @click="soundRecording_start" class="fadeShow">点击录制</button>
-    <button @click="soundRecording_stop(0)" class="rs-fd">停止录制{{accSub(0.03, 0.01)}}</button>
+    <div class="times">录制时间：{{times}}s</div>
+    <button @click="soundRecording_start">点击录制</button>
+    <button @click="soundRecording_stop(0)">停止录制</button>
+    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
     <!-- <button @click="synthesis">合成音频</button> -->
     <audio :src="myMp3" controls></audio>
     <tab></tab>
@@ -29,8 +16,10 @@
 import wx from "weixin-js-sdk";
 import Shake from "assets/js/shake.js";
 import Tab from "components/tab.vue";
+import { getLocation_qq, getLocation_baidu, getLocation_amap } from "assets/js/get-location.js";
+import { getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-phone-region.js";
 import MyHeader from "components/header.vue";
-import { getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api.js";
+import { uploadAudio, getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api.js"
 export default {
   name: "",
   data() {
@@ -48,27 +37,59 @@ export default {
   },
   created() {
     this.alerts()
+    this.getLocation();
   },
   mounted() {
-    getPostTest({ bis_id: 8 }).then(res => {
-      console.log("【测试接口返回】", res)
+    getIpLocation_juhe({ phone: '15707496771', key: '40c2bcf1f7d2b93fe86254759ba95d6d' }).then(res => {
+      console.log("【手机号归属地查询接口返回1】", res)
+      console.log("【手机号归属地查询接口返回1】", res.data.result)
     })
-    getIpLocation({ callbackName: 'QQmap', output:'jsonp' }).then(res => {
-      console.log("【定位信息的返回】", res);
-    });
+    getIpLocation_jisu({ phone: '15707496771', key: '31a6a96f004f8ca8' }).then(res => {
+      console.log("【手机号归属地查询接口返回2】", res)
+      console.log("【手机号归属地查询接口返回2】", res.data.result)
+    })
+    getIpLocation_baidu({ phone: '15707496771'}).then(res => {
+      console.log("【手机号归属地查询接口返回3】", res)
+      console.log("【手机号归属地查询接口返回3】", res.data.response)
+    })
+    getIpLocation_k780({ phone: '15707496771'}).then(res => {
+      console.log("【手机号归属地查询接口返回4】", res)
+      console.log("【手机号归属地查询接口返回4】", res.data.result)
+    })
+    // this.getLocation(); // 调用获取地理位置
+    // this.getLocation2(); // 调用获取地理位置
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
+    getLocation() {
+      getLocation_qq().then(res => {
+        console.log("【腾讯定位信息】", res)
+      })
+      getLocation_baidu().then(res => {
+        console.log("【百度定位信息】", res)
+      })
+      getLocation_amap().then(res => {
+        console.log("【高德定位信息】", res)
+      })
+    },
+    /**获取地图定位*/
+    // getLocation2() {
+    //   let geolocation = location.initMap("map-container"); //定位
+    //   console.log("geolocation", geolocation)
+    //   AMap.event.addListener(geolocation, "complete", result => {
+    //     console.log("【高德地图定位信息的返回】", result);
+    //   });
+    // },
     alerts() {
-      if (process.env.NODE_ENV === 'production') {
-        this.$dialog.alert({
-          title: '测试页面',
-          message: '此页面为测试页面，点击确认退出'
-        }).then(() => {
-          this.$router.replace('/')
-        });
+      if (process.env.NODE_ENV === "production") {
+        this.$dialog
+          .alert({
+            title: "测试页面",
+            message: "此页面为测试页面，点击确认退出"
+          })
+          .then(() => {
+            this.$router.replace("/");
+          });
       }
     },
     accSub(num1, num2) {
@@ -150,23 +171,19 @@ export default {
     //上传合成音频
     synthesis() {
       let _this = this;
-      console.log("本地id列表", _this.localIdList);
+      console.log("音频本地id列表", _this.localIdList);
       _this.uploadVoice(() => {
-        console.log("服务器id列表", _this.serverIdList);
+        console.log("音频服务器id列表", _this.serverIdList);
         let _data = {
-          // a: "upload",
           // media_id: JSON.stringify(_this.serverIdList)
-          media_id: _this.serverIdList.join(","),
-          // media_id: "123456",
-          ab: "555",
-          bd: "888"
-          // media_id: _this.serverIdList[0]
+          media_id: _this.serverIdList,
+          ab: "555"
         };
         console.log("传给后台的id列表数据：", _data);
-        getAudio(_data).then(res => {
+        uploadAudio(_data).then(res => {
           console.log("合成mp3接口的返回：");
           console.log(res);
-          _this.myMp3 = res.data.url;
+          _this.myMp3 = res.data.data;
           console.log("最后的mp3", _this.myMp3);
         });
       });
@@ -235,7 +252,7 @@ export default {
 .times {
   text-align: center;
   font-size: 0.5rem;
-  padding: .3rem 0 0.3rem;
+  padding: 0.3rem 0 0.3rem;
 }
 button {
   display: block;

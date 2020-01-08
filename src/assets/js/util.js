@@ -33,29 +33,32 @@ export function setPageScrollTop(scrollTop) {
 }
 //创建script标签并加载
 export function loadScript(src, callback) {
-  var _script = document.createElement("script")
-  _script.async = false
-  _script.src = src
-  var evtName = null
-  var evtListener = null
-  function logic() {
-    _script.parentNode.removeChild(_script)
-    _script.removeEventListener(evtName, evtListener, false)
-    callback && callback()
-  }
-  evtName = "load"
-  evtListener = logic
-  // if (!-[1,]) {
-  //   evtName = "readystatechange"
-  //   evtListener = function () {
-  //     (this.readyState == "loaded" || this.readyState == "complete") && logic()
-  //   }
-  // } else {
-  //   evtName = "load"
-  //   evtListener = logic
-  // }
-  _script.addEventListener(evtName, evtListener, false)
-  document.body.appendChild(_script)
+  return new Promise((resolve, reject) => {
+    var _script = document.createElement("script")
+    _script.async = false
+    _script.src = src
+    var evtName = null
+    var evtListener = null
+    function logic() {
+      _script.parentNode.removeChild(_script)
+      _script.removeEventListener(evtName, evtListener, false)
+      resolve()
+    }
+    evtName = "load"
+    evtListener = logic
+    // if (!-[1,]) {
+    //   evtName = "readystatechange"
+    //   evtListener = function () {
+    //     (this.readyState == "loaded" || this.readyState == "complete") && logic()
+    //   }
+    // } else {
+    //   evtName = "load"
+    //   evtListener = logic
+    // }
+    _script.addEventListener(evtName, evtListener, false)
+    document.body.appendChild(_script)
+
+  })
 }
 //保留n位小数
 export function retainedDecimal(x, n, math) {

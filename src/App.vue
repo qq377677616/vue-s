@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <transition :name="transitionName"><router-view class="router-view"/></transition>
-    <my-audio v-show="PROJECT_CONFIG.is_background_music"></my-audio>
+    <transition :name="transitionName"><router-view class="router-view" @touchmove.prevent/></transition>
+    <my-audio v-if="PROJECT_CONFIG.is_background_music"></my-audio>
   </div>
 </template>
 

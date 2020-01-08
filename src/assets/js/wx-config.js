@@ -1,5 +1,5 @@
 import wx from 'weixin-js-sdk'
-import { loadScript } from './util'
+import { loadScript } from 'assets/js/util'
 import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
 import { getProjectConfig, getWxConfig } from 'api/api.js'

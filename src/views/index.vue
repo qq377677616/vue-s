@@ -1,5 +1,5 @@
 <template>
-  <div class="body index" @touchmove.prevent>
+  <div class="body index">
     <scroll class="ul">
       <ul>
         <li v-for="(item, index) in jumpList" :class="{'dis': !item.url}" :key="'key' + index" @click="jump(index)">{{item.name}}</li>
@@ -35,18 +35,6 @@ export default {
         { name: "A~Z索引滚动列表", url: "/mail-list" },
         { name: "vuex", url: "/vuex" },
         { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
-        { name: "多语言", url: "/lang" },
         { name: "下一版本见...", url: "" }
       ]
     }
@@ -74,7 +62,6 @@ export default {
 <style scoped>
   p.name{width:4.2em;margin:.2rem auto;border:1px solid green;}
   .index{background:linear-gradient(135deg,#027C60 0%, #A8271E 100%);padding-bottom: 1rem;box-sizing: border-box;}
-  /* .ul,ul{height: calc(90vh - 1rem);overflow: auto;-webkit-overflow-scrolling:touch;} */
   .ul{height: calc(90vh - 1rem);overflow: hidden;}
   ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:.15rem auto;background: #fff;font-size: .28rem;}
   ul li.dis{color:#bbb;}

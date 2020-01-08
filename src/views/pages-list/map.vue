@@ -29,10 +29,15 @@ export default {
   methods: {
     //地图初始化
     init() {
-      this.map = new qq.maps.Map(document.getElementById('container'),{ center: new qq.maps.LatLng(39.916527,116.397128), zoom: 12 })
-      this.markerList.forEach(item => {
-        this.createMarker(item.position)
-      })
+      // loadScript("https://map.qq.com/api/js?v=2.exp&key=2O6BZ-N3HK6-IQTS3-EEVSR-AGBLQ-UBFKJ").then(() => {
+        console.log("qq", qq)
+        console.log("qq.maps", qq.maps)
+        console.log("qq.maps.Map", qq.maps.Map)
+        this.map = new qq.maps.Map(document.getElementById('container'),{ center: new qq.maps.LatLng(39.916527,116.397128), zoom: 12 })
+        this.markerList.forEach(item => {
+          this.createMarker(item.position)
+        })
+      // })
     },
     //创建标注点
     createMarker(position) {
