@@ -29,7 +29,6 @@ export default {
   methods: {
     back() {
       let _url = sessionStorage.getItem('prevPage') || '/'
-      console.log("_url", _url)
       this.$router.replace(_url)
       sessionStorage.setItem('prevPage', '')
     }    
