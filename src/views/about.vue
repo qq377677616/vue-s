@@ -40,22 +40,22 @@ export default {
     this.getLocation();
   },
   mounted() {
-    getIpLocation_juhe({ phone: '15707496771', key: '40c2bcf1f7d2b93fe86254759ba95d6d' }).then(res => {
-      console.log("【手机号归属地查询接口返回1】", res)
-      console.log("【手机号归属地查询接口返回1】", res.data.result)
-    })
-    getIpLocation_jisu({ phone: '15707496771', key: '31a6a96f004f8ca8' }).then(res => {
-      console.log("【手机号归属地查询接口返回2】", res)
-      console.log("【手机号归属地查询接口返回2】", res.data.result)
-    })
-    getIpLocation_baidu({ phone: '15707496771'}).then(res => {
-      console.log("【手机号归属地查询接口返回3】", res)
-      console.log("【手机号归属地查询接口返回3】", res.data.response)
-    })
-    getIpLocation_k780({ phone: '15707496771'}).then(res => {
-      console.log("【手机号归属地查询接口返回4】", res)
-      console.log("【手机号归属地查询接口返回4】", res.data.result)
-    })
+    // getIpLocation_juhe({ phone: '15707496771', key: '40c2bcf1f7d2b93fe86254759ba95d6d' }).then(res => {
+    //   console.log("【手机号归属地查询接口返回1】", res)
+    //   console.log("【手机号归属地查询接口返回1】", res.data.result)
+    // })
+    // getIpLocation_jisu({ phone: '15707496771', key: '31a6a96f004f8ca8' }).then(res => {
+    //   console.log("【手机号归属地查询接口返回2】", res)
+    //   console.log("【手机号归属地查询接口返回2】", res.data.result)
+    // })
+    // getIpLocation_baidu({ phone: '15707496771'}).then(res => {
+    //   console.log("【手机号归属地查询接口返回3】", res)
+    //   console.log("【手机号归属地查询接口返回3】", res.data.response)
+    // })
+    // getIpLocation_k780({ phone: '15707496771'}).then(res => {
+    //   console.log("【手机号归属地查询接口返回4】", res)
+    //   console.log("【手机号归属地查询接口返回4】", res.data.result)
+    // })
     // this.getLocation(); // 调用获取地理位置
     // this.getLocation2(); // 调用获取地理位置
   },
