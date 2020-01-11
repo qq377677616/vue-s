@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 import jsonp from 'api/jsonp'
@@ -58,7 +59,7 @@ export const api = (url, data, type, isQs, isUrl) => {
     url = `${REQUEST_PROXY_URL}${url}`
   }
   if (type === 'jsonp') {
-    return jsonp(url, data).then(res => {
+    return Vue.prototype.$jsonp(url, data).then(res => {
       return Promise.resolve(res)
     }).catch(err => {
       return Promise.reject(err)

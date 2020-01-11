@@ -5,7 +5,6 @@ import { WXCONFIG_URL, PROJECT_CONFIG_URL } from 'api/config'
 const getWxConfig = (data, url = WXCONFIG_URL, type = 'post') => { return api(url, data, type, true, 0) }
 //核弹系统配置
 const getProjectConfig = (data, url = PROJECT_CONFIG_URL, type = 'post') => { return api(url, data, type, true, 0) }
-
 //上传多段录制音频
 const uploadAudio = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/ljy_wzyh_3/public/index/demo/message', type = 'post') => { return api(url, data, type, true, 0) }
 //测试接口

@@ -1,9 +1,9 @@
 //从地址栏获取传参
 export function getQueryString(name) {
-  var after = window.location.hash.split("?")[1];
+  let after = window.location.hash.split("?")[1];
   if (after) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = after.match(reg);
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    let r = after.match(reg);
     if (r != null) {
       return decodeURIComponent(r[2]);
     } else {
@@ -34,11 +34,11 @@ export function setPageScrollTop(scrollTop) {
 //创建script标签并加载
 export function loadScript(src, callback) {
   return new Promise((resolve, reject) => {
-    var _script = document.createElement("script")
+    let _script = document.createElement("script")
     _script.async = false
     _script.src = src
-    var evtName = null
-    var evtListener = null
+    let evtName = null
+    let evtListener = null
     function logic() {
       _script.parentNode.removeChild(_script)
       _script.removeEventListener(evtName, evtListener, false)
@@ -59,6 +59,60 @@ export function loadScript(src, callback) {
     document.body.appendChild(_script)
 
   })
+}
+//判断当前手机系统（Android/ios） 
+export function isSystem(callback) {
+  return new Promise(resolve => {
+    let u = navigator.userAgent
+    let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+    let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+    resolve({isAndroid: isAndroid, isiOS: isiOS})
+  })
+}
+//audioContext播放音乐
+export function audioContextMusic(mp3Url, clickEle, callback) {
+  let audioContext
+  let audioBufferSourceNode
+  let analyser
+  let clickBtn = document.getElementById(clickEle)
+  window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext
+  audioContext = new window.AudioContext()
+  analyser = audioContext.createAnalyser()
+  analyser.fftSize = 256
+  loadAudioFile(mp3Url)
+  function loadAudioFile(url) {
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'arraybuffer'
+    xhr.onload = function(e) {
+      decodecFile(this.response)
+    };
+    xhr.send()
+  }
+  function decodecFile(fileContent) {
+    audioContext.decodeAudioData(fileContent, function(buffer) {
+      start(buffer)
+    })
+  }
+  function start(buffer) {
+    if(audioBufferSourceNode) { audioBufferSourceNode.stop() }
+    audioBufferSourceNode = audioContext.createBufferSource()
+    audioBufferSourceNode.connect(analyser)
+    analyser.connect(audioContext.destination)
+    audioBufferSourceNode.buffer = buffer
+    audioBufferSourceNode.loop = true
+    audioBufferSourceNode.start(0)
+    callback({status: 1})
+  }
+  clickBtn.onclick=function(){
+    if (audioContext.state === "suspended") {
+      audioContext.resume()
+      callback({status: 1})
+    } else if (audioContext.state === "running") {
+      audioContext.suspend()
+      callback({status: 2})
+    }
+  }
 }
 //保留n位小数
 export function retainedDecimal(x, n, math) {
@@ -93,7 +147,7 @@ export function retainedDecimal(x, n, math) {
 }
 //js浮点数精度--两数相加
 export function accAdd(num1, num2) {
-  var r1, r2, m;
+  let r1, r2, m;
   try {
     r1 = num1.toString().split('.')[1].length;
   } catch (e) {
@@ -110,7 +164,7 @@ export function accAdd(num1, num2) {
 }
 //js浮点数精度--两数相减
 export function accSub(num1, num2) {
-  var r1, r2, m;
+  let r1, r2, m;
   try {
     r1 = num1.toString().split('.')[1].length;
   } catch (e) {
@@ -134,7 +188,7 @@ export function accMul(num1, num2) {
 }
 //js浮点数精度--两数相除
 export function accDiv(num1, num2) {
-  var t1, t2, r1, r2;
+  let t1, t2, r1, r2;
   try {
     t1 = num1.toString().split('.')[1].length;
   } catch (e) {

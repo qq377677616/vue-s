@@ -16,7 +16,8 @@ import clipper from 'assets/js/clipper'
 import LangEn from 'assets/lang/en'
 import LangZhCHS from 'assets/lang/zhCHS'
 import LangZhCHT from 'assets/lang/zhCHT'
-
+import VueJsonp from 'vue-jsonp'
+Vue.use(VueJsonp)
 Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(VueTouch, { name: 'v-touch' })

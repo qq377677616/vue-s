@@ -20,15 +20,28 @@ const ASSETS_URL = 'http://game.flyh5.cn/resources/game/wechat/'
 const SHARECONFIG = {
   ShareUrl: window.location.href,
   Title: '专注vue',
-  Desc: "vue是一套用于构建用户界面的渐进式JavaScript框架。",
-  ShareImage: "http://game.flyh5.cn/resources/game/wechat/szq/images/avatar_01.jpg"
+  Desc: 'vue是一套用于构建用户界面的渐进式JavaScript框架。',
+  ShareImage: 'http://game.flyh5.cn/resources/game/wechat/szq/images/avatar_01.jpg'
 }
+//第三方密钥配置信息
+const SECRETKEY = {
+  secretkey_qq_map: 'GW3BZ-NMN6J-JSEFT-FTC6R-F7DA3-Z3FVJ',//腾讯地图位置密钥
+  secretkey_baidu_map: 'AqHbeO1DTPXX06zcMKTqhhOAHkyqnqxY',//百度地图位置密钥
+  secretkey_amap_map: '36b7d67054e5dcd7d391ab517478ccfe',//高德地图位置密钥
+  secretkey_juhe_phone_region: '40c2bcf1f7d2b93fe86254759ba95d6d',//聚合数据获取手机号归属地密钥
+  secretkey_jisu_phone_region: '31a6a96f004f8ca8'//极速数据获取手机号归属地密钥
+}  
 //项目开关配置信息
 const PROJECT_CONFIG = {
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
+  is_page_locking: true,//是否锁定页面上拉、下拉
   is_wx_share: true,//是否配置分享  
-  is_background_music: false,//是否开启背景音乐
-  is_vconsole: 3,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+  is_background_music: {//背景音乐配置
+    is_open: true,//是否开启背景音乐
+    type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
+    constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径 
+  },
+  is_vconsole: 1,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
   is_offline_sign_out: false,//项目下线后是否关闭退出项目
 }
 
@@ -43,5 +56,6 @@ export {
   PROJECT_CONFIG_URL, 
   AUTH_URL,
   SHARECONFIG,
+  SECRETKEY,
   PROJECT_CONFIG   
 }

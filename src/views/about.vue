@@ -1,12 +1,18 @@
 <template>
   <div class="body about">
     <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
+    <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
     <button @click="soundRecording_stop(0)">停止录制</button>
+    <button @click="openMap">打开地图</button>
+    <div class="input"><input type="text"></div>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
     <!-- <button @click="synthesis">合成音频</button> -->
     <audio :src="myMp3" controls></audio>
+    <div class="h5">{{aaa}}</div>
+    <div class="box"></div>
+    <div class="input"><input type="text" @focus="focus"></div>
     <tab></tab>
     <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/code.jpg" alt="" @click="previewImage"> -->
   </div>
@@ -16,10 +22,12 @@
 import wx from "weixin-js-sdk";
 import Shake from "assets/js/shake.js";
 import Tab from "components/tab.vue";
-import { getLocation_qq, getLocation_baidu, getLocation_amap } from "assets/js/get-location.js";
-import { getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-phone-region.js";
+import { setPageScrollTop } from "assets/js/util";
+import { getLocation_qq, getLocation_baidu, getLocation_amap, getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-third-party.js";
 import MyHeader from "components/header.vue";
 import { uploadAudio, getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api.js"
+
+
 export default {
   name: "",
   data() {
@@ -32,19 +40,52 @@ export default {
       serverIdList: [], //录音服务器id列表
       serverId_index: 0,
       section: [5, 10],
+      aaa: 1,
       myMp3: "" //合成后的mp3
     };
   },
   created() {
-    this.alerts()
+    // this.alerts()
     this.getLocation();
+    sessionStorage.setItem("aaa", "【5555555555】")
+    console.log(sessionStorage.getItem("aaa"))
+  },
+  destroyed() {
+    // this.$router.replace("/")
   },
   mounted() {
-    // getIpLocation_juhe({ phone: '15707496771', key: '40c2bcf1f7d2b93fe86254759ba95d6d' }).then(res => {
+    // this.$router.push('/')
+    window.onunload  = function (e) {
+      // e = e || window.event;
+    
+      // 兼容IE8和Firefox 4之前的版本
+      // if (e) {
+      //   e.returnValue = '关闭提示3333';
+      // }
+      this.$router.replace("/")
+      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+      // return '关闭提示';
+    }
+    window.addEventListener("beforeunload", function (e) {
+      // alert(555)
+      // return;
+// //      //不是所有浏览器都支持提示信息的修改
+//      var confirmationMessage = "请先保存您编辑的内容,否则您修改的信息会丢失。";
+//      e.returnValue = confirmationMessage;
+//      alert(4444)
+//      this.$router.replace("/")
+    //  return confirmationMessage;
+});
+    window.onresize = () => {
+      let _aaa = this.aaa
+      _aaa++
+      this.aaa = _aaa
+    }
+    // getIpLocation_juhe({ phone: '15707496771' }).then(res => {
     //   console.log("【手机号归属地查询接口返回1】", res)
     //   console.log("【手机号归属地查询接口返回1】", res.data.result)
     // })
-    // getIpLocation_jisu({ phone: '15707496771', key: '31a6a96f004f8ca8' }).then(res => {
+    // getIpLocation_jisu({ phone: '15707496771' }).then(res => {
     //   console.log("【手机号归属地查询接口返回2】", res)
     //   console.log("【手机号归属地查询接口返回2】", res.data.result)
     // })
@@ -58,18 +99,46 @@ export default {
     // })
     // this.getLocation(); // 调用获取地理位置
     // this.getLocation2(); // 调用获取地理位置
+    // this.loading()
   },
   computed: {},
   methods: {
+    loading(ele, ele2, speed, callback) {
+      //加载进度条
+      // $(ele2).animate({ 'width': '0%' }, 0).animate({ 'width': '33%' }, speed * 2).animate({ 'width': '66%' }, speed * 2).animate({ 'width': '100%' }, speed * 3);
+      let _num = 0
+      setInterval(function () {
+        _num++
+        console.log(_num)
+      }, 100);
+    },
     getLocation() {
+      // getMap()
       getLocation_qq().then(res => {
         console.log("【腾讯定位信息】", res)
       })
-      getLocation_baidu().then(res => {
-        console.log("【百度定位信息】", res)
-      })
-      getLocation_amap().then(res => {
-        console.log("【高德定位信息】", res)
+      // getLocation_baidu().then(res => {
+      //   console.log("【百度定位信息】", res)
+      // })
+      // getLocation_amap().then(res => {
+      //   console.log("【高德定位信息】", res)
+      // })
+    },
+    focus() {
+      setTimeout(() => {
+        window.screenHeight = document.body.clientHeight;  
+        setPageScrollTop(document.body.scrollHeight)
+      }, 500)
+    },
+    openMap(){
+      console.log("【打开地图】")
+      wx.openLocation({
+        latitude: 28.179474, // 纬度，浮点数，范围为90 ~ -90
+        longitude: 112.988696, // 经度，浮点数，范围为180 ~ -180。
+        name: '377677', // 位置名
+        address: '377677616', // 地址详情说明
+        scale: 12, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
       })
     },
     /**获取地图定位*/
@@ -246,9 +315,15 @@ export default {
 </script>
 
 <style scoped>
+#iframe{width:100vw;height: 100vh;}
 .about {
   background: #fff;
+  padding-bottom: 1rem;
 }
+.h5{text-align: center;font-size: 20px;}
+.box{height:5rem;}
+.input{margin:.4rem 0;}
+input{height:.6rem;border:1px solid #ddd;width: 100%;}
 .times {
   text-align: center;
   font-size: 0.5rem;

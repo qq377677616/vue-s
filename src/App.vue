@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <transition :name="transitionName"><router-view class="router-view" @touchmove.prevent/></transition>
-    <my-audio v-if="PROJECT_CONFIG.is_background_music"></my-audio>
+    <transition :name="transitionName"><router-view class="router-view" /></transition>
+    <my-audio v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import myAudio from 'base/audio/audio'
 import { PROJECT_CONFIG } from 'api/config'
 export default {
@@ -20,12 +19,20 @@ export default {
     this.vuexConfig()//vuex
     this.PROJECT_CONFIG = PROJECT_CONFIG
   },
+  mounted() {
+    if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }
+  },
   methods: {
+    //vuex
     vuexConfig() {
       sessionStorage.getItem("state") && this.$store.replaceState(JSON.parse(sessionStorage.getItem("state")))
       window.addEventListener("beforeunload",()=>{
         sessionStorage.setItem("state", JSON.stringify(this.$store.state))
       })
+    },
+    //页面下拉锁定(效果同于在最外层#app盒子上添加@touchmove.prevent事件)
+    pageLocking() {
+      document.getElementById('app').addEventListener('touchmove', e => { e.preventDefault() /*e.stopPropagation();*/ }, { passive: false })
     }
   },
   watch: {
@@ -57,7 +64,9 @@ export default {
   .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100vw;min-height:100vh;}
   .right-left-enter,.left-right-leave-to{transform: translateX(100%);opacity: 0;}
   .right-left-leave-to,.left-right-enter{transform: translateX(-100%);opacity: 0;}
-  .bottom-top-enter,.top-bottom-leave-to{transform: translateY(60%) scale(1);opacity: 0;}
-  .bottom-top-leave-to,.top-bottom-enter{transform: translateY(-60%) scale(.8);opacity: 0;}
+  .bottom-top-enter,.top-bottom-leave-to{transform: translateY(100%) scale(1);opacity: 0;}
+  .bottom-top-leave-to,.top-bottom-enter{transform: translateY(-100%) scale(.8);opacity: 0;}
+  .scale-big-enter,.scale-small-leave-to{transform: scale(.5);opacity: 0;}
+  .scale-big-leave-to,.scale-small-enter{transform: scale(1);opacity: 0;}
   .full-screen{width:100vw;height:calc(100vh - .92rem);}
 </style>

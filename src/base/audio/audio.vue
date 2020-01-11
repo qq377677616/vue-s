@@ -2,53 +2,68 @@
   <div class="audio">
     <audio :src="musicSrc" id="audio" loop></audio>
     <transition name="right-left">
-      <div class="btns" v-show="isPlay > 0" @click="playPause('audio')">
-        <img src="../../assets/images/music_01.png" alt="" class="btn-play" v-show="isPlay == 1">
-        <img src="../../assets/images/music_02.png" alt=""  v-show="isPlay == 2">
+      <div class="btns" id="audio-btn" v-show="isPlay > 0" @click="playPause('audio')">
+        <img :src="PROJECT_CONFIG.is_background_music.constrols_btn_url[0]" alt="" class="btn-play" v-show="isPlay == 1">
+        <img :src="PROJECT_CONFIG.is_background_music.constrols_btn_url[1]" alt=""  v-show="isPlay == 2">
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import { PROJECT_CONFIG } from 'api/config'
+import { isSystem, audioContextMusic } from 'assets/js/util'
 import { getProjectConfig } from 'api/api'
 export default {
   data() {
     return {
       // musicSrc: 'https://game.flyh5.cn/resources/game/wechat/szq/gaoxiao/music.mp3',
+      isAudioType: 0,//当前播放模式:0为原生audio标签播放，1为AudioContext播放
       musicSrc: '',
       isPlay: 0
     }
+  },
+  created() {
+    this.PROJECT_CONFIG = PROJECT_CONFIG
   },
   mounted() {
     this.shareConfig()
     // this.getMusicUrl()
   },
-  created() {
-
-  },
   methods: {
     //获取背景音乐地址
-    getMusicUrl() {
-      setTimeout(() => {
-        let _musicUrl = sessionStorage.getItem("music")
-        if (_musicUrl) {
-          this.musicSrc = _musicUrl
-          this.autoPlayAudio("audio")
-        } else {
-          this.setTimeout()
-        }
-      }, 500)
-    },
+    // getMusicUrl() {
+    //   setTimeout(() => {
+    //     let _musicUrl = sessionStorage.getItem("music")
+    //     if (_musicUrl) {
+    //       this.musicSrc = _musicUrl
+    //       this.autoPlayAudio("audio")
+    //     } else {
+    //       this.setTimeout()
+    //     }
+    //   }, 500)
+    // },
     shareConfig() {
       getProjectConfig().then(res => {
         let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
         this.musicSrc = _data.res_music
-        console.log("_data.res_music", _data.res_music)
-        this.autoPlayAudio("audio")
+        this.playAudio(this.musicSrc, "audio", "audio-btn")
       }).catch(err => {
         console.log(err)
         this.autoPlayAudio("audio")
+      })
+    },
+    playAudio(mp3Url, audioId, controls) {
+      isSystem().then(res => {
+        if (res.isiOS) {
+          this.autoPlayAudio(audioId)
+        } else {
+          this.isAudioType = 1
+          audioContextMusic(mp3Url, controls, res => {
+            if (res.status == 1) console.log("【背景音乐自动播放OK3】")
+            this.isPlay = res.status
+          })
+        }
       })
     },
     autoPlayAudio(audioId) {
@@ -65,6 +80,7 @@ export default {
       }, false);
     },
     playPause(audioId) {
+      if (this.isAudioType) return
       let _audio = document.getElementById(audioId)
       if (_audio.paused) {
         _audio.play()
