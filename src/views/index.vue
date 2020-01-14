@@ -32,7 +32,7 @@ export default {
         // { name: "数字滚动", url: "" },
         { name: "抽奖系列", url: "/prize" },
         { name: "地图", url: "/map" },
-        { name: "A~Z索引滚动列表", url: "/mail-list" },
+        { name: "索引列表", url: "/mail-list" },
         { name: "vuex", url: "/vuex" },
         { name: "多语言", url: "/lang" },
         { name: "下一版本见...", url: "" }

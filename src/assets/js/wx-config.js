@@ -74,13 +74,13 @@ function _mtaInit(sid) {
 }
 //微信jssdk注册配置
 function _wxConfig(config) {
-  // try{
-  //   console.log("wx_config", wx_config)
-  // }
-  // catch(err){
-  //   console.log(err)
-  //   return
-  // }
+  try{
+    console.log("【微信jssdk注册配置参数】", config)
+  }
+  catch(err){
+    console.log("【微信jssdk注册配置失败】", err)
+    return
+  }
   wx.config({
     // debug: window.openJssdkDebug,
     appId: config.appId,
@@ -92,23 +92,9 @@ function _wxConfig(config) {
     ]
   })
   wx.ready(function () {
-    // wx.checkJsApi({
-    //     jsApiList: ["chooseWXPay"],
-    //     success: function (res) {
-    //       console.log('【是否支付chooseWXPay】', res)
-    //         if (res.checkResult.chooseWXPay) {
-    //             console.log("wx.checkJsApi success");
-    //             window.wxConfigReady = true;
-    //             document.dispatchEvent(new Event("wxConfigReady"));
-    //         }
-    //         console.log("wx.checkJsApi result:", res.checkResult);
-    //     },
-    //     fail: function (res) {
-    //         console.log("wx.checkJsApi fail:", res);
-    //     }
-    // });
+    checkJsApi(["chooseWXPay"]).then(res => { console.log("【检测是否支持某些功能】", res) })
     console.log("【wx.ready OK】")  
-    if (PROJECT_CONFIG.is_wx_share) _shareConfigure()
+    if (PROJECT_CONFIG.is_wx_share) shareConfigure().then(res => { console.log("【分享配置成功】", res) }).catch(err => { console.log("【分享配置失败】", err) })
   })
   wx.error(function (res) {
     console.log("wx.config error:", res);
@@ -116,51 +102,47 @@ function _wxConfig(config) {
   })
 }
 //微信、QQ分享配置
-function _shareConfigure() {
-  // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
-  wx.updateAppMessageShareData({ 
-    title: SHARECONFIG.Title, // 分享标题
-    desc: SHARECONFIG.Desc, // 分享描述
-    link: SHARECONFIG.ShareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: SHARECONFIG.ShareImage, // 分享图标
-    success: function () {
-      // 设置成功
-      console.log('【分享配置OK1】')
-    }
+const shareConfigure = (shareConfig) => {
+  return new Promise((resolve, reject) => {
+    let isShareConfigure = 0, shareMessage = []
+    if (shareConfig && typeof shareConfig == 'object') Object.assign(SHARECONFIG, shareConfig)
+    // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
+    wx.updateAppMessageShareData({ 
+      title: SHARECONFIG.Title, // 分享标题
+      desc: SHARECONFIG.Desc, // 分享描述
+      link: SHARECONFIG.ShareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      imgUrl: SHARECONFIG.ShareImage, // 分享图标
+      success: res => { // 分享配置成功回调
+        isShareConfigure++
+        shareMessage.push(res)
+        if (isShareConfigure == 2) resolve(shareMessage) 
+      },
+      fail: err => {reject(err)}// 分享配置失败回调
+    })
+    // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
+    wx.updateTimelineShareData({
+      title: SHARECONFIG.Title,
+      link: SHARECONFIG.ShareUrl,
+      imgUrl: SHARECONFIG.ShareImage, 
+      success: res => { // 分享配置成功回调
+        isShareConfigure++
+        shareMessage.push(res)
+        if (isShareConfigure == 2) resolve(shareMessage) 
+      },
+      fail: err => {reject(err)}
+    })
   })
-  // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容（1.4.0）
-  wx.updateTimelineShareData({ 
-    title: SHARECONFIG.Title, // 分享标题
-    link: SHARECONFIG.ShareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: SHARECONFIG.ShareImage, // 分享图标
-    success: function () {
-      // 设置成功
-      console.log('【分享配置OK2】')
-    }
+}
+//判断当前客户端版本是否支持指定JS接口
+function checkJsApi(jsApiList) {
+  return new Promise((resolve, reject) => {
+    wx.checkJsApi({
+      jsApiList: jsApiList,
+      success: res => { resolve(res) },
+      fail: err => {reject(err)}
+    })
   })
-  //2.1监听“分享到朋友”按钮点击、自定义分享内容及分享结果接口(旧)
-  wx.onMenuShareAppMessage({
-    title: SHARECONFIG.Title, // 分享标题
-    desc: SHARECONFIG.Desc, // 分享描述
-    link: SHARECONFIG.ShareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: SHARECONFIG.ShareImage, // 分享图标
-    success: function() {
-      console.log('【分享配置OK3】')
-    },
-    cancel: function() {},
-    fail: function() {}
-  });
-    
-  // 2.2 监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口(旧)
-  wx.onMenuShareTimeline({
-    title: SHARECONFIG.Title, // 分享标题
-    desc: SHARECONFIG.Desc, // 分享描述
-    link: SHARECONFIG.ShareUrl, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-    imgUrl: SHARECONFIG.ShareImage, // 分享图标
-    success: function() {
-      console.log('【分享配置OK4】') 
-    },
-    cancel: function() {},
-    fail: function() {}
-  });
+}
+export {
+  shareConfigure
 }

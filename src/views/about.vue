@@ -2,10 +2,14 @@
   <div class="body about">
     <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
     <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
+    <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
+    <!-- <video src="http://player.youku.com/embed/XMzY5MDA1MTM3Ng=="></video> -->
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
     <button @click="soundRecording_stop(0)">停止录制</button>
     <button @click="openMap">打开地图</button>
+    <button @click="isVideo = true">播放视频</button>
+    <button @click="modifyShare">修改分享路径</button>
     <div class="input"><input type="text"></div>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
     <!-- <button @click="synthesis">合成音频</button> -->
@@ -15,6 +19,49 @@
     <div class="input"><input type="text" @focus="focus"></div>
     <tab></tab>
     <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/code.jpg" alt="" @click="previewImage"> -->
+    <!-- <van-index-bar>
+  <van-index-anchor index="A" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-index-anchor index="B" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-index-anchor index="C" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-index-anchor index="D" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+  <van-cell title="文本" />
+</van-index-bar> -->
   </div>
 </template>
 
@@ -25,8 +72,9 @@ import Tab from "components/tab.vue";
 import { setPageScrollTop } from "assets/js/util";
 import { getLocation_qq, getLocation_baidu, getLocation_amap, getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-third-party.js";
 import MyHeader from "components/header.vue";
-import { uploadAudio, getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api.js"
-
+import { uploadAudio, getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api"
+import { shareConfigure } from 'assets/js/wx-config'
+import { AUTH_URL } from 'api/config'
 
 export default {
   name: "",
@@ -41,6 +89,7 @@ export default {
       serverId_index: 0,
       section: [5, 10],
       aaa: 1,
+      isVideo: false,
       myMp3: "" //合成后的mp3
     };
   },
@@ -85,10 +134,10 @@ export default {
     //   console.log("【手机号归属地查询接口返回1】", res)
     //   console.log("【手机号归属地查询接口返回1】", res.data.result)
     // })
-    // getIpLocation_jisu({ phone: '15707496771' }).then(res => {
-    //   console.log("【手机号归属地查询接口返回2】", res)
-    //   console.log("【手机号归属地查询接口返回2】", res.data.result)
-    // })
+    getIpLocation_jisu({ phone: '15707496771' }).then(res => {
+      console.log("【手机号归属地查询接口返回2】", res)
+      console.log("【手机号归属地查询接口返回2】", res.data.result)
+    })
     // getIpLocation_baidu({ phone: '15707496771'}).then(res => {
     //   console.log("【手机号归属地查询接口返回3】", res)
     //   console.log("【手机号归属地查询接口返回3】", res.data.response)
@@ -103,6 +152,9 @@ export default {
   },
   computed: {},
   methods: {
+    modifyShare() {
+      shareConfigure({ Title: '我是百度', ShareUrl: `${AUTH_URL}?song=377677616`, Desc: '我是百度我是百度我是百度我是百度', ShareImage : 'http://game.flyh5.cn/resources/game/wechat/szq/images/img_04.jpg' }).then(res => { console.log("【分享成功】", res) }).catch(err => { console.log("【分享失败】", err) })
+    },
     loading(ele, ele2, speed, callback) {
       //加载进度条
       // $(ele2).animate({ 'width': '0%' }, 0).animate({ 'width': '33%' }, speed * 2).animate({ 'width': '66%' }, speed * 2).animate({ 'width': '100%' }, speed * 3);
@@ -315,7 +367,8 @@ export default {
 </script>
 
 <style scoped>
-#iframe{width:100vw;height: 100vh;}
+video{width: 100%;height: 4rem;}
+#iframe{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 100;transform: translateY(100%);}
 .about {
   background: #fff;
   padding-bottom: 1rem;

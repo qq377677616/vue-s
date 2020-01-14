@@ -3,7 +3,7 @@
     <My-Header :title="pageTitle"></My-Header>
     <div class="con-box">
       <dl class="item-list">
-        <dd v-for="(item, index) in jump_list" :key="'key'+index" @click="jump(index)">{{item.name}}</dd>
+        <dd v-for="(item, index) in jump_list" :key="'key'+index" @click="jump(index)">{{item.title}}</dd>
       </dl>
     </div>
   </div>
@@ -17,10 +17,10 @@ export default {
     return {
       pageTitle: '抽奖系列',
       jump_list: [
-        { name: "圆盘抽奖(针转)", url: "/prize/prize1", name: 'prize1'},
-        { name: "圆盘抽奖(盘转)", url: "/prize/prize2", name: 'prize2'},
-        { name: "跑马灯抽奖", url: "/prize/prize3", name: 'prize3'},
-        { name: "刮刮乐", url: "/prize/prize4", name: 'prize4'}
+        { title: "圆盘抽奖(针转)", url: "/prize/prize1", name: 'prize1'},
+        { title: "圆盘抽奖(盘转)", url: "/prize/prize2", name: 'prize2'},
+        { title: "跑马灯抽奖", url: "/prize/prize3", name: 'prize3'},
+        { title: "刮刮乐", url: "/prize/prize4", name: 'prize4'}
       ]
     }
   },

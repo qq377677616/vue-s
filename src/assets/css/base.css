@@ -60,7 +60,7 @@ body img{max-width: 100%;}
 .wobble{animation:wobble 2s infinite alternate;}
 @keyframes wobble { 0%{transform:translateY(-.1rem) rotateY(5deg);} 100%{transform:translateY(.1rem) rotateY(-5deg);} }
 /*从下往上弹出*/
-.bottom-top{animation:bottom-top .3s;}
+.bottom-top{animation:bottom-top .3s forwards;}
 @keyframes bottom-top { 0%{transform:translateY(100%);} 100%{transform:translateY(0);} }
 /*从下往上淡出*/
 .bt-fd{animation:bt-fade .7s;}

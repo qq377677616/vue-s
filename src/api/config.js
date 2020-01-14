@@ -9,7 +9,7 @@ const WXCONFIG_SCRIPT_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?
 //项目接口请求地址
 const REQUEST_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
 //后端授权链接
-const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
+const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/ceshi_sy/index.php'
 //本地请求代理请求地址
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址
@@ -29,7 +29,7 @@ const SECRETKEY = {
   secretkey_baidu_map: 'AqHbeO1DTPXX06zcMKTqhhOAHkyqnqxY',//百度地图位置密钥
   secretkey_amap_map: '36b7d67054e5dcd7d391ab517478ccfe',//高德地图位置密钥
   secretkey_juhe_phone_region: '40c2bcf1f7d2b93fe86254759ba95d6d',//聚合数据获取手机号归属地密钥
-  secretkey_jisu_phone_region: '31a6a96f004f8ca8'//极速数据获取手机号归属地密钥
+  secretkey_jisu_phone_region: '61c24049fd659e7f'//极速数据获取手机号归属地密钥
 }  
 //项目开关配置信息
 const PROJECT_CONFIG = {
@@ -37,7 +37,7 @@ const PROJECT_CONFIG = {
   is_page_locking: true,//是否锁定页面上拉、下拉
   is_wx_share: true,//是否配置分享  
   is_background_music: {//背景音乐配置
-    is_open: true,//是否开启背景音乐
+    is_open: false,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
     constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径 
   },
