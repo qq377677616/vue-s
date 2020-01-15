@@ -74,6 +74,8 @@ export default {
         console.log("【背景音乐自动播放OK1】")
       }
       document.addEventListener("WeixinJSBridgeReady", () => {
+        // let _audio = document.getElementById("mainVideo")
+        // if (_audio) _audio.play();
         _audio.play();
         this.isPlay = 1
         console.log("【背景音乐自动播放OK2】")

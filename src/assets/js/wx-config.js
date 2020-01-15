@@ -1,8 +1,8 @@
 import wx from 'weixin-js-sdk'
-import { loadScript } from 'assets/js/util'
+import { getQueryString, loadScript } from 'assets/js/util'
 import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
-import { getProjectConfig, getWxConfig } from 'api/api.js'
+import { getProjectConfig, getWxConfig, getUserInfos } from 'api/api.js'
 
 //获取微信配置参数信息
 var re_request_num = 0;
@@ -59,7 +59,43 @@ function _openDebugging(onlineDate, offlinedate) {
   }
   if (PROJECT_CONFIG.is_vconsole == 1 || (PROJECT_CONFIG.is_vconsole == 2 && process.env.NODE_ENV == 'production') || (PROJECT_CONFIG.is_vconsole == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
     let vConsole = new VConsole()
+    document.querySelector(".vc-switch").innerHTML = '该版本未上线'
   }
+  if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfos()
+}
+//从本地缓存、url或者接口请求获取后台授权传过来的用户信息
+const getUserInfo = () => {
+  // if (PROJECT_CONFIG.getUserInfo.type !== 1 && PROJECT_CONFIG.getUserInfo.type !== 2) return
+  return new Promise((resolve, reject) => {
+    let _userInfo = {}
+    if (PROJECT_CONFIG.getUserInfo.type === 1) {
+      for (let item of PROJECT_CONFIG.getUserInfo.getDataList) {
+        let _item = getQueryString(item) || sessionStorage.getItem(item) || localStorage.getItem(item)
+        if (_item) _userInfo[item] = _item
+      }
+      setStorage()
+    } else if (PROJECT_CONFIG.getUserInfo.type === 2) {
+      getUserInfos().then(res => {
+        let _responseList = PROJECT_CONFIG.getUserInfo.response.split("."), index = 0
+        _response()
+        function _response() {
+          index === 0 ? _userInfo = res[_responseList[++index]] : _userInfo = _userInfo[_responseList[++index]]
+          if (index < _responseList.length - 1) _response()
+        }
+        setStorage()
+      }).catch(err => { 
+        console.log("【获取用户信息失败】", err)
+        reject(err)
+      })
+    }
+    function setStorage() {
+      sessionStorage.setItem("userInfo", JSON.stringify(_userInfo))
+      localStorage.setItem("userInfo", JSON.stringify(_userInfo))
+      console.log("【sessionStorage】中的用户信息", sessionStorage.getItem("userInfo"))
+      console.log("【localStorage】中的用户信息", localStorage.getItem("userInfo"))
+      resolve(_userInfo)
+    }
+  })
 }
 //腾讯统计配置
 function _mtaInit(sid) {
@@ -144,5 +180,6 @@ function checkJsApi(jsApiList) {
   })
 }
 export {
-  shareConfigure
+  shareConfigure,
+  getUserInfo
 }

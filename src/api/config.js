@@ -9,7 +9,9 @@ const WXCONFIG_SCRIPT_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?
 //项目接口请求地址
 const REQUEST_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
 //后端授权链接
-const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/ceshi_sy/index.php'
+const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_tests/index.php'
+//获取用户信息请求地址
+const GET_USER_INFO_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_tests/api.php?a=get_session'
 //本地请求代理请求地址
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址
@@ -34,6 +36,12 @@ const SECRETKEY = {
 //项目开关配置信息
 const PROJECT_CONFIG = {
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
+  getUserInfo: {//从后端链接授权后获取后台带过来的用户数据
+    is_open: true,//是否加载页面后自动获取后存储到本地两种缓存中
+    type: 1,//获取方式：1为从本地缓存或者url中获取，2为请求后端接口获取
+    getDataList: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表
+    response: "res.data.data"//从后端接口请求返回的数据字段格式
+  },
   is_page_locking: true,//是否锁定页面上拉、下拉
   is_wx_share: true,//是否配置分享  
   is_background_music: {//背景音乐配置
@@ -55,6 +63,7 @@ export {
   REQUEST_PROXY_URL,
   PROJECT_CONFIG_URL, 
   AUTH_URL,
+  GET_USER_INFO_URL,
   SHARECONFIG,
   SECRETKEY,
   PROJECT_CONFIG   

@@ -3,7 +3,9 @@
     <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
     <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
     <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
-    <!-- <video src="http://player.youku.com/embed/XMzY5MDA1MTM3Ng=="></video> -->
+    <!-- <video src="../assets/images/video.mp4" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
+    <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
+    <div id="pro">{{aaa}}</div>
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
     <button @click="soundRecording_stop(0)">停止录制</button>
@@ -73,7 +75,7 @@ import { setPageScrollTop } from "assets/js/util";
 import { getLocation_qq, getLocation_baidu, getLocation_amap, getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-third-party.js";
 import MyHeader from "components/header.vue";
 import { uploadAudio, getIpLocation, getWxConfig, getProjectConfig, getPostTest, getTest } from "api/api"
-import { shareConfigure } from 'assets/js/wx-config'
+import { shareConfigure, getUserInfo } from 'assets/js/wx-config'
 import { AUTH_URL } from 'api/config'
 
 export default {
@@ -103,6 +105,14 @@ export default {
     // this.$router.replace("/")
   },
   mounted() {
+    getUserInfo().then(res => {
+      console.log("res", res)
+    })
+    // this.$toast.loading({ message: "视频加载中", duration: 0, loadingType: "spinner" })
+    // setTimeout(() => {
+    //   let _vc = document.querySelector(".vc-switch");
+    //   _vc.innerHTML = '该版本未上线'
+    // }, 100)
     // this.$router.push('/')
     window.onunload  = function (e) {
       // e = e || window.event;
@@ -134,10 +144,10 @@ export default {
     //   console.log("【手机号归属地查询接口返回1】", res)
     //   console.log("【手机号归属地查询接口返回1】", res.data.result)
     // })
-    getIpLocation_jisu({ phone: '15707496771' }).then(res => {
-      console.log("【手机号归属地查询接口返回2】", res)
-      console.log("【手机号归属地查询接口返回2】", res.data.result)
-    })
+    // getIpLocation_jisu({ phone: '15707496771' }).then(res => {
+    //   console.log("【手机号归属地查询接口返回2】", res)
+    //   console.log("【手机号归属地查询接口返回2】", res.data.result)
+    // })
     // getIpLocation_baidu({ phone: '15707496771'}).then(res => {
     //   console.log("【手机号归属地查询接口返回3】", res)
     //   console.log("【手机号归属地查询接口返回3】", res.data.response)
@@ -152,6 +162,29 @@ export default {
   },
   computed: {},
   methods: {
+    loadstart() {
+      console.log('【111】【loadstart】')
+    },
+    durationchange() {
+      console.log('【222】【durationchange】')
+    },
+    loadedmetadata() {
+      console.log('【333】【loadedmetadata】')
+    },
+    loadeddata() {
+      console.log('【444】【loadeddata】')
+    },
+    progress(e) {
+      console.log('【555】【progress】', this.aaa++)
+      console.log('【eee】【progress】', e)
+    },
+    canplay() {
+      console.log('【666】【canplay】')
+    },
+    canplaythrough() {
+      this.$toast("视频加载完成")
+      console.log('【777】【canplaythrough】')
+    },
     modifyShare() {
       shareConfigure({ Title: '我是百度', ShareUrl: `${AUTH_URL}?song=377677616`, Desc: '我是百度我是百度我是百度我是百度', ShareImage : 'http://game.flyh5.cn/resources/game/wechat/szq/images/img_04.jpg' }).then(res => { console.log("【分享成功】", res) }).catch(err => { console.log("【分享失败】", err) })
     },
@@ -368,7 +401,8 @@ export default {
 
 <style scoped>
 video{width: 100%;height: 4rem;}
-#iframe{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 100;transform: translateY(100%);}
+#pro{padding:.6rem;background: #fff;font-size: .3rem;position: fixed;left:0;top:0;z-index: 1000;}
+#mainVideo{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;}
 .about {
   background: #fff;
   padding-bottom: 1rem;
