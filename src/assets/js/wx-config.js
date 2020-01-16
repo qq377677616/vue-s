@@ -57,9 +57,10 @@ function _openDebugging(onlineDate, offlinedate) {
     alert("项目已下线")
     window.close()
   }
-  if (PROJECT_CONFIG.is_vconsole == 1 || (PROJECT_CONFIG.is_vconsole == 2 && process.env.NODE_ENV == 'production') || (PROJECT_CONFIG.is_vconsole == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
+  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && process.env.NODE_ENV == 'production') || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
     let vConsole = new VConsole()
-    document.querySelector(".vc-switch").innerHTML = '该版本未上线'
+    document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
+    document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfos()
 }
