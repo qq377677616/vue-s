@@ -46,7 +46,7 @@ const PROJECT_CONFIG = {
   is_page_locking: true,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享  
   is_background_music: {//背景音乐配置
-    is_open: false,//是否开启背景音乐
+    is_open: true,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
     constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径 
   },
