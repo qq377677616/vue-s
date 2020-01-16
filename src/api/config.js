@@ -42,14 +42,15 @@ const PROJECT_CONFIG = {
     getDataList: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表
     response: "res.data.data"//从后端接口请求返回的数据字段格式
   },
-  is_page_locking: true,//是否锁定页面上拉、下拉
+  is_loading_page: true,//是否配置loading预加载页
+  is_page_locking: true,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享  
   is_background_music: {//背景音乐配置
     is_open: false,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
     constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径 
   },
-  is_vconsole: 1,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+  is_vconsole: 2,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
   is_offline_sign_out: false,//项目下线后是否关闭退出项目
 }
 

@@ -16,8 +16,8 @@ export default {
   name: 'index',
   data() {
     return {
-      name: "这是一个有点长的又不是很长的昵称 ",
-      names: '',
+      name: "首页 ",
+      percentNum: 0,
       jumpList: [
         { name: "自由拖拽", url: "/drag" },
         { name: "拖拽排序", url: "/list-sort" },
@@ -39,17 +39,12 @@ export default {
       ]
     }
   },
-  created() {
-
-  },
   methods: {
     jump(index) {
       if (!this.jumpList[index].url) return
       // sessionStorage.setItem('prevPage', this.jumpList[index].url)
       this.$router.replace(this.jumpList[index].url)
     }
-  },
-  computed: {
   },
   components: {
     Tab,

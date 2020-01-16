@@ -25,7 +25,7 @@
 
 <script type="text/ecmascript-6">
 import MyHeader from "components/header.vue"
-import Lang from "base/lang/lang.vue"
+import Lang from "base/lang.vue"
 export default {
   name: "",
   data() {

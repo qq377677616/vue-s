@@ -1,10 +1,9 @@
 <template>
   <div class="body about">
-    <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
-    <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
-    <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
-    <!-- <video src="../assets/images/video.mp4" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
-    <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
+    <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe> 
+    <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe>
+    <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video>
     <div id="pro">{{aaa}}</div>
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
@@ -14,56 +13,72 @@
     <button @click="modifyShare">修改分享路径</button>
     <div class="input"><input type="text"></div>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
-    <!-- <button @click="synthesis">合成音频</button> -->
     <audio :src="myMp3" controls></audio>
     <div class="h5">{{aaa}}</div>
     <div class="box"></div>
     <div class="input"><input type="text" @focus="focus"></div>
     <tab></tab>
     <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/code.jpg" alt="" @click="previewImage"> -->
-    <!-- <van-index-bar>
-  <van-index-anchor index="A" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-index-anchor index="B" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-index-anchor index="C" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-index-anchor index="D" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-  <van-cell title="文本" />
-</van-index-bar> -->
+    <!-- <div id="pro">{{pro}}</div> -->
+    <!-- <van-index-bar :index-list='indexList'>
+      <van-index-anchor index="热" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-index-anchor index="A" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-index-anchor index="B" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-index-anchor index="C" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-index-anchor index="D" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+      <van-cell title="文本" />
+    </van-index-bar> -->
   </div>
 </template>
 
@@ -92,10 +107,15 @@ export default {
       section: [5, 10],
       aaa: 1,
       isVideo: false,
+      indexList: ["热", "A", "B", "C"],
+      pageLoadingOk: false,
+      pro: 1,
+      speed: 150,
       myMp3: "" //合成后的mp3
     };
   },
   created() {
+    
     // this.alerts()
     this.getLocation();
     sessionStorage.setItem("aaa", "【5555555555】")
@@ -105,6 +125,10 @@ export default {
     // this.$router.replace("/")
   },
   mounted() {
+    this.pageOk()
+    this.pageProgress(() => {
+      console.log("加载OK")
+    })
     getUserInfo().then(res => {
       console.log("res", res)
     })
@@ -162,6 +186,36 @@ export default {
   },
   computed: {},
   methods: {
+    pageOk() {
+      setTimeout(() => {
+        this.pageLoadingOk = true
+      }, 4000)
+    },
+    pageProgress(callback) {
+      setTimeout(() => {
+        if (this.pageLoadingOk) {
+          this.speed = 50
+          if (this.pro >= 100) {
+            this.speed = 9999
+            callback()
+          }
+        } else if (this.pro == 99) {
+          this.speed = 500
+        } else if (this.pro == 95) {
+          this.speed += 1000
+        } else if (this.pro == 90) {
+          this.speed += 500
+        } else if (this.pro == 75) {
+          this.speed += 300
+        } else if (this.pro == 50) {
+          this.speed += 150
+        }
+        if (!this.pageLoadingOk || (this.pageLoadingOk && (this.pro == 99 || this.speed == 50))) {
+          if ((!this.pageLoadingOk && this.pro < 99) || (this.pageLoadingOk && (this.pro == 99 || this.speed == 50))) this.pro++
+          this.pageProgress(callback)
+        }
+      }, this.speed)
+    },
     loadstart() {
       console.log('【111】【loadstart】')
     },

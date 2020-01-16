@@ -2,16 +2,21 @@
   <div id="app">
     <transition :name="transitionName"><router-view class="router-view" /></transition>
     <my-audio v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
+    <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" />
   </div>
 </template>
 
 <script>
-import myAudio from 'base/audio/audio'
+import myAudio from 'base/audio'
+import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG } from 'api/config'
+import ImgPreloader from 'assets/js/imgPreloader'
 export default {
   name: 'app',
+  mixins: [ImgPreloader],
   data() {
     return {
+      pageLoadingOk: false,
       transitionName: 'right-left'
     }
   },
@@ -23,6 +28,10 @@ export default {
     if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }
   },
   methods: {
+    //loading加载
+    loadingOk() {
+      console.log("【加载完成】")
+    },
     //vuex
     vuexConfig() {
       sessionStorage.getItem("state") && this.$store.replaceState(JSON.parse(sessionStorage.getItem("state")))
@@ -51,7 +60,8 @@ export default {
     }
   },
   components: {
-    myAudio
+    myAudio,
+    LoadingPage
   }
 }
 </script>
