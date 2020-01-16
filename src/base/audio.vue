@@ -79,7 +79,7 @@ export default {
         _audio.play();
         this.isPlay = 1
         console.log("【背景音乐自动播放OK2】")
-      }, false);
+      }, false)
     },
     playPause(audioId) {
       if (this.isAudioType) return

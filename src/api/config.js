@@ -44,6 +44,11 @@ const PROJECT_CONFIG = {
     response: "res.data.data"//从后端接口请求返回的数据字段格式
   },
   is_loading_page: true,//是否配置loading预加载页
+  /*刷新页面路由处理配置*/
+  refresh_back_to_home: {
+    is_open: true,//是否回到首页，hash模式路由默认刷新后停留在当前页
+    home_url: '/'//首页的路由地址
+  },
   is_page_locking: true,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享
   /*背景音乐配置*/  
@@ -55,8 +60,8 @@ const PROJECT_CONFIG = {
   /*绿标配置*/
   vConsole: {
     is_open: 1,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
-    green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//绿色浮标颜色
-    green_label_title: "未上线版本"//绿色浮标显示文字
+    green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
+    green_label_title: "未上线版本"//浮标显示文字
   },
   is_offline_sign_out: false,//项目下线后是否关闭退出项目
 }
