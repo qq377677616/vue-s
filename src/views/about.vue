@@ -115,7 +115,6 @@ export default {
     };
   },
   created() {
-    
     this.alerts()
     this.getLocation();
     sessionStorage.setItem("aaa", "【5555555555】")
@@ -289,7 +288,7 @@ export default {
     //   });
     // },
     alerts() {
-      if (process.env.NODE_ENV === "production") {
+      if (process.env.NODE_ENV === "production" || !window.location.href.includes("156")) {
         this.$dialog
           .alert({
             title: "测试页面",
