@@ -69,7 +69,7 @@ const getUserInfo = () => {
   return new Promise((resolve, reject) => {
     let _userInfo = {}
     if (PROJECT_CONFIG.getUserInfo.type === 1) {
-      for (let item of PROJECT_CONFIG.getUserInfo.getDataList) {
+      for (let item of PROJECT_CONFIG.getUserInfo.get_data_list) {
         let _item = getQueryString(item) || sessionStorage.getItem(item) || localStorage.getItem(item)
         if (_item) _userInfo[item] = _item
       }

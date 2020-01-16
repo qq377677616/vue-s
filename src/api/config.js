@@ -39,7 +39,7 @@ const PROJECT_CONFIG = {
   getUserInfo: {//从后端链接授权后获取后台带过来的用户数据
     is_open: true,//是否加载页面后自动获取后存储到本地两种缓存中
     type: 1,//获取方式：1为从本地缓存或者url中获取，2为请求后端接口获取
-    getDataList: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表
+    get_data_list: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表
     response: "res.data.data"//从后端接口请求返回的数据字段格式
   },
   is_loading_page: true,//是否配置loading预加载页
