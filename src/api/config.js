@@ -24,15 +24,7 @@ const SHARECONFIG = {
   Title: '专注vue',
   Desc: 'vue是一套用于构建用户界面的渐进式JavaScript框架。',
   ShareImage: 'http://game.flyh5.cn/resources/game/wechat/szq/images/avatar_01.jpg'
-}
-//第三方密钥配置信息
-const SECRETKEY = {
-  secretkey_qq_map: 'GW3BZ-NMN6J-JSEFT-FTC6R-F7DA3-Z3FVJ',//腾讯地图位置密钥
-  secretkey_baidu_map: 'AqHbeO1DTPXX06zcMKTqhhOAHkyqnqxY',//百度地图位置密钥
-  secretkey_amap_map: '36b7d67054e5dcd7d391ab517478ccfe',//高德地图位置密钥
-  secretkey_juhe_phone_region: '40c2bcf1f7d2b93fe86254759ba95d6d',//聚合数据获取手机号归属地密钥
-  secretkey_jisu_phone_region: '61c24049fd659e7f'//极速数据获取手机号归属地密钥
-}  
+} 
 //项目开关配置信息
 const PROJECT_CONFIG = {
   is_loading_page: false,//是否配置loading预加载页
@@ -66,6 +58,14 @@ const PROJECT_CONFIG = {
   },
   is_offline_sign_out: false,//项目下线后是否关闭退出项目
 }
+//第三方密钥配置信息
+const SECRETKEY = {
+  secretkey_qq_map: 'GW3BZ-NMN6J-JSEFT-FTC6R-F7DA3-Z3FVJ',//腾讯地图位置密钥
+  secretkey_baidu_map: 'AqHbeO1DTPXX06zcMKTqhhOAHkyqnqxY',//百度地图位置密钥
+  secretkey_amap_map: '36b7d67054e5dcd7d391ab517478ccfe',//高德地图位置密钥
+  secretkey_juhe_phone_region: '40c2bcf1f7d2b93fe86254759ba95d6d',//聚合数据获取手机号归属地密钥
+  secretkey_jisu_phone_region: '61c24049fd659e7f'//极速数据获取手机号归属地密钥
+} 
 
 export {
   ERR_Ok,     
