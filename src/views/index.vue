@@ -62,7 +62,7 @@ export default {
 <style scoped>
   p.name{width:4.2em;margin:.2rem auto;border:1px solid green;}
   .index{background:linear-gradient(135deg,#027C60 0%, #A8271E 100%);padding-bottom: 1rem;box-sizing: border-box;}
-  .ul{height: calc(100vh - 1.92rem);overflow: hidden;}
+  .ul{height: calc(100vh - 2.84rem);overflow: hidden;}
   ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:0 auto .15rem;background: #fff;font-size: .28rem;}
   ul li.dis{color:#bbb;}
 </style>
