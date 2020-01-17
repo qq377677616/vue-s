@@ -27,7 +27,7 @@ const SHARECONFIG = {
 } 
 //项目开关配置信息
 const PROJECT_CONFIG = {
-  is_loading_page: false,//是否配置loading预加载页
+  is_loading_page: true,//是否配置loading预加载页
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
   /*从后端链接授权后获取后台带过来的用户数据配置*/
   getUserInfo: {
