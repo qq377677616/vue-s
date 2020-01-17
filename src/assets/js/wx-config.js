@@ -61,6 +61,7 @@ function _openDebugging(onlineDate, offlinedate) {
     let vConsole = new VConsole()
     document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color
+    document.querySelector(".vc-switch").style.bottom = PROJECT_CONFIG.vConsole.green_label_position
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfos()
 }
