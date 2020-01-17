@@ -3,7 +3,7 @@
     <my-header :title="pageTitle"></my-header>
     <div class="full-screen">
       <div class="currency" v-show="sequenceListIndex >= 0">
-        <img :class="sequenceListIndex == index ? 'on' : ''" v-for="(item, index) in sequenceList" :key="index" :src="item.url"></img>
+        <img :class="sequenceListIndex == index ? 'on' : ''" v-for="(item, index) in sequenceList" :key="index" :src="item.url" />
       </div>
       <van-button type="primary" class="start" @click="start" v-show="sequenceListIndex <= 0">播放序列帧</van-button>
     </div>

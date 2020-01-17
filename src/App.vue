@@ -46,29 +46,29 @@ export default {
   },
   watch: {
     //路由监听
-    $route: {
-      immediate: false,
-      handler(val, oldVal){
-        console.log("val", val);
-        console.log("oldVal", oldVal);
-      },
-      // 深度观察监听
-      deep: true
-    },
-    // '$route'(to, from) {
-    //   console.log("从from", from)
-    //   console.log("到to", to)
-    //   if (!from.name && this.PROJECT_CONFIG.refresh_back_to_home.is_open) this.$router.replace(this.PROJECT_CONFIG.refresh_back_to_home.home_url)
-    //   let _tabbar = ['/', '/about']//tabBar导航页
-    //   let _secondLevel = ['/cropper', '/prize']//二级页面
-    //   if (_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
-    //     this.transitionName = ''
-    //   } else if (from.path == '/' || (_secondLevel.includes(from.path) && to.path != "/")) {
-    //     this.transitionName = 'right-left' 
-    //   } else if (to.path == '/' || (_secondLevel.includes(to.path) && from.path != "/")) {
-    //     this.transitionName = 'left-right'
-    //   }
-    // }
+    // $route: {
+    //   immediate: true,
+    //   handler(val, oldVal){
+    //     console.log("val", val);
+    //     console.log("oldVal", oldVal);
+    //   },
+    //   // 深度观察监听
+    //   deep: true
+    // },
+    '$route'(to, from) {
+      console.log("从from", from)
+      console.log("到to", to)
+      if (!from.name && this.PROJECT_CONFIG.refresh_back_to_home.is_open) this.$router.replace(this.PROJECT_CONFIG.refresh_back_to_home.home_url)
+      let _tabbar = ['/', '/about']//tabBar导航页
+      let _secondLevel = ['/cropper', '/prize']//二级页面
+      if (_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
+        this.transitionName = ''
+      } else if (from.path == '/' || (_secondLevel.includes(from.path) && to.path != "/")) {
+        this.transitionName = 'right-left' 
+      } else if (to.path == '/' || (_secondLevel.includes(to.path) && from.path != "/")) {
+        this.transitionName = 'left-right'
+      }
+    }
   },
   components: {
     myAudio,
