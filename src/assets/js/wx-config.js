@@ -102,10 +102,10 @@ const getUserInfo = () => {
 function _mtaInit(sid) {
   let _mtac = {"performanceMonitor":1,"senseQuery":1}
   let mta = document.createElement("script")
-  mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.4"
+  mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.4"
   mta.setAttribute("name", "MTAH5")
-  mta.setAttribute("sid", sid)
-  mta.setAttribute("cid", sid + 1)
+  mta.setAttribute("sid", parseInt(sid))
+  mta.setAttribute("cid", parseInt(sid) + 1)
   let s = document.getElementsByTagName("script")[0]
   s.parentNode.insertBefore(mta, s)
 }

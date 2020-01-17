@@ -16,10 +16,10 @@ export default {
   name: 'index',
   data() {
     return {
-      name: "首页 ",
+      name: "首页",
       percentNum: 0,
       jumpList: [
-        { name: "自由拖拽", url: "/drag" },
+        { name: "自由拖拽1.0", url: "/drag" },
         { name: "拖拽排序", url: "/list-sort" },
         { name: "原生上传", url: "/upload" },
         { name: "图片裁剪", url: "/cropper" },
