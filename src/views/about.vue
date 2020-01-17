@@ -1,8 +1,8 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
-    <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe> 
-    <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe>
+    <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
+    <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
     <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
     <!-- <div id="pro">{{aaa}}</div> -->
     <div class="times">录制时间：{{times}}s</div>
@@ -11,6 +11,7 @@
     <button @click="openMap">打开地图</button>
     <button @click="isVideo = true">播放视频</button>
     <button @click="modifyShare">修改分享路径</button>
+    <button @click="mtah5">腾讯统计</button>
     <div class="input"><input type="text"></div>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
     <audio :src="myMp3" controls></audio>
@@ -240,6 +241,10 @@ export default {
     },
     modifyShare() {
       shareConfigure({ Title: '我是百度', ShareUrl: `${AUTH_URL}?song=377677616`, Desc: '我是百度我是百度我是百度我是百度', ShareImage : 'http://game.flyh5.cn/resources/game/wechat/szq/images/img_04.jpg' }).then(res => { console.log("【分享成功】", res) }).catch(err => { console.log("【分享失败】", err) })
+    },
+    mtah5() {
+      console.log("MtaH52", MtaH5)
+      MtaH5.clickStat("page1_btn1")
     },
     loading(ele, ele2, speed, callback) {
       //加载进度条

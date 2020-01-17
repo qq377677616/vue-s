@@ -19,7 +19,7 @@ export default {
       name: "首页",
       percentNum: 0,
       jumpList: [
-        { name: "自由拖拽1.0", url: "/drag" },
+        { name: "自由拖拽", url: "/drag" },
         { name: "拖拽排序", url: "/list-sort" },
         { name: "原生上传", url: "/upload" },
         { name: "图片裁剪", url: "/cropper" },
@@ -28,6 +28,7 @@ export default {
         { name: "生成二维码", url: "/code" },
         { name: "省市区日期选择", url: "/picker" },
         { name: "合成gif动图", url: "/create-gif" },
+        { name: "序列帧", url: "/sequence" },
         // { name: "charts图表", url: "" },
         // { name: "数字滚动", url: "" },
         { name: "抽奖系列", url: "/prize" },
@@ -57,7 +58,7 @@ export default {
 <style scoped>
   p.name{width:4.2em;margin:.2rem auto;border:1px solid green;}
   .index{background:linear-gradient(135deg,#027C60 0%, #A8271E 100%);padding-bottom: 1rem;box-sizing: border-box;}
-  .ul{height: calc(90vh - 1rem);overflow: hidden;}
-  ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:.15rem auto;background: #fff;font-size: .28rem;}
+  .ul{height: calc(100vh - 1.92rem);overflow: hidden;}
+  ul li{width:2.5rem;height:.5rem;line-height: .5rem;text-align: center;border:1px solid #ddd;border-radius: .1rem;margin:0 auto .15rem;background: #fff;font-size: .28rem;}
   ul li.dis{color:#bbb;}
 </style>

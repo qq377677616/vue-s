@@ -105,6 +105,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/create-gif.vue'], resolve)    
   },
   {
+    path:'/sequence',
+    name: 'sequence',
+    component: resolve => require(['../views/pages-list/sequence.vue'], resolve)    
+  },
+  {
     path:'/picker',
     name: 'picker',
     component: resolve => require(['../views/pages-list/picker.vue'], resolve)    

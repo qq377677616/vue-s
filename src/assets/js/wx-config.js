@@ -1,15 +1,15 @@
 import wx from 'weixin-js-sdk'
 import { getQueryString, loadScript } from 'assets/js/util'
 import VConsole from 'vconsole'
-import { PROJECT_CONFIG, PROJECT_CONFIG_URL, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
-import { getProjectConfig, getWxConfig, getUserInfos } from 'api/api.js'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
+import { getProjectConfig, getWxConfig, getUserInfos } from 'api/api'
 
 //获取微信配置参数信息
 var re_request_num = 0;
 (function _configStart() {
   if (PROJECT_CONFIG.wx_jssdk_type) {
     getWxConfig().then(res => {
-      console.log("【微信注册信息】", res)
+      console.log("【获取微信注册参数信息】", res)
       _getPageConfig(res.data)
     }).catch(err => {
       console.log("【微信注册信息4个参数获取失败】", err)
@@ -24,12 +24,12 @@ var re_request_num = 0;
 })()
 //获取页面配置信息
 function _getPageConfig(config) {
-  if (!PROJECT_CONFIG_URL) {
+  if (!PROJECT_CONFIG_CODE) {
     _wxConfig(config)
   } else {
     getProjectConfig().then(res => {
       let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
-      console.log("【获取页面配置信息】", _data)
+      console.log("【获取核弹配置信息】", _data)
       sessionStorage.setItem("music", _data.res_music)
       document.title = _data.docTitle
       SHARECONFIG.Title = _data.shareTitle
@@ -38,7 +38,7 @@ function _getPageConfig(config) {
       SHARECONFIG.ShareImage = _data.shareImg 
       _openDebugging(_data['online-date'], _data['offline-date'])
       _wxConfig(config)
-      _mtaInit(_data.res_appid)
+      if (PROJECT_CONFIG.is_tx_mtah5) _mtaInit(_data.res_appid)
     }).catch(err => {
       console.log(err)
       _wxConfig(config)
