@@ -27,6 +27,7 @@ export default {
         { name: "生成海报", url: "/poster" },
         { name: "生成二维码", url: "/code" },
         { name: "省市区日期选择", url: "/picker" },
+        { name: "图片验证码", url: "/img-code" },
         { name: "合成gif动图", url: "/create-gif" },
         { name: "序列帧", url: "/sequence" },
         // { name: "charts图表", url: "" },
@@ -39,6 +40,9 @@ export default {
         { name: "下一版本见...", url: "" }
       ]
     }
+  },
+  mounted() {
+    console.log(document.querySelector("html"))
   },
   methods: {
     jump(index) {

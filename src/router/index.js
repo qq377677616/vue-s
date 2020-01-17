@@ -120,6 +120,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/lang.vue'], resolve)    
   },
   {
+    path:'/img-code',
+    name: 'img-code',
+    component: resolve => require(['../views/pages-list/img-code.vue'], resolve)    
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    
