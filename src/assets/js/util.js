@@ -157,6 +157,10 @@ const retainedDecimal = (x, n, math) => {
   }
   return s_x
 }
+//图片base64路径处理
+const base64Switch = base64 => {
+  return "data:image/jpg;base64," + base64.slice(base64.indexOf("/9j"))
+}
 //js浮点数精度--两数相加
 const accAdd = (num1, num2) => {
   let r1, r2, m;
@@ -226,6 +230,7 @@ export {
   isSystem,
   audioContextMusic,
   retainedDecimal,
+  base64Switch,
   accAdd,
   accSub,
   accMul,

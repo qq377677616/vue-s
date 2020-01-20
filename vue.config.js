@@ -49,7 +49,7 @@ module.exports = {
               uglifyOptions: {
                   compress: {
                       drop_debugger: true,
-                      drop_console: true,  //生产环境自动删除console
+                      drop_console: false,  //生产环境自动删除console
                   },
                   warnings: false,
               },

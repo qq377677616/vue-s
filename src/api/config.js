@@ -52,9 +52,9 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 2,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 1,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
-    green_label_position: '0',//绿标初始位置boottom，单位px、rem
+    green_label_position: '100',//绿标初始位置boottom，单位px、rem
     green_label_title: "未上线版本"//浮标文字
   },
   is_offline_sign_out: false,//项目下线后是否关闭退出项目

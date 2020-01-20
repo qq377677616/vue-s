@@ -15,7 +15,7 @@ export default {
   name: "upload-list",
   data() {
     return {
-      pageTitle: '抽奖系列',
+      pageTitle: '上传系列',
       jump_list: [
         { title: "原生上传", url: "/upload/upload1", name: 'upload1'},
         { title: "微信jssdk上传", url: "/upload/upload2", name: 'upload2'},

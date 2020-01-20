@@ -52,7 +52,7 @@ service.interceptors.response.use(response => {
 })
 
 /*********************导出一个通用请求方法*********************/
-export const api = (url, data, type, isQs, isUrl) => {
+export const api = (url, data, type = 'post', isQs = true, isUrl = 0) => {
   if (isUrl == 1 || (isUrl == 2 && process.env.NODE_ENV === 'production')) {
     url = `${REQUEST_URL}${url}`
   } else if (isUrl == 2) {

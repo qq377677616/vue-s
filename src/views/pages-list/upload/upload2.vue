@@ -5,17 +5,16 @@
       <div id="upload">
         <div class="img-video">
           <ul>
-            <li v-for="(item, index) in selectList" :key="'key' + index" :class="{'li-video': curType == 2}">
-              <img :src="getObjectURL(item.file)" alt="" v-if="curType == 1">
-              <video :src="getObjectURL(item.file)" v-if="curType == 2"></video>
+            <li v-for="(item, index) in selectImg" :key="'key' + index">
+              <img :src="item" alt="">
               <span class="img-remove" @click="removeImg(index)">&times;</span>
             </li>
-            <li class="add" data-type="0" @click="select" v-if="selectList.length > 0 && selectList.length < (curType == 1 ? maxImageZhang : maxVideoZhang)"><span data-type="0">+</span></li>
+            <li class="add" data-type="0" @click="chooseImage" v-if="selectImg.length > 0 && selectImg.length < maxImageZhang"><span data-type="0">+</span></li>
           </ul>
         </div>
-        <div class="btn-box" v-if="selectList.length == 0"><div class="img-btn btn" data-type="1" @click="select"></div><div class="video-btn btn" data-type="2" @click="select"></div></div>
+        <div class="btn-box" v-if="selectImg.length == 0"><div class="img-btn btn" data-type="1" @click="chooseImage"></div></div>
       </div>
-      <input hidden type="file" multiple id="file" ref="file" />
+      <input hidden type="file" multiple id="file" ref="file" accept = "image/*" />
       <button class="submit" @click="submit">确认上传</button>  
     </div>
     <show-modal :showModal="showModal"></show-modal>
@@ -25,20 +24,21 @@
 <script type="text/ecmascript-6">
 import ShowModal from 'base/showModal/showModal'
 import MyHeader from 'components/header.vue'
+import wx from 'weixin-js-sdk'
+import { Toast } from 'vant'
+import { api } from 'api/request.js' 
+import { base64Switch } from 'assets/js/util'
 export default {
   name: "",
   data() {
     return {
       pageTitle: "微信jssdk上传",
-      upLoadUrl: 'http://game.flyh5.cn/game/walmartShare/public/index/index/upload_szq',//上传接口地址
+      upLoadUrl: 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/upload/upload_file_base64_list',//上传接口地址
       maxImageZhang: 9,//最大可以上传图片数量
       selectList: [],//当前选择的图片/视频
+      selectImg: [],
       allSize: 0,//选择图片/视频的总大小
-      showModal: {
-        isShowModal: false,
-        isIcon: true,
-        title: '上传中'
-      }
+      localIdsCurindex: 0
     }
   },
   created() {
@@ -49,8 +49,9 @@ export default {
     select(e) {
       let _this = this
       let file = this.$refs.file
-      e.target.dataset.type != 0 && (this.curType = e.target.dataset.type)
-      this.curType == 1 ? file.setAttribute("accept", "image/*") : file.setAttribute("accept", "video/*")
+      file.setAttribute("accept", "image/*")
+      // e.target.dataset.type != 0 && (this.curType = e.target.dataset.type)
+      // this.curType == 1 ? file.setAttribute("accept", "image/*") : file.setAttribute("accept", "video/*")
       file.click()
       file.addEventListener('change', function () {
         // if (!this.files) return
@@ -67,42 +68,43 @@ export default {
     },
     //删除图片/视频
     removeImg(index){
-      this.selectList.splice(index, 1)
+      this.selectImg.splice(index, 1)
     },
     chooseImage() {
-        var _self = this
-        wx.chooseImage({
-          count: _self.maxSelectImg - _self.localIdsList.length, // 默认9
-          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: function (res) {
-            _self.localIdsList = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            console.log(`【刚才选择了${_self.localIdsList.length}张照片】`)
-            console.log(_self.localIdsList)
-            _self.getLocalImgData()
-          }
-        })
+      var _this = this
+      console.log('wxwx', wx)
+      wx.chooseImage({
+        count: _this.maxImageZhang - _this.selectList.length, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          _this.selectList = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          console.log(`【刚才选择了${_this.selectList.length}张照片】`)
+          console.log(_this.selectList)
+          _this.getLocalImgData()
+        }
+      })
       },
       getLocalImgData() {
-        let _self = this
+        let _this = this
         wx.getLocalImgData({
-          localId: _self.localIdsList[_self.localIdsCurindex], // 图片的localID
+          localId: _this.selectList[_this.localIdsCurindex], // 图片的localID
           success: function (res) {
-            _self.localIdsCurindex++
-            if (_self.localIdsCurindex <= _self.localIdsList.length) {
+            _this.localIdsCurindex++
+            if (_this.localIdsCurindex <= _this.selectList.length) {
               if (res.errMsg == "getLocalImgData:ok") {
                 console.log("【刚选择的图片】")
                 console.log(base64Switch(res.localData).slice(0, 30))
-                _self.selectImg.push(base64Switch(res.localData))
-                _self.getLocalImgData()
-                if (_self.localIdsCurindex == _self.localIdsList.length) {
-                  console.log("【多张图片上传OK】")
-                  console.log('共' + _self.selectImg.length + '张')
-                  console.log(_self.selectImg)
-                  _self.localIdsCurindex = 0
+                _this.selectImg.push(base64Switch(res.localData))
+                _this.getLocalImgData()
+                if (_this.localIdsCurindex == _this.selectList.length) {
+                  console.log("【多张图片获取base64路径ok】")
+                  console.log('共' + _this.selectImg.length + '张')
+                  console.log(_this.selectImg)
+                  _this.localIdsCurindex = 0
                 }
               } else {
-                
+                console.log("err", res)
               }
             }  
           }
@@ -111,41 +113,23 @@ export default {
     //点击上传
     submit() {
       if (this.selectList.length == 0) {
-        this.myShowModal("请先选择文件")
+        this.$toast("请先选择文件")
         return
       }
-      let xhr = new XMLHttpRequest()
-      for (let i = 0; i < this.selectList.length; i++) {
-        this.allSize += this.selectList[i].file.size / 1024 / 1024
-        this.FormData.append('files[]', this.selectList[i].file) 
-      }
-      console.log("文件总大小：", `${this.allSize.toFixed(2)}M`)
-      xhr.onreadystatechange = e => {//上传成功/失败回调
-        if(xhr.readyState == 4){
-          if (xhr.status == 200) {
-            console.log("【上传成功】")
-            console.log(JSON.parse(xhr.responseText))
-            this.myShowModal("上传成功")
-            this.selectList = []
-            this.FormData = new FormData()
-          } else {
-            console.log("【上传失败】")
-            console.log(xhr.responseText)
-            this.myShowModal("上传失败")
-            this.FormData = new FormData()
-          }
+      console.log("传给后端的图片", this.selectImg)
+      Toast.loading({ message: '图片上传中', forbidClick: true, duration: 0 })
+      api(this.upLoadUrl, {  base64_arr: JSON.stringify(this.selectImg) }).then(res => {
+        console.log("【上传返回】", res)
+        if (res.status == 200) {
+          setTimeout(() => {
+            Toast.clear()
+            this.$toast("作品上传成功")
+            this.selectImg = []
+          }, 800)
         }
-      }
-      console.log("this.FormData = new FormData()", this.FormData[0])
-      xhr.upload.addEventListener("progress", evt => {//监听上传进度
-        if (evt.lengthComputable) {
-          var percentComplete = evt.loaded / evt.total
-          this.myShowModal(`上传中${parseInt(percentComplete * 100)}%`, true, true)
-          console.log("【上传进度】", parseInt(percentComplete * 100) + "%")
-        }
-      }, false)
-      xhr.open("post", this.upLoadUrl, true)
-      xhr.send(this.FormData)
+      }).catch(err => {
+        console.log("【上传返回err】", red)
+      })
     },
     //获取本地预览图片
     getObjectURL(file) {

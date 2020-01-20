@@ -59,10 +59,9 @@ function _openDebugging(onlineDate, offlinedate) {
   }
   if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && process.env.NODE_ENV == 'production') || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
     let vConsole = new VConsole()
-    document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
-    document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color
-    document.querySelector(".vc-switch").style.bottom = PROJECT_CONFIG.vConsole.green_label_position
-    console.log('document.querySelector("html")', document.querySelector("html").style["font-size"])
+    // document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
+    // document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color
+    // document.querySelector(".vc-switch").style.bottom = PROJECT_CONFIG.vConsole.green_label_position
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfos()
 }
