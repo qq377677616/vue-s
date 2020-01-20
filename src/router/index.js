@@ -22,7 +22,17 @@ const routes = [
   {
     path:'/upload',
     name: 'upload',
-    component: resolve => require(['../views/pages-list/upload.vue'], resolve)    
+    component: resolve => require(['../views/pages-list/upload/index.vue'], resolve)    
+  },
+  {
+    path:'/upload/upload1',
+    name: 'upload1',
+    component: resolve => require(['../views/pages-list/upload/upload1.vue'], resolve)    
+  },
+  {
+    path:'/upload/upload2',
+    name: 'upload2',
+    component: resolve => require(['../views/pages-list/upload/upload2.vue'], resolve)    
   },
   {
     path:'/cropper',
@@ -123,6 +133,11 @@ const routes = [
     path:'/img-code',
     name: 'img-code',
     component: resolve => require(['../views/pages-list/img-code.vue'], resolve)    
+  },
+  {
+    path:'/scroll-show',
+    name: 'scroll-show',
+    component: resolve => require(['../views/pages-list/scroll-show.vue'], resolve)    
   },
   {
     path:'/test',

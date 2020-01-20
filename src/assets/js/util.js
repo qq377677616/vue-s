@@ -1,5 +1,5 @@
 //从地址栏获取传参
-export function getQueryString(name) {
+const getQueryString = name => {
   let after = window.location.hash.split("?")[1];
   if (after) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -12,7 +12,7 @@ export function getQueryString(name) {
   }
 }
 //数组洗牌打乱
-export function shuffle(arr) {
+const shuffle = arr => {
   let _arr = arr.slice()
   for (let i = 0; i < _arr.length; i++) {
     let j = getRandomInt(0, i)
@@ -26,13 +26,25 @@ export function shuffle(arr) {
   return _arr
 }
 //设置页面滚动高度
-export function setPageScrollTop(scrollTop) {
+const setPageScrollTop = scrollTop => {
   window.pageYOffset = scrollTop
   document.body.scrollTop = scrollTop
   document.documentElement.scrollTop = scrollTop
 }
+//获取界面宽高
+const getScreenWidthHeight = () => {
+  return new Promise(resolve => {
+    resolve({ width: document.body.clientWidth || document.documentElement.clientWidth, height: document.body.clientHeight || document.documentElement.clientHeight })
+  })
+}
+//获取dom距离页面x、y方向的距离
+const getDomPageDistance = (dom) => {
+  return new Promise(resolve => {
+    resolve({ left: dom.offsetLeft, top: dom.offsetTop })
+  })
+}
 //创建script标签并加载
-export function loadScript(src, callback) {
+const loadScript = (src, callback) => {
   return new Promise((resolve, reject) => {
     let _script = document.createElement("script")
     _script.async = false
@@ -61,7 +73,7 @@ export function loadScript(src, callback) {
   })
 }
 //判断当前手机系统（Android/ios） 
-export function isSystem(callback) {
+const isSystem = callback => {
   return new Promise(resolve => {
     let u = navigator.userAgent
     let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
@@ -70,7 +82,7 @@ export function isSystem(callback) {
   })
 }
 //audioContext播放音乐
-export function audioContextMusic(mp3Url, clickEle, callback) {
+const audioContextMusic = (mp3Url, clickEle, callback) => {
   let audioContext
   let audioBufferSourceNode
   let analyser
@@ -115,7 +127,7 @@ export function audioContextMusic(mp3Url, clickEle, callback) {
   }
 }
 //保留n位小数
-export function retainedDecimal(x, n, math) {
+const retainedDecimal = (x, n, math) => {
   n = n || 2
   math = math || 'round'
   let f_x = parseFloat(x)
@@ -146,7 +158,7 @@ export function retainedDecimal(x, n, math) {
   return s_x
 }
 //js浮点数精度--两数相加
-export function accAdd(num1, num2) {
+const accAdd = (num1, num2) => {
   let r1, r2, m;
   try {
     r1 = num1.toString().split('.')[1].length;
@@ -163,7 +175,7 @@ export function accAdd(num1, num2) {
   return Math.round(num1 * m + num2 * m) / m;
 }
 //js浮点数精度--两数相减
-export function accSub(num1, num2) {
+const accSub = (num1, num2) => {
   let r1, r2, m;
   try {
     r1 = num1.toString().split('.')[1].length;
@@ -180,14 +192,14 @@ export function accSub(num1, num2) {
   return (Math.round(num1 * m - num2 * m) / m).toFixed(n);
 }
 //js浮点数精度--两数相乘 
-export function accMul(num1, num2) {
+const accMul = (num1, num2) => {
   let m = 0, s1 = num1.toString(), s2 = num2.toString()
   try { m += s1.split(".")[1].length } catch (e) { }
   try { m += s2.split(".")[1].length } catch (e) { }
   return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 }
 //js浮点数精度--两数相除
-export function accDiv(num1, num2) {
+const accDiv = (num1, num2) => {
   let t1, t2, r1, r2;
   try {
     t1 = num1.toString().split('.')[1].length;
@@ -202,4 +214,20 @@ export function accDiv(num1, num2) {
   r1 = Number(num1.toString().replace(".", ""));
   r2 = Number(num2.toString().replace(".", ""));
   return (r1 / r2) * Math.pow(10, t2 - t1);
+}
+
+export {
+  getQueryString,
+  shuffle,
+  setPageScrollTop,
+  getScreenWidthHeight,
+  getDomPageDistance,
+  loadScript,
+  isSystem,
+  audioContextMusic,
+  retainedDecimal,
+  accAdd,
+  accSub,
+  accMul,
+  accDiv
 }

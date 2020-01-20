@@ -27,7 +27,7 @@ const SHARECONFIG = {
 } 
 //项目开关配置信息
 const PROJECT_CONFIG = {
-  is_loading_page: true,//是否配置loading预加载页
+  is_loading_page: false,//是否配置loading预加载页
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
   /*从后端链接授权后获取后台带过来的用户数据配置*/
   getUserInfo: {
@@ -41,7 +41,7 @@ const PROJECT_CONFIG = {
     is_open: false,//是否回到首页，hash模式路由默认刷新后停留在当前页
     home_url: '/'//首页的路由地址,也可以配置其它想跳转的路由地址
   },
-  is_page_locking: true,//是否锁定页面上拉下拉滑动
+  is_page_locking: false,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享
   is_tx_mtah5: false,//是否配置腾讯统计
   /*背景音乐配置*/  
@@ -52,9 +52,9 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 1,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 2,//是否开启绿标:0为不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
-    green_label_position: '200px',//绿标初始位置boottom
+    green_label_position: '0',//绿标初始位置boottom，单位px、rem
     green_label_title: "未上线版本"//浮标文字
   },
   is_offline_sign_out: false,//项目下线后是否关闭退出项目

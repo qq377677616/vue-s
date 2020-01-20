@@ -1,10 +1,18 @@
 <template>
   <div class="body about">
-    <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
     <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
     <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
     <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
     <!-- <div id="pro">{{aaa}}</div> -->
+    <!-- <video :class="{'on': playIndex == 2}" src="../assets/images/1.mp4" id="video1" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <video :class="{'on': playIndex == 3}" :src="src2" id="video2" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <video :class="{'on': playIndex == 4}" :src="src3" id="video3" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <video :class="{'on': playIndex == 5}" :src="src4" id="video4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <video :class="{'on': playIndex == 6}" :src="src5" id="video5" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <video :class="{'on': playIndex == 7}" :src="src6" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
+    <!-- <div class="video-con" @click="playVideo" v-show="isPlay"></div> -->
+    <button @click="playVideo2">点击播放2</button>
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
     <button @click="soundRecording_stop(0)">停止录制</button>
@@ -18,7 +26,7 @@
     <!-- <div class="h5">{{aaa}}</div> -->
     <div class="box"></div>
     <div class="input"><input type="text" @focus="focus"></div>
-    <tab></tab>
+    <!-- <tab></tab> -->
     <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/code.jpg" alt="" @click="previewImage"> -->
     <!-- <div id="pro">{{pro}}</div> -->
     <!-- <van-index-bar :index-list='indexList'>
@@ -112,6 +120,14 @@ export default {
       pageLoadingOk: false,
       pro: 1,
       speed: 150,
+      // src: [require('../assets/images/1.mp4'), require('../assets/images/2.mp4'), require('../assets/images/3.mp4'), require('../assets/images/4.mp4'), require('../assets/images/5.mp4'), require('../assets/images/6.mp4')],
+      src2: '',
+      src3: '',
+      src4: '',
+      src5: '',
+      src6: '',
+      isPlay: true,
+      playIndex: 1,
       myMp3: "" //合成后的mp3
     };
   },
@@ -186,6 +202,51 @@ export default {
   },
   computed: {},
   methods: {
+    playVideo() {
+      if (!this.isPlay) return
+      this.isPlay = false
+      console.log("5555")
+      let _this = this
+      let _video1 = document.getElementById("video1")
+      let _video2 = document.getElementById("video2")
+      let _video3 = document.getElementById("video3")
+      let _video4 = document.getElementById("video4")
+      let _video5 = document.getElementById("video5")
+      let _video6 = document.getElementById("video6")
+      console.log("_video1", _video1)
+      _video1.play()
+      this.src2 = this.src[1]
+      this.playIndex++
+      console.log("this.src2", this.src2)
+      _video1.onended = () => {
+         _video2.play()
+         this.src3 = this.src[2]
+         this.playIndex++
+      }
+      _video2.onended = () => {
+         _video3.play()
+         this.src4 = this.src[3]
+         this.playIndex++
+      }
+      _video3.onended = () => {
+         _video4.play()
+         this.src5 = this.src[4]
+         this.playIndex++
+      }
+      _video4.onended = () => {
+         _video5.play()
+         this.src6 = this.src[5]
+         this.playIndex++
+      }
+      _video5.onended = () => {
+         _video6.play()
+        //  this.src3 = this.src[6]
+      }
+    },
+    playVideo2() {
+      let _video2 = document.getElementById("video1")
+      _video2.play()
+    },
     pageOk() {
       setTimeout(() => {
         this.pageLoadingOk = true
@@ -458,9 +519,17 @@ export default {
 </script>
 
 <style scoped>
-video{width: 100%;height: 4rem;}
+.video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
+video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;}
+/* #video2{z-index: 90;}
+#video3{z-index: 80;}
+#video4{z-index: 70;}
+#video5{z-index: 60;}
+#video6{z-index: 50;} */
+video.on{z-index: 200 !important;}
+/* video{width: 100%;height: 4rem;} */
 #pro{padding:.6rem;background: #fff;font-size: .3rem;position: fixed;left:0;top:0;z-index: 1000;}
-#mainVideo{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;}
+#mainVideo
 .about {
   background: #fff;
   padding-bottom: 1rem;

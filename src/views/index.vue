@@ -25,6 +25,7 @@ export default {
         { name: "图片裁剪", url: "/cropper" },
         { name: "触摸事件", url: "/vue-event" },
         { name: "生成海报", url: "/poster" },
+        { name: "滑动淡出", url: "/scroll-show" },
         { name: "生成二维码", url: "/code" },
         { name: "省市区日期选择", url: "/picker" },
         { name: "图片验证码", url: "/img-code" },
@@ -40,9 +41,6 @@ export default {
         { name: "下一版本见...", url: "" }
       ]
     }
-  },
-  mounted() {
-    console.log(document.querySelector("html"))
   },
   methods: {
     jump(index) {

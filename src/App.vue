@@ -2,7 +2,9 @@
   <div id="app">
     <transition :name="transitionName"><router-view class="router-view" /></transition>
     <my-audio v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
-    <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" />
+    <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro">
+      <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div>
+    </loading-page>
   </div>
 </template>
 
@@ -16,6 +18,7 @@ export default {
   mixins: [ImgPreloader],
   data() {
     return {
+      pro: 0,
       pageLoadingOk: false,
       transitionName: 'right-left'
     }
@@ -31,6 +34,10 @@ export default {
     //loading加载
     loadingOk() {
       console.log("【加载完成】")
+    },
+    //当前进度
+    curPro(e) {
+      this.pro = e.pro
     },
     //vuex
     vuexConfig() {
@@ -60,7 +67,7 @@ export default {
       console.log("到to", to)
       if (!from.name && this.PROJECT_CONFIG.refresh_back_to_home.is_open) this.$router.replace(this.PROJECT_CONFIG.refresh_back_to_home.home_url)
       let _tabbar = ['/', '/about']//tabBar导航页
-      let _secondLevel = ['/cropper', '/prize']//二级页面
+      let _secondLevel = ['/cropper', '/upload', '/prize']//二级页面
       if (_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
         this.transitionName = ''
       } else if (from.path == '/' || (_secondLevel.includes(from.path) && to.path != "/")) {

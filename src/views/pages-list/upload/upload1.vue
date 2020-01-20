@@ -158,8 +158,8 @@ export default {
   #box{border:2px solid #982722;border-radius: 10px;width:100%;margin:0 auto;box-sizing: border-box;padding:10px;height:calc(100vh - 1.32rem);position: relative;margin-top: .92rem;}
   #upload{border: 1px solid #ccc;border-radius: 5px;padding: .2rem .3rem;height:6.3rem;position: relative;}
   #upload .btn-box{position: absolute;right:0;bottom:0;padding:.2rem;}
-  #upload .btn-box .btn{width: 25px;height: 18px;background: url(../../assets/images/icon_01.png) no-repeat;margin:0 5px;-webkit-background-size: cover;background-size: cover;display: inline-block;vertical-align: top;}
-  #upload .btn-box .video-btn{background-image: url(../../assets/images/icon_02.png);}
+  #upload .btn-box .btn{width: 25px;height: 18px;background: url(../../../assets/images/icon_01.png) no-repeat;margin:0 5px;-webkit-background-size: cover;background-size: cover;display: inline-block;vertical-align: top;}
+  #upload .btn-box .video-btn{background-image: url(../../../assets/images/icon_02.png);}
   .submit{width:calc(100% - 20px);height:40px;border-radius: 5px;background: #2D93FA;font-size: 18px;color:#fff;border:none;outline:none;margin-top: 20px;position: absolute;left:10px;bottom:10px;}
   .img-video li{width:30%;padding-bottom: 30%;position: relative;margin-bottom: .2rem;display: inline-block;vertical-align: top;box-sizing: border-box;}
   .img-video li:nth-child(3n - 1){margin:0 5%;}
