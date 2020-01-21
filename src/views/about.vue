@@ -1,6 +1,6 @@
 <template>
   <div class="body about">
-    <!-- <My-Header :title="pageTitle" :isBack="false"></My-Header> -->
+    <My-Header :title="pageTitle" :isBack="false"></My-Header>
     <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
     <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
     <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
@@ -12,6 +12,8 @@
     <video :class="{'on': playIndex == 6}" :src="src5" id="video5" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
     <video :class="{'on': playIndex == 7}" :src="src6" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
     <!-- <div class="video-con" @click="playVideo" v-show="isPlay"></div> -->
+    <video src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <!-- <embed src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4"></embed> -->
     <button @click="playVideo2">点击播放2</button>
     <div class="times">录制时间：{{times}}s</div>
     <button @click="soundRecording_start">点击录制</button>
@@ -26,7 +28,7 @@
     <!-- <div class="h5">{{aaa}}</div> -->
     <div class="box"></div>
     <div class="input"><input type="text" @focus="focus"></div>
-    <!-- <tab></tab> -->
+    <tab></tab>
     <!-- <img src="https://game.flyh5.cn/resources/game/wechat/szq/code.jpg" alt="" @click="previewImage"> -->
     <!-- <div id="pro">{{pro}}</div> -->
     <!-- <van-index-bar :index-list='indexList'>
@@ -519,8 +521,10 @@ export default {
 </script>
 
 <style scoped>
-.video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
-video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;}
+.body{background: red;}
+/* .video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
+video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;} */
+video,embed{width: 5.4rem;height: 3.5rem;display: block;margin: 0 auto;background: red;}
 /* #video2{z-index: 90;}
 #video3{z-index: 80;}
 #video4{z-index: 70;}

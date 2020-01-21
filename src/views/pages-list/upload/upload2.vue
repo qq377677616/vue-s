@@ -35,41 +35,14 @@ export default {
       pageTitle: "微信jssdk上传",
       upLoadUrl: 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/upload/upload_file_base64_list',//上传接口地址
       maxImageZhang: 9,//最大可以上传图片数量
-      selectList: [],//当前选择的图片/视频
-      selectImg: [],
+      selectList: [],//当前选择的图片/视频localID
+      selectImg: [],//当前选择的图片/视频base64
       allSize: 0,//选择图片/视频的总大小
-      localIdsCurindex: 0
+      localIdsCurindex: 0//循环索引
     }
   },
-  created() {
-    // this.myShowModal(``, true, true)
-  },
   methods: {
-    //选择图片/视频
-    select(e) {
-      let _this = this
-      let file = this.$refs.file
-      file.setAttribute("accept", "image/*")
-      // e.target.dataset.type != 0 && (this.curType = e.target.dataset.type)
-      // this.curType == 1 ? file.setAttribute("accept", "image/*") : file.setAttribute("accept", "video/*")
-      file.click()
-      file.addEventListener('change', function () {
-        // if (!this.files) return
-        console.log("this.files", this.files[0])
-        console.log("this.files.name", this.files[0].name)
-        let _allSelect = this.files
-        let _max = (_this.curType == 1 ? _this.maxImageZhang : _this.maxVideoZhang)
-        let _num = Math.min(_allSelect.length, _max - _this.selectList.length)
-        for (let i = 0; i <_num; i++) {
-          _this.selectList.push({file: _allSelect[i]})
-        }
-        file.value = ''
-      })
-    },
-    //删除图片/视频
-    removeImg(index){
-      this.selectImg.splice(index, 1)
-    },
+    //选择图片
     chooseImage() {
       var _this = this
       console.log('wxwx', wx)
@@ -84,32 +57,37 @@ export default {
           _this.getLocalImgData()
         }
       })
-      },
-      getLocalImgData() {
-        let _this = this
-        wx.getLocalImgData({
-          localId: _this.selectList[_this.localIdsCurindex], // 图片的localID
-          success: function (res) {
-            _this.localIdsCurindex++
-            if (_this.localIdsCurindex <= _this.selectList.length) {
-              if (res.errMsg == "getLocalImgData:ok") {
-                console.log("【刚选择的图片】")
-                console.log(base64Switch(res.localData).slice(0, 30))
-                _this.selectImg.push(base64Switch(res.localData))
-                _this.getLocalImgData()
-                if (_this.localIdsCurindex == _this.selectList.length) {
-                  console.log("【多张图片获取base64路径ok】")
-                  console.log('共' + _this.selectImg.length + '张')
-                  console.log(_this.selectImg)
-                  _this.localIdsCurindex = 0
-                }
-              } else {
-                console.log("err", res)
+    },
+    //图片本地路径转base64
+    getLocalImgData() {
+      let _this = this
+      wx.getLocalImgData({
+        localId: _this.selectList[_this.localIdsCurindex], // 图片的localID
+        success: function (res) {
+          _this.localIdsCurindex++
+          if (_this.localIdsCurindex <= _this.selectList.length) {
+            if (res.errMsg == "getLocalImgData:ok") {
+              console.log("【刚选择的图片】")
+              console.log(base64Switch(res.localData).slice(0, 30))
+              _this.selectImg.push(base64Switch(res.localData))
+              _this.getLocalImgData()
+              if (_this.localIdsCurindex == _this.selectList.length) {
+                console.log("【多张图片获取base64路径ok】")
+                console.log('共' + _this.selectImg.length + '张')
+                console.log(_this.selectImg)
+                _this.localIdsCurindex = 0
               }
-            }  
-          }
-        })
-      },
+            } else {
+              console.log("err", res)
+            }
+          }  
+        }
+      })
+    },
+    //删除图片
+    removeImg(index){
+      this.selectImg.splice(index, 1)
+    },
     //点击上传
     submit() {
       if (this.selectList.length == 0) {
@@ -130,40 +108,6 @@ export default {
       }).catch(err => {
         console.log("【上传返回err】", red)
       })
-    },
-    //获取本地预览图片
-    getObjectURL(file) {
-      var url = null
-      if (window.createObjectURL != undefined) { // basic
-        url = window.createObjectURL(file)
-      } else if (window.URL != undefined) { // mozilla(firefox)
-        url = window.URL.createObjectURL(file) 
-      } else if (window.webkitURL != undefined) { // webkit or chrome
-        url = window.webkitURL.createObjectURL(file) 
-      }
-      return url 
-    },
-    myShowModal(title, duration = 2000, icon = false) {
-      if (typeof(title) == "boolean" && !title) {
-        this.showModal.isShowModal = false
-        return
-      }
-      this.showModal.isShowModal = true
-      this.showModal.title = title
-      this.showModal.isIcon = icon
-      if (typeof(duration) == "boolean" && duration) return
-      setTimeout(() => { this.showModal.isShowModal = false }, duration)
-    },
-    //上传图片视频为base64
-    uploadImg(e) {
-      var file = e.target.files[0]
-      var reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = (e) => {
-        this.imgsrc= e.target.result
-        console.log("blob格式", this.getObjectURL(file))
-        console.log("base64格式" + e.target.result)
-      }
     }
   },
   components: {
