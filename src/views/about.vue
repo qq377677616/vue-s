@@ -12,7 +12,26 @@
     <video :class="{'on': playIndex == 6}" :src="src5" id="video5" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
     <video :class="{'on': playIndex == 7}" :src="src6" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
     <!-- <div class="video-con" @click="playVideo" v-show="isPlay"></div> -->
-    <video src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
+    <!-- <video src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
+     <video
+          src
+          id="video"
+          src="http://game.flyh5.cn/resources/game/wechat/zcy/zst_video2.mp4"
+          class="video-player"
+          playsinline
+          webkit-playsinline
+          x5-playsinline
+          x5-video-orientation="portrait"
+          x5-video-player-fullscreen="true"
+          x5-video-player-type="h5"
+          controls
+          preload
+          playsinline
+          @pause="onPlayerPause($event)"
+          @play="onPlayerPlay($event)"
+          poster="http://game.flyh5.cn/resources/game/wechat/zcy/zst_bg.jpg"
+          @ended="onEnded($event)"
+        ></video>
     <!-- <embed src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4"></embed> -->
     <button @click="playVideo2">点击播放2</button>
     <div class="times">录制时间：{{times}}s</div>
@@ -24,6 +43,7 @@
     <button @click="mtah5">腾讯统计</button>
     <div class="input"><input type="text"></div>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_03.jpg" alt="">
+    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/code_04.jpg" alt="">
     <audio :src="myMp3" controls></audio>
     <!-- <div class="h5">{{aaa}}</div> -->
     <div class="box"></div>
@@ -134,7 +154,7 @@ export default {
     };
   },
   created() {
-    this.alerts()
+    // this.alerts()
     this.getLocation();
     sessionStorage.setItem("aaa", "【5555555555】")
     console.log(sessionStorage.getItem("aaa"))

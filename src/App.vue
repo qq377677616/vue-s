@@ -3,7 +3,7 @@
     <transition :name="transitionName"><router-view class="router-view" /></transition>
     <my-audio v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
     <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro">
-      <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div>
+      <!-- <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div> -->
     </loading-page>
   </div>
 </template>
@@ -12,10 +12,11 @@
 import myAudio from 'base/audio'
 import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG } from 'api/config'
-import ImgPreloader from 'assets/js/imgPreloader'
+import { loadingPage } from 'assets/js/imgPreloader'
+console.log("ImgPreloader", loadingPage)
 export default {
   name: 'app',
-  mixins: [ImgPreloader],
+  mixins: [loadingPage],
   data() {
     return {
       pro: 0,
@@ -25,10 +26,10 @@ export default {
   },
   created() {
     this.vuexConfig()//vuex
-    this.PROJECT_CONFIG = PROJECT_CONFIG
+    this.PROJECT_CONFIG = PROJECT_CONFIG//页面配置信息
   },
   mounted() {
-    if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }
+    if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }//锁定页面
   },
   methods: {
     //loading加载

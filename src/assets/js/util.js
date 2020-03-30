@@ -1,13 +1,13 @@
 //从地址栏获取传参
 const getQueryString = name => {
-  let after = window.location.hash.split("?")[1];
+  let after = window.location.hash.split("?")[1]
   if (after) {
-    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    let r = after.match(reg);
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
+    let r = after.match(reg)
     if (r != null) {
-      return decodeURIComponent(r[2]);
+      return decodeURIComponent(r[2])
     } else {
-      return null;
+      return null
     }
   }
 }
@@ -38,7 +38,7 @@ const getScreenWidthHeight = () => {
   })
 }
 //获取dom距离页面x、y方向的距离
-const getDomPageDistance = (dom) => {
+const getDomPageDistance = dom => {
   return new Promise(resolve => {
     resolve({ left: dom.offsetLeft, top: dom.offsetTop })
   })
@@ -98,7 +98,7 @@ const audioContextMusic = (mp3Url, clickEle, callback) => {
     xhr.responseType = 'arraybuffer'
     xhr.onload = function(e) {
       decodecFile(this.response)
-    };
+    }
     xhr.send()
   }
   function decodecFile(fileContent) {
@@ -161,39 +161,47 @@ const retainedDecimal = (x, n, math) => {
 const base64Switch = base64 => {
   return "data:image/jpg;base64," + base64.slice(base64.indexOf("/9j"))
 }
+//浏览器环境
+const getIsWxClient = () => {
+  return new Promise(resolve => {
+    let ua = navigator.userAgent.toLowerCase()
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      return true
+    }
+  })
+}
 //js浮点数精度--两数相加
 const accAdd = (num1, num2) => {
-  let r1, r2, m;
+  let r1, r2, m
   try {
-    r1 = num1.toString().split('.')[1].length;
+    r1 = num1.toString().split('.')[1].length
   } catch (e) {
-    r1 = 0;
+    r1 = 0
   }
   try {
-    r2 = num2.toString().split(".")[1].length;
+    r2 = num2.toString().split(".")[1].length
   } catch (e) {
-    r2 = 0;
+    r2 = 0
   }
-  m = Math.pow(10, Math.max(r1, r2));
-  // return (num1*m+num2*m)/m;
-  return Math.round(num1 * m + num2 * m) / m;
+  m = Math.pow(10, Math.max(r1, r2))
+  return Math.round(num1 * m + num2 * m) / m
 }
 //js浮点数精度--两数相减
 const accSub = (num1, num2) => {
-  let r1, r2, m;
+  let r1, r2, m, n
   try {
-    r1 = num1.toString().split('.')[1].length;
+    r1 = num1.toString().split('.')[1].length
   } catch (e) {
-    r1 = 0;
+    r1 = 0
   }
   try {
-    r2 = num2.toString().split(".")[1].length;
+    r2 = num2.toString().split(".")[1].length
   } catch (e) {
-    r2 = 0;
+    r2 = 0
   }
-  m = Math.pow(10, Math.max(r1, r2));
-  n = (r1 >= r2) ? r1 : r2;
-  return (Math.round(num1 * m - num2 * m) / m).toFixed(n);
+  m = Math.pow(10, Math.max(r1, r2))
+  n = (r1 >= r2) ? r1 : r2
+  return (Math.round(num1 * m - num2 * m) / m).toFixed(n)
 }
 //js浮点数精度--两数相乘 
 const accMul = (num1, num2) => {
@@ -204,20 +212,20 @@ const accMul = (num1, num2) => {
 }
 //js浮点数精度--两数相除
 const accDiv = (num1, num2) => {
-  let t1, t2, r1, r2;
+  let t1, t2, r1, r2
   try {
-    t1 = num1.toString().split('.')[1].length;
+    t1 = num1.toString().split('.')[1].length
   } catch (e) {
-    t1 = 0;
+    t1 = 0
   }
   try {
-    t2 = num2.toString().split(".")[1].length;
+    t2 = num2.toString().split(".")[1].length
   } catch (e) {
-    t2 = 0;
+    t2 = 0
   }
-  r1 = Number(num1.toString().replace(".", ""));
-  r2 = Number(num2.toString().replace(".", ""));
-  return (r1 / r2) * Math.pow(10, t2 - t1);
+  r1 = Number(num1.toString().replace(".", ""))
+  r2 = Number(num2.toString().replace(".", ""))
+  return (r1 / r2) * Math.pow(10, t2 - t1)
 }
 
 export {
@@ -231,6 +239,7 @@ export {
   audioContextMusic,
   retainedDecimal,
   base64Switch,
+  getIsWxClient,
   accAdd,
   accSub,
   accMul,

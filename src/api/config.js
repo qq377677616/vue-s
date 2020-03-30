@@ -16,7 +16,7 @@ const GET_USER_INFO_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_test
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址短码code
 const PROJECT_CONFIG_CODE = 'tJ4GXH2P2luArDVm0u9'
-//静态资源地址
+//静态资源地址(cdn)
 const ASSETS_URL = 'https://game.flyh5.cn/resources/game/wechat/xw/rc_qc/assets_3.0/'
 //默认分享配置信息
 const SHARECONFIG = {
@@ -31,7 +31,7 @@ const PROJECT_CONFIG = {
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
   /*从后端链接授权后获取后台带过来的用户数据配置*/
   getUserInfo: {
-    is_open: true,//是否加载页面后自动获取后存储到本地两种缓存中
+    is_open: true,//是否加载页面后自动获取用户信息后存储到本地两种缓存中
     type: 1,//获取方式：1为从本地缓存或者url中获取，2为请求后端接口获取
     get_data_list: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表
     response: "res.data.data"//从后端接口请求返回的数据字段格式
@@ -48,7 +48,7 @@ const PROJECT_CONFIG = {
   is_background_music: {
     is_open: false,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
-    constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径 
+    constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径，前者为播放状态后者为暂停状态 
   },
   /*绿标配置*/
   vConsole: {

@@ -17,50 +17,57 @@
 //   });
 //   return Promise.all(promiseArr);
 // };
-export default {
-  mounted() {
-    // setTimeout(() => {this.pageLoadingOk = true}, 60000)
+const loadings = (imgUrl, files) => {
+  console.log("imgUrl", imgUrl)
+  console.log("files", files)
+  // const files = 
+  return new Promise(resolve => {
+    // console.log("files", files)
+    let count = 0
+    let percentNum = 0
+    for (let src of files) {
+      let _src = require('../images/' + src.substring(2))
+      let image = new Image()
+      image.src = _src
+      image.onload = () => {
+        console.log("【5555555555555】")
+        count++
+        percentNum = Math.floor(count / files.length * 100)
+        if (percentNum == 100) resolve()
+      }
+    }
+
+  })
+}
+const loadingLoading = {
+
+}
+const loadingPage =  {
+  created() {
     this.getFiles()
   },
   // 获取全部要预加载的文件
   methods: {
     getFiles() {
-      const files = require.context('../images', true, /.(png|jpg|jpeg|gif|bmp|webp)$/).keys()
-      // console.log("files", files)
-      let count = 0
-      for (let src of files) {
-        let _src = require('../images/' + src.substring(2))
-        let image = new Image()
-        image.src = _src
-        image.onload = () => {
-          count++
-          this.percentNum = Math.floor(count / files.length * 100)
-          if (this.percentNum == 100) this.pageLoadingOk = true
-        }
-      }
-      // for (let item of files) {
-      //   console.log("item", item)
-      //   let file = this.$imgSrc(item.substring(2))
-      //   // base64的不加载
-      //   if (file.indexOf('data:') !== 0) {
-      //     this.files.push(file)
+      loadings('../images/', require.context('../images', true, /.(png|jpg|jpeg|gif|bmp|webp)$/).keys()).then(() => {
+        this.pageLoadingOk = true
+      })
+      // const files = require.context('../images', true, /.(png|jpg|jpeg|gif|bmp|webp)$/).keys()
+      // // console.log("files", files)
+      // let count = 0
+      // for (let src of files) {
+      //   let _src = require('../images/' + src.substring(2))
+      //   let image = new Image()
+      //   image.src = _src
+      //   image.onload = () => {
+      //     count++
+      //     this.percentNum = Math.floor(count / files.length * 100)
+      //     if (this.percentNum == 100) this.pageLoadingOk = true
       //   }
       // }
     }
-    // 图片预加载
-    // const preload = imgs => {
-    //   let count = 0
-    //   for (let img of imgs) {
-    //     let image = new Image()
-    //     image.src = img
-    //     image.onload = () => {
-    //       count++
-    //       // 计算图片加载的百分数，绑定到percent变量
-    //       let percentNum = Math.floor(count / imgs.length * 100)
-    //       console.log("percentNum", percentNum)
-    //       // this.percent = `${percentNum}%`
-    //     }
-    //   }
-    // } 
   }
+}
+export {
+  loadingPage
 }
