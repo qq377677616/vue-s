@@ -1,0 +1,70 @@
+<template>
+  <div class="body poster" :class="{'on': dataURL}" ref="cutScreen">
+    <my-header :title="pageTitle"></my-header>
+    <div id="poster-img"><div class="fadeShow" v-show="dataURL"><img class="wobble" :src="dataURL" alt=""></div></div>
+    <canvas id="myCanvas" style="width: 750px;height: 1480px;opacity:0;"></canvas>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+import MyHeader from 'components/header.vue'
+import { canvasImg } from "assets/js/util"
+import { Toast } from 'vant'
+export default {
+  name: "",
+  data() {
+    return {
+      pageTitle: "原生海报",
+      imgs: require("../../../assets/images/poster_02.png"),
+      dataURL: ''
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.canvasInit()
+    }, 1000)
+  },
+  methods: {
+    canvasInit() {
+      Toast.loading({ message: '海报生成中', forbidClick: true, duration: 0 })
+      let _this = this;
+      let options = {
+        canvasId: "myCanvas",
+        psd_w: 750,
+        psd_h: 1480,
+        bgImg: this.imgs,
+        imgList: [
+          { url: "https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132", imgW: 120, imgH: 120, imgX: 50, imgY: 50, radius: "50%" }
+        ],
+        textList: [ { string: "证书编号TPBJ202000001", color: "#A37582", style: "bold 26px Arial", textX: 352, textY: 64, textAlign: "left" },
+                    { string: "张三丰", color: "#ffffff", style: "bold 28px Arial", textX: 375, textY: 524, textAlign: "center" }
+                  ]
+      }
+      canvasImg(options).then(res => {
+        console.log("生成的截屏图片地址为：")
+        console.log(res.slice(0, 50))
+        Toast.clear()
+        _this.dataURL = res
+      })
+    }
+  },
+  components: {
+    MyHeader
+  }
+}
+</script>
+
+<style scoped>
+  .poster{font-size: 0;transition: all .5s;}
+  .poster.on{background: #333;}
+  .poster-box{height: calc(100vh - .92rem);box-sizing: border-box;font-size: .28rem;opacity: 0;}
+  .poster-box .box{width:70%;}
+  .poster-box .text{padding:.4rem .3rem;background: #fff;margin-top: -1.5rem;position: relative;z-index: 5;}
+  .poster-box img{width:105%;}
+  .poster-box .left{flex:2;}
+  .poster-box .left span{font-size: 20px;color:red;}
+  .poster-box .right{flex:1;text-align: center;}
+  .poster-box .right p{font-size: .36rem;padding-bottom: .1rem;}
+  .poster-box .right img{width:70%;border-radius: 50%;}
+  #poster-img{position: fixed;width:70%;top:50%;left:50%;transform: translate(-50%, -50%);z-index: 100;}
+</style>
