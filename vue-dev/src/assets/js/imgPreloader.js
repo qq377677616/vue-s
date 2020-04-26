@@ -18,8 +18,8 @@
 //   return Promise.all(promiseArr);
 // };
 const loadings = (imgUrl, files) => {
-  console.log("imgUrl", imgUrl)
-  console.log("files", files)
+  // console.log("imgUrl", imgUrl)
+  // console.log("files", files)
   // const files = 
   return new Promise(resolve => {
     // console.log("files", files)
