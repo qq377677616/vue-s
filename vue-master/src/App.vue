@@ -90,7 +90,7 @@ export default {
   .body{min-height:100vh;overflow-x: hidden;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}
   .item-list dd{border:1px solid #333;padding:.2rem .3rem;margin:.5rem 0;text-align: center;}
-  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100vw;min-height:100vh;}
+  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100vw;min-height:100vh;max-width: 750px;left: 50%;transform: translateX(-50%);}
   .right-left-enter,.left-right-leave-to{transform: translateX(100%);opacity: 0;}
   .right-left-leave-to,.left-right-enter{transform: translateX(-100%);opacity: 0;}
   .bottom-top-enter,.top-bottom-leave-to{transform: translateY(100%) scale(1);opacity: 0;}

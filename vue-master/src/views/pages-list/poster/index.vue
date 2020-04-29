@@ -18,7 +18,8 @@ export default {
       pageTitle: '生成海报',
       jump_list: [
         { title: "html2canvas", url: "/poster/poster1", name: 'poster1'},
-        { title: "原生", url: "/poster/poster2", name: 'poster2'}
+        { title: "DIY版", url: "/poster/poster3", name: 'poster3'},
+        { title: "原生版", url: "/poster/poster2", name: 'poster2'}
       ]
     }
   },

@@ -13,6 +13,7 @@
     <video :class="{'on': playIndex == 7}" :src="src6" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>-->
     <!-- <div class="video-con" @click="playVideo" v-show="isPlay"></div> -->
     <!-- <video src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
+    <div id="myChart" :style="{width: '400px', height: '300px'}"></div>
     <a
       href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=123456"
       style="padding:50px;background:green;"
@@ -148,7 +149,20 @@ export default {
       idx: -1,
       clauseTitle: "",
       loadedRatio: 0,
-      pdfh5:  null
+      pdfh5:  null,
+      option: {
+            title: { text: '在Vue中使用echarts' },
+            tooltip: {},
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        }
     };
   },
   created() {
@@ -164,6 +178,16 @@ export default {
     // this.$router.replace("/")
   },
   mounted() {
+    this.drawLine();
+    setTimeout(() => {
+      console.log("更新")
+      this.option.xAxis.data = ["苹果","香蕉","荔枝","桔子","梨子","黄瓜"]
+      this.option.series = [{
+                name: '销量',
+                type: 'bar',
+                data: [50, 30, 16, 50, 70, 40]
+            }]
+    }, 2000)
     // alert(navigator.userAgent)
     // getBrowserEnvironment().then(res => {
     //   console.log("【当前浏览器环境】", res)
@@ -243,7 +267,21 @@ export default {
     // this.loading()
   },
   computed: {},
+  watch: {
+    option: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        this.myChart.setOption(newVal, true)
+      }
+    }
+  },
   methods: {
+    drawLine(){
+        // 基于准备好的dom，初始化echarts实例
+        this.myChart = this.$echarts.init(document.getElementById('myChart'))
+        // 绘制图表
+        this.myChart.setOption(this.option);
+    },
     shareOk(res){
       console.log("分享成功分享成功分享成功分享成功分享成功分享成功分享成功", res)
     },

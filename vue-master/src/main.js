@@ -9,20 +9,7 @@ import 'assets/js/default'
 import 'assets/js/wx-config'
 import 'assets/css/reset.css'
 import 'assets/css/base.css'
-import VideoPlayer from 'vue-video-player'
-import 'video.js/dist/video-js.css'
-import 'videojs-flash'
-// VideoPlayer.config({
-
-//   youtube: true,
-  
-//   switcher: true,
-  
-//   hls: true
-  
-//   })
-  
-  Vue.use(VideoPlayer)
+import VueDragResize from 'vue-drag-resize' //缩放、拖拽
 import VueTouch from "vue-touch"
 import Vant from 'vant'
 import 'vant/lib/index.css'
@@ -31,7 +18,10 @@ import LangEn from 'assets/lang/en'
 import LangZhCHS from 'assets/lang/zhCHS'
 import LangZhCHT from 'assets/lang/zhCHT'
 import VueJsonp from 'vue-jsonp'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.use(VueJsonp)
+Vue.component('vue-drag-resize', VueDragResize)
 Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(VueTouch, { name: 'v-touch' })

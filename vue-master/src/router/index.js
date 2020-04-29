@@ -80,6 +80,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/poster/poster2.vue'], resolve)    
   },
   {
+    path:'/poster/poster3',
+    name: 'poster3',
+    component: resolve => require(['../views/pages-list/poster/poster3.vue'], resolve)    
+  },
+  {
     path:'/mail-list',
     name: 'mail-list',
     component: resolve => require(['../views/pages-list/mail-list.vue'], resolve)    

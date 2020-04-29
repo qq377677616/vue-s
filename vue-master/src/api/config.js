@@ -61,7 +61,7 @@ const PROJECT_CONFIG = {
     is_open: false,//是否回到首页，hash模式路由默认刷新后停留在当前页
     home_url: '/'//首页的路由地址,也可以配置其它想跳转的路由地址
   },
-  is_page_locking: false,//是否锁定页面上拉下拉滑动
+  is_page_locking: true,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享
   is_tx_mtah5: true,//是否配置腾讯统计
   /*背景音乐配置*/  
@@ -72,7 +72,7 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 0,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 2,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
     green_label_position: '100',//绿标初始位置boottom，单位px、rem
     green_label_title: "未上线"//浮标文字
