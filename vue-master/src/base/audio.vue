@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/project.config'
 import { isSystem, audioContextMusic } from 'assets/js/util'
 import { getProjectConfig } from 'api/api'
 export default {

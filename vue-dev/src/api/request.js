@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 import jsonp from 'api/jsonp'
-import { REQUEST_URL, REQUEST_PROXY_URL, ERR_Ok } from 'api/config'
+import { REQUEST_URL, REQUEST_PROXY_URL, ERR_Ok } from 'api/project.config'
 
 /*********************创建一个axios实例*********************/
 const service = axios.create({

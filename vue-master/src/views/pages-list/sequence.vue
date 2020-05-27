@@ -12,7 +12,7 @@
 
 <script type="text/ecmascript-6">
 import MyHeader from "components/header.vue"
-import { ASSETS_URL } from 'api/config'
+import { ASSETS_URL } from 'api/project.config'
 export default {
   name: "",
   data() {

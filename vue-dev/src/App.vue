@@ -9,7 +9,7 @@
 <script>
 import myAudio from 'base/audio'
 import LoadingPage from 'base/loading-page.vue'
-import { PROJECT_CONFIG } from 'api/config'
+import { PROJECT_CONFIG } from 'api/project.config'
 import { loadingPage } from 'assets/js/imgPreloader'
 import { setDataArrive } from "api/api.config"
 

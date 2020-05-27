@@ -1,7 +1,7 @@
 import wx from 'weixin-js-sdk'
 import { getQueryString, getBrowserEnvironment, loadScript } from 'assets/js/util'
 import VConsole from 'vconsole'
-import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/project.config'
 import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
 
 //获取微信配置参数信息

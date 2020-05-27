@@ -1,5 +1,5 @@
 import { loadScript } from 'assets/js/util'
-import { SECRETKEY } from 'api/config'
+import { SECRETKEY } from 'api/project.config'
 import { api } from 'api/request.js'
 
 /****************************************获取当前位置信息****************************************/
