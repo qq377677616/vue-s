@@ -52,7 +52,7 @@ service.interceptors.response.use(response => {
 })
 
 /*********************导出一个通用请求方法*********************/
-export const api = (url, data, type = 'post', isQs = true, isUrl = 0) => {
+export const api = (url, data, type = 'post', isQs = true, isUrl = 0, config) => {
   if (isUrl == 1 || (isUrl == 2 && process.env.NODE_ENV === 'production')) {
     url = `${REQUEST_URL}${url}`
   } else if (isUrl == 2) {
@@ -65,8 +65,8 @@ export const api = (url, data, type = 'post', isQs = true, isUrl = 0) => {
       return Promise.reject(err)
     }) 
   } else {
-    if (type !== 'post' && type !== 'get') return Promise.reject({ status: 1001, message: '请求方法不符合规范' })
-    return service[type](url, isQs ? qs.stringify(data) : data).then(res => {
+    if (type !== 'post' && type !== 'get') return Promise.reject({ status: 1001, message: '请求方法不符合规范' }) 
+    return service[type](url, isQs ? qs.stringify(data) : data, config).then(res => {
       return Promise.resolve(res)
     }).catch(err => {
       return Promise.reject(err)

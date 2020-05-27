@@ -19,8 +19,10 @@
 .wrap{width:92.53%;margin:0 auto;}
 /*页面初始样式*/
 html,body{width: 100%;height: 100%;overflow-x: hidden;user-select: none; -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
-body{max-width: 750px;margin: 0 auto;}
 /* #app{width: 100%;height:100%;overflow-x: hidden;}  */
+#app{max-width: 750px;position: relative;margin:0 auto;}
+body{background: #bbb;}
+.body{background: #fff;}
 body img{max-width: 100%;}
 .container{width: 100%;}
 [v-cloak]{display: none;}
@@ -38,7 +40,7 @@ body img{max-width: 100%;}
 /*修改swiper的默认样式*/
 .swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
 .swiper-pagination-bullet-active{background: #3DA6FF !important;}
-#__vconsole .vc-switch{width:50px !important;height: 50px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;}
+#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;}
 /*特殊字体*/
 /* @font-face
   font-family DIN

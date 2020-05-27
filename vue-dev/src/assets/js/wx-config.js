@@ -1,12 +1,13 @@
 import wx from 'weixin-js-sdk'
-import { getQueryString, loadScript } from 'assets/js/util'
+import { getQueryString, getBrowserEnvironment, loadScript } from 'assets/js/util'
 import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/config'
-import { getProjectConfig, getWxConfig, getUserInfos } from 'api/api'
+import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
 
 //获取微信配置参数信息
-var re_request_num = 0, config_num = 0;
+let re_request_num = 0, config_num = 0;
 (function _configStart() {
+  if (PROJECT_CONFIG.is_data_statistics) setLookPageTime()
   if (PROJECT_CONFIG.wx_jssdk_type) {
     getWxConfig({ url: encodeURIComponent(window.location.href) }).then(res => {
       console.log("【微信注册信息4个参数获取成功】", res)
@@ -22,6 +23,21 @@ var re_request_num = 0, config_num = 0;
     loadScript(WXCONFIG_SCRIPT_URL, () => { _getPageConfig(window['wx_config']) })
   }
 })()
+//页面访问时长统计
+function setLookPageTime() {
+  let total_times = 0
+  setInterval(() => {
+    ++total_times
+  }, 1000)
+  window.onload = function() {
+    if (localStorage.getItem("total_times")) {
+      setDataDuration({ second: localStorage.getItem("total_times") }).then(res => { console.log(`【数据统计--访问时长--${total_times}s】`) })
+    }
+  }
+  window.onbeforeunload = function() {
+    localStorage.setItem("total_times", total_times)
+  }
+}
 //获取页面配置信息
 function _getPageConfig(config) {
   if (!PROJECT_CONFIG_CODE) {
@@ -57,7 +73,7 @@ function _openDebugging(onlineDate, offlinedate) {
     alert("项目已下线")
     window.close()
   }
-  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && process.env.NODE_ENV == 'production') || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
+  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && (process.env.NODE_ENV == 'production' || window.location.href.indexOf("192.") != -1)) || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
     let vConsole = new VConsole()
     document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color
@@ -91,6 +107,7 @@ const getUserInfo = () => {
       })
     }
     function setStorage() {
+      if (JSON.stringify(_userInfo) == "{}") return
       sessionStorage.setItem("userInfo", JSON.stringify(_userInfo))
       localStorage.setItem("userInfo", JSON.stringify(_userInfo))
       console.log("【sessionStorage】中的用户信息", sessionStorage.getItem("userInfo"))
@@ -143,7 +160,7 @@ function _wxConfig(config) {
   })
 }
 //微信、QQ分享配置
-const shareConfigure = (shareConfig) => {
+const shareConfigure = shareConfig => {
   return new Promise((resolve, reject) => {
     let isShareConfigure = 0, shareMessage = []
     if (shareConfig && typeof shareConfig == 'object') Object.assign(SHARECONFIG, shareConfig)
@@ -182,7 +199,10 @@ const shareConfigure = (shareConfig) => {
         imgUrl: SHARECONFIG.ShareImage,
         type: '', // 分享类型,music、video或link，不填默认为link
         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-        success: () => { SHARECONFIG.success({ type: 1, title: "点击了分享给好友的按钮" }) },
+        success: () => { 
+          SHARECONFIG.success({ type: 1, title: "点击了分享给好友的按钮" })
+          if (PROJECT_CONFIG.is_data_statistics) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
+         },
         trigger: () => { console.log("分享给好友") }
       })
       //获取“分享到朋友圈”按钮点击状态及自定义分享内容接口（即将废弃）
@@ -190,7 +210,10 @@ const shareConfigure = (shareConfig) => {
         title: SHARECONFIG.Title,
         link: SHARECONFIG.ShareUrl,
         imgUrl: SHARECONFIG.ShareImage,
-        success: () => { SHARECONFIG.success({ type: 2, title: "点击了分享到朋友圈的按钮" }) },
+        success: () => { 
+          SHARECONFIG.success({ type: 2, title: "点击了分享到朋友圈的按钮" }) 
+          if (PROJECT_CONFIG.is_data_statistics) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
+        },
         trigger: () => { console.log("分享到朋友圈") }
       })
       //获取“分享到QQ”按钮点击状态及自定义分享内容接口（即将废弃）
@@ -199,7 +222,10 @@ const shareConfigure = (shareConfig) => {
         desc: SHARECONFIG.Desc,
         link: SHARECONFIG.ShareUrl,
         imgUrl: SHARECONFIG.ShareImage,
-        success: function () { SHARECONFIG.success({ type: 3, title: "点击了分享到QQ的按钮" }) },
+        success:() => { 
+          SHARECONFIG.success({ type: 3, title: "点击了分享到QQ的按钮" }) 
+          if (PROJECT_CONFIG.is_data_statistics) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
+        },
         trigger: () => { console.log("分享到QQ") }
       });
       //获取“分享到QQ空间”按钮点击状态及自定义分享内容接口（即将废弃）
@@ -208,7 +234,10 @@ const shareConfigure = (shareConfig) => {
         desc: SHARECONFIG.Desc,
         link: SHARECONFIG.ShareUrl,
         imgUrl: SHARECONFIG.ShareImage,
-        success: function () { SHARECONFIG.success({ type: 4, title: "点击了分享到QQ的按钮" }) },
+        success:() => { 
+          SHARECONFIG.success({ type: 4, title: "点击了分享到QQ的按钮" }) 
+          if (PROJECT_CONFIG.is_data_statistics) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
+        },
         trigger: () => { console.log("分享到QQ空间") }
       })
     }

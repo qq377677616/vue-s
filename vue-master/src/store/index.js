@@ -9,12 +9,32 @@ const state = {
   },
   balance: 8888
 }
+const getters = {
+  userInfoNew(state) {
+    let _userInfo = JSON.parse(JSON.stringify(state.userInfo))
+    // let { userInfo: _userInfo } = state
+    let { nickName } = _userInfo
+    _userInfo.nickName = nickName + '5555'
+    return _userInfo
+  }
+}
 const mutations = {
-  add(state, params) {
+  add(state, params) { 
     state.balance = (state.balance + params.num) > 0 ? (state.balance + params.num) : 0
+  },
+  cheng(state) {
+    state.balance = state.balance * 2
+  }
+}
+const actions = {
+  asyncAdd({ commit }, params) {
+    commit("add", params)
+    setTimeout(() => { commit("cheng") }, 2000)
   }
 }
 export default new Vuex.Store({
   state,
-  mutations
+  getters,
+  mutations,
+  actions
 })

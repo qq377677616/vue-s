@@ -165,6 +165,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/live.vue'], resolve)    
   },
   {
+    path:'/baberrage',
+    name: 'baberrage',
+    component: resolve => require(['../views/pages-list/baberrage.vue'], resolve)    
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    
@@ -173,6 +178,9 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'hash',
+  // mode: 'history',
+  // base: process.env.NODE_ENV === 'dev' ? '' : '/resources/game/wechat/szq/vue-s/', // 两边斜杠要加
+  // publicPath: process.env.NODE_ENV === 'production' ? '/resources/game/wechat/szq/vue-s/' : '/',
   // base: process.env.BASE_URL,
   routes
 })

@@ -51,10 +51,13 @@
 </script>
 
 <style scoped>
-  .tab{width: 100%;position: fixed;left:0;bottom:0;z-index: 9999;text-align: center;background: #fff;box-shadow: 0 .3rem .5rem 0 rgba(82, 86, 90, 0.81);}
+  .tab{max-width:750px;width: 100%;position: fixed;left:0;bottom:0;z-index: 9999;text-align: center;background: #fff;box-shadow: 0 .3rem .5rem 0 rgba(82, 86, 90, 0.81);}
   .tab img{width:.52rem;height: .52rem;}
   .tab dd{font-size: 0;padding:.12rem 0;width: 20%;position: relative;z-index: 5;}
   .tab dd i{font-size: .42rem;color:#878787;}
   .tab dd.cur i,.tab dd.cur p{color:#000;}
   .tab dd p{font-size: .22rem;color:#000;padding-top: 0.1rem;color: #878787;}
+  @media screen and (min-width: 640px) {
+    .tab{left:50%;transform: translateX(-50%);}
+  }
 </style>

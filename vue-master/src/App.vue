@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition :name="transitionName"><router-view class="router-view" /></transition>
+    <transition :name="transitionName"><router-view class="router-view" :class="{'on': !transitionName}" /></transition>
     <my-audio ref="audio" v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
     <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro">
       <!-- <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div> -->
@@ -13,7 +13,10 @@ import myAudio from 'base/audio'
 import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG } from 'api/config'
 import { loadingPage } from 'assets/js/imgPreloader'
-console.log("ImgPreloader", loadingPage)
+import { loadScript } from "assets/js/util"
+import { setDataArrive } from "api/api.config"
+import { getTest } from "api/api"
+
 export default {
   name: 'app',
   mixins: [loadingPage], 
@@ -21,15 +24,21 @@ export default {
     return {
       pro: 0,
       pageLoadingOk: false,
-      transitionName: 'right-left'
+      transitionName: ''
     }
   },
   created() {
-    this.vuexConfig()//vuex
+    // this.vuexConfig()//vuex
+    // loadScript("http://w10.ttkefu.com/k/?fid=8B1HFFI3").then(res => {
+    //   console.log("kkkefu加载完成3")
+    // })
     this.PROJECT_CONFIG = PROJECT_CONFIG//页面配置信息
   },
   mounted() {
     if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }//锁定页面
+    // getTest({ goods_sn: '2060001' }).then(res => {
+    //   console.log("【测试接口返回】", res)
+    // })
   },
   methods: {
     //loading加载
@@ -62,20 +71,24 @@ export default {
     //   },
     //   // 深度观察监听
     //   deep: true
-    // },
+    // }, 
     '$route'(to, from) {
       console.log("从from", from)
       console.log("到to", to)
       if (!from.name && this.PROJECT_CONFIG.refresh_back_to_home.is_open) this.$router.replace(this.PROJECT_CONFIG.refresh_back_to_home.home_url)
       let _tabbar = ['/', '/about']//tabBar导航页
       let _secondLevel = ['/cropper', '/upload', '/prize', '/poster']//二级页面
+      let _setData = ['/', '/poster']//数据统计页：首页、结果页
+      //路由动画
       if (_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
         this.transitionName = ''
-      } else if (from.path == '/' || (_secondLevel.includes(from.path) && to.path != "/")) {
+      } else if (_tabbar.includes(from.path) || (_secondLevel.includes(from.path) && !_tabbar.includes(to.path))) {
         this.transitionName = 'right-left' 
-      } else if (to.path == '/' || (_secondLevel.includes(to.path) && from.path != "/")) {
+      } else if (_tabbar.includes(to.path) || (_secondLevel.includes(to.path) && !_tabbar.includes(from.path))) {
         this.transitionName = 'left-right'
       }
+      //数据统计
+      if (PROJECT_CONFIG.is_data_statistics && _setData.includes(to.path)) setDataArrive({ status: _setData.findIndex(item => item == to.path) + 1 }).then(res => { console.log("【数据统计--抵达页成功】") })
     }
   },
   components: {
@@ -87,15 +100,17 @@ export default {
 
 <style>
   @import 'assets/fonts/font-icon.css';
-  .body{min-height:100vh;overflow-x: hidden;padding-top: .92rem;box-sizing: border-box;}
+  .body{min-height:100vh;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}
   .item-list dd{border:1px solid #333;padding:.2rem .3rem;margin:.5rem 0;text-align: center;}
-  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100vw;min-height:100vh;max-width: 750px;left: 50%;transform: translateX(-50%);}
+  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100%;min-height:100vh;}
+  .router-view.on{transition: none;}
+  /* .router-view{position: absolute;left:0;top:0;width: 100vw;min-height:100vh;} */
   .right-left-enter,.left-right-leave-to{transform: translateX(100%);opacity: 0;}
   .right-left-leave-to,.left-right-enter{transform: translateX(-100%);opacity: 0;}
   .bottom-top-enter,.top-bottom-leave-to{transform: translateY(100%) scale(1);opacity: 0;}
   .bottom-top-leave-to,.top-bottom-enter{transform: translateY(-100%) scale(.8);opacity: 0;}
   .scale-big-enter,.scale-small-leave-to{transform: scale(.5);opacity: 0;}
   .scale-big-leave-to,.scale-small-enter{transform: scale(1);opacity: 0;}
-  .full-screen{width:100vw;height:calc(100vh - .92rem);}
+  .full-screen{width:100%;height:calc(100vh - .92rem);}
 </style>

@@ -58,9 +58,10 @@
         }
         this.scroll = new BScroll(this.$refs.wrapper, {
           probeType: this.probeType,
-          scrollX: this.isX,
+          scrollX: true,
           click: this.click,
-          mouseWheel: true
+          mouseWheel: true,
+          bounce: false
         })
 
         if (this.listenScroll) {
@@ -102,6 +103,7 @@
         this.scroll && this.scroll.refresh()
       },
       scrollTo() {
+        // console.log(y, scrollNum)
         this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
       },
       scrollToElement() {

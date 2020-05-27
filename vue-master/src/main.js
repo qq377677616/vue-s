@@ -5,11 +5,10 @@ import store from './store'
 import VueLazyload from 'vue-lazyload'
 import VueI18n from 'vue-i18n'
 import 'assets/js/rem'
-import 'assets/js/default'
-import 'assets/js/wx-config'
+import 'assets/js/wx.config'
 import 'assets/css/reset.css'
 import 'assets/css/base.css'
-import VueDragResize from 'vue-drag-resize' //缩放、拖拽
+import VueDragResize from 'vue-drag-resize'
 import VueTouch from "vue-touch"
 import Vant from 'vant'
 import 'vant/lib/index.css'
@@ -19,6 +18,9 @@ import LangZhCHS from 'assets/lang/zhCHS'
 import LangZhCHT from 'assets/lang/zhCHT'
 import VueJsonp from 'vue-jsonp'
 import echarts from 'echarts'
+import VueBus from 'vue-bus'
+import FastClick from 'fastclick'
+FastClick.attach(document.body);
 Vue.prototype.$echarts = echarts
 Vue.use(VueJsonp)
 Vue.component('vue-drag-resize', VueDragResize)
@@ -26,6 +28,8 @@ Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(VueTouch, { name: 'v-touch' })
 Vue.use(Vant)
+Vue.use(VueBus)
+// Vue.use(vueBaberrage)
 Vue.use(VueLazyload, {
   // loading: require('assets/images/default.png')
 })

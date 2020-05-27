@@ -17,9 +17,9 @@ const uploadAudio = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/l
 //测试接口
 const getPostTest = (data, url = '/index/index/bis_detail', type = 'post') => { return api(url, data, type, true, 1) }
 //上传图片
-const uploadImg = (data, url = '/index/index/bis_detail', type = 'post') => { return api(url, data, type, false, 0) }
+const uploadImg = (data, url = '', type = 'post', config) => { return api(url, data, type, false, 0, config) }
 //测试接口
-const getTest = (data, url = '/apis/index', type = 'post') => { return api(url, data, type, true, 1) }
+const getTest = (data, url = 'http://game.vrupup.com/sanguo/wx38da89ddf8b76665/sye_lizhiyuan/public/api.php/index/getGoods', type = 'post') => { return api(url, data, type, true, 0) }
 
 export {
   getWxConfig,

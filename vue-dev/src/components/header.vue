@@ -37,7 +37,10 @@ export default {
 </script>
 
 <style scoped>
-  .header{height:.92rem;line-height: .92rem;background: #027C60;font-size: .36rem;color:#fff;text-align: center;position: fixed;width:100%;left:0;top:0;z-index: 200;}  
+  .header{max-width:750px;height:.92rem;line-height: .92rem;background: #027C60;font-size: .36rem;color:#fff;text-align: center;position: fixed;width:100%;left:0;top:0;z-index: 200;}  
   .header .back{width:.4rem;padding-right: 4%;height:100%;position: absolute;left: 0;top:0;background-size: .4rem;transition: all .5s;transform-origin: .2rem center;padding-right: 0;padding-left: 4%;background-position: right .11rem center;}
   .header .back i{font-size:.44rem;}
+  @media screen and (min-width: 640px) {
+    .header{left:50%;transform: translateX(-50%);}
+  }
 </style>

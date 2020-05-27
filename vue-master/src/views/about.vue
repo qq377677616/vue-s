@@ -1,19 +1,23 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
-    <!-- <iframe id="iframe" src="http://game.flyh5.cn/resources/game/wechat/szq/demo/iframe.html" frameborder="0"></iframe>  -->
-    <!-- <iframe :class="{'bottom-top': isVideo}" id="iframe" src='http://player.youku.com/embed/XMjg1NzA5NDY4NA==' frameborder=0 allowfullscreen></iframe> -->
-    <!-- <video id="mainVideo" src="../assets/images/video.mp4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload @loadstart="loadstart" @durationchange="durationchange" @loadedmetadata="loadedmetadata" @loadeddata="loadeddata" @progress="progress" @canplay="canplay" @canplaythrough="canplaythrough"></video> -->
-    <!-- <div id="pro">{{aaa}}</div> -->
-    <!-- <video :class="{'on': playIndex == 2}" src="../assets/images/1.mp4" id="video1" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
-    <video :class="{'on': playIndex == 3}" :src="src2" id="video2" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
-    <video :class="{'on': playIndex == 4}" :src="src3" id="video3" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
-    <video :class="{'on': playIndex == 5}" :src="src4" id="video4" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
-    <video :class="{'on': playIndex == 6}" :src="src5" id="video5" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>
-    <video :class="{'on': playIndex == 7}" :src="src6" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video>-->
-    <!-- <div class="video-con" @click="playVideo" v-show="isPlay"></div> -->
-    <!-- <video src="http://game.flyh5.cn/resources/game/wechat/szq/images/video_05.mp4" id="video6" playsinline="" webkit-playsinline="" x5-playsinline="" x5-video-player-type="h5" x5-video-orientation="portrait" x5-video-player-fullscreen="true" controls preload></video> -->
-    <div id="myChart" :style="{width: '400px', height: '300px'}"></div>
+    <div>
+      <span v-for="item in odd">{{item}}--</span>
+    </div>
+    <div>
+      <span v-for="item in even">{{item}}--</span>
+    </div>
+    <input type="text" v-model="inputs" />
+    <div>{{inputs}}</div>
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=377677616&site=qq&menu=yes" target="_blank">点击发起客服</a>
+    <a href="mqqwpa://im/chat?chat_type=wpa&uin=229371229&version=1&src_type=web&web_src=oicqzone.com" target="_blank">点击qq聊天</a>
+    <a href="tencent://message/?uin=377677616&version=1&src_type=web&web_src=oicqzone.com" target="_blank">点击qq聊天</a>
+    <a href="mqqwpa //im/chat?chat_type=wpa&uin=574201314&version=1" target="_blank">点击qq聊天</a>
+    <div class="my-echarts flex">
+      <div id="myChart1"></div>
+      <div id="myChart2"></div>
+      <div id="myChart3"></div>
+    </div>
     <a
       href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=123456"
       style="padding:50px;background:green;"
@@ -38,33 +42,6 @@
     <a href="https://view.officeapps.live.com/op/view.aspx?src=https://game.flyh5.cn/resources/game/wechat/szq/images/pdf_01.pdf">查看pdf2</a>
     <a href="https://game.flyh5.cn/resources/game/wechat/szq/images/ppt.ppt">查看ppt</a>
     <a href="https://view.officeapps.live.com/op/view.aspx?src=https://game.flyh5.cn/resources/game/wechat/szq/images/ppt.ppt">查看ppt2</a>
-    <!-- <div class="pdf-box">
-      <pdf src="https://game.flyh5.cn/resources/game/wechat/szq/images/pdf_01.pdf" :page="currentPage" @progress="loadedRatio = $event" @num-pages="pageCount=$event" @page-loaded="currentPage=$event" @loaded="loadPdfHandler" ref="wrapper" class="pdf"></pdf>
-      <ul class="footers">
-        <li :class="{select:idx==0}" @touchstart="idx=0" @touchend="idx=-1" @click="scaleD">
-          <p>放大</p>
-        </li>
-        <li :class="{select:idx==1}" @touchstart="idx=1" @touchend="idx=-1" @click="scaleX">
-          <p>缩小</p>
-        </li>
-        <li
-          :class="{select:idx==2}"
-          @touchstart="idx=2"
-          @touchend="idx=-1"
-          @click="changePdfPage(0)"
-        >
-          <p>上一页</p>
-        </li>
-        <li
-          :class="{select:idx==3}"
-          @touchstart="idx=3"
-          @touchend="idx=-1"
-          @click="changePdfPage(1)"
-        >
-          <p>下一页</p>
-        </li>
-      </ul>
-    </div> -->
     <a href="https://game.flyh5.cn/resources/game/wechat/szq/images/doc.doc">查看word</a>
     <a href="https://view.officeapps.live.com/op/view.aspx?src=https://game.flyh5.cn/resources/game/wechat/szq/images/doc.doc">查看word2</a>
     <div class="input">
@@ -85,10 +62,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import wx from "weixin-js-sdk";
-import Shake from "assets/js/shake.js";
-import Tab from "components/tab.vue";
-import { setPageScrollTop, getBrowserEnvironment } from "assets/js/util";
+import wx from "weixin-js-sdk"
+import Shake from "assets/js/shake.js"
+import Tab from "components/tab.vue"
+import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript } from "assets/js/util"
 import {
   getLocation_qq,
   getLocation_baidu,
@@ -97,8 +74,8 @@ import {
   getIpLocation_jisu,
   getIpLocation_baidu,
   getIpLocation_k780
-} from "assets/js/get-third-party.js";
-import MyHeader from "components/header.vue";
+} from "assets/js/get-third-party.js"
+import MyHeader from "components/header.vue"
 import {
   uploadAudio,
   getIpLocation,
@@ -106,17 +83,20 @@ import {
   getProjectConfig,
   getPostTest,
   getTest,
-} from "api/api";
+} from "api/api"
 // import { shareConfigure, getUserInfo } from "assets/js/wx-config"
 // import { AUTH_URL } from "api/config";
 import pdf from "vue-pdf"
 import Pdfh5 from "pdfh5"
-
+// import { isMobile } from 'mobile-device-detect'
+// import { MobileDetect } from 'mobile-detect'
+var myChart_one, myChart_two, myChart_three
 export default {
   name: "",
   data() {
     return {
       imgs: require("../assets/images/poster_02.png"),
+      inputs: '555',
       poster_img: "",
       pageTitle: "我的测试",
       status: 0,
@@ -150,218 +130,129 @@ export default {
       clauseTitle: "",
       loadedRatio: 0,
       pdfh5:  null,
-      option: {
-            title: { text: '在Vue中使用echarts' },
-            tooltip: {},
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        }
-    };
+      myChart: null,
+      song: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    }
   },
+  // watch: {
+  //   //路由监听
+  //   '$route'(to, from) {
+  //     alert(getQueryString("a"))
+  //   }
+  // },
   created() {
-    getTest().then(res => {
-      console.log("res", res)
-    })
+    // loadScript("http://w10.ttkefu.com/k/?fid=8B1HFFI3").then(res => {
+    //   console.log("kkkefu加载完成")
+    // })
+    // setTimeout(() => {
+    //   console.log(6666)
+    //   setPageScrollTop(0)
+    // }, 2000)
+    // getTest().then(res => {
+    //   console.log("res", res)
+    // })
     // this.alerts()
     // this.getLocation();
     // sessionStorage.setItem("aaa", "【5555555555】");
     // console.log(sessionStorage.getItem("aaa"));
   },
+  computed: {
+    odd() {
+      return this.song.filter((item, index) => {
+        if (index % 2 == 0 ) return item
+      })
+    },
+    even() {
+      return this.song.filter((item, index) => {
+        if (index % 2 != 0 ) return item
+      })
+    }
+  },
   destroyed() {
-    // this.$router.replace("/")
+    
   },
   mounted() {
-    this.drawLine();
+    //判断数组中是否包含某字符串
+  Array.prototype.contains = function(needle) {
+    for (i in this) {
+      if (this[i].indexOf(needle) > 0)
+        return i;
+    }
+    return -1;
+  }
+ 
+  var device_type = navigator.userAgent; //获取userAgent信息
+  // document.write(device_type); //打印到页面
+  console.log("MobileDetect", MobileDetect)
+  var md = new MobileDetect(device_type); //初始化mobile-detect
+  var os = md.os(); //获取系统
+  console.log(os)
+  var model = "";
+  if (os == "iOS") { //ios系统的处理
+    os = +md.version("iPhone");
+    console.log(os)
+    model = md.mobile();
+  } else if (os == "AndroidOS") { //Android系统的处理
+    os = md.os() + md.version("Android");
+    var sss = device_type.split(";");
+    var i = sss.contains("Build/");
+    if (i > -1) {
+      model = sss[i].substring(0, sss[i].indexOf("Build/"));
+    }
+  }
+  // alert(os + "---" + model);//打印系统版本和手机型号
+    isSystem().then(res => {
+      let _system = res.system.toLowerCase()
+      if (_system.toLowerCase().indexOf("al00a") != -1 || _system.toLowerCase().indexOf("al00ta") != -1 || _system.indexOf("huawei")) {
+        let _input = document.getElementsByClassName("van-uploader__input")[0]
+        _input.setAttribute("capture", "camcorder")
+      }
+    })
     setTimeout(() => {
-      console.log("更新")
-      this.option.xAxis.data = ["苹果","香蕉","荔枝","桔子","梨子","黄瓜"]
-      this.option.series = [{
-                name: '销量',
-                type: 'bar',
-                data: [50, 30, 16, 50, 70, 40]
-            }]
-    }, 2000)
-    // alert(navigator.userAgent)
-    // getBrowserEnvironment().then(res => {
-    //   console.log("【当前浏览器环境】", res)
-    // })
-    // WindowsWechat
-    // Windows
-    // iPhone
-    // Android
-    // iPad
-    // getTest().then(res => {
-    //   console.log("[web网站的测试接口]", res)
-    // })
-    //实例化
- this.pdfh5 = new  Pdfh5("#demo", {
-      pdfurl:  "https://game.flyh5.cn/resources/game/wechat/szq/images/pdf_01.pdf",
-      lazy:true
-  }).on("complete", function (status, msg, time) { //监听完成事件
-      console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
-   })
-    this.pageOk();
-    this.pageProgress(() => {
-      console.log("加载OK");
-    });
-    // getUserInfo().then(res => {
-    //   console.log("res", res);
-    // });
-    // this.$toast.loading({ message: "视频加载中", duration: 0, loadingType: "spinner" })
-    // setTimeout(() => {
-    //   let _vc = document.querySelector(".vc-switch");
-    //   _vc.innerHTML = '该版本未上线'
-    // }, 100)
-    // this.$router.push('/')
-    window.onunload = function(e) {
-      // e = e || window.event;
-
-      // 兼容IE8和Firefox 4之前的版本
-      // if (e) {
-      //   e.returnValue = '关闭提示3333';
-      // }
-      this.$router.replace("/");
-      // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-      // return '关闭提示';
-    };
-    window.addEventListener("beforeunload", function(e) {
-      // alert(555)
-      // return;
-      // //      //不是所有浏览器都支持提示信息的修改
-      //      var confirmationMessage = "请先保存您编辑的内容,否则您修改的信息会丢失。";
-      //      e.returnValue = confirmationMessage;
-      //      alert(4444)
-      //      this.$router.replace("/")
-      //  return confirmationMessage;
-    });
-    window.onresize = () => {
-      let _aaa = this.aaa;
-      _aaa++;
-      this.aaa = _aaa;
-    };
-    // getIpLocation_juhe({ phone: '15707496771' }).then(res => {
-    //   console.log("【手机号归属地查询接口返回1】", res)
-    //   console.log("【手机号归属地查询接口返回1】", res.data.result)
-    // })
-    // getIpLocation_jisu({ phone: '15707496771' }).then(res => {
-    //   console.log("【手机号归属地查询接口返回2】", res)
-    //   console.log("【手机号归属地查询接口返回2】", res.data.result)
-    // })
-    // getIpLocation_baidu({ phone: '15707496771'}).then(res => {
-    //   console.log("【手机号归属地查询接口返回3】", res)
-    //   console.log("【手机号归属地查询接口返回3】", res.data.response)
-    // })
-    // getIpLocation_k780({ phone: '15707496771'}).then(res => {
-    //   console.log("【手机号归属地查询接口返回4】", res)
-    //   console.log("【手机号归属地查询接口返回4】", res.data.result)
-    // })
-    // this.getLocation(); // 调用获取地理位置
-    // this.getLocation2(); // 调用获取地理位置
-    // this.loading()
+      this.song.push(11, 12, 13, 14, 15, 16, 17)
+    }, 3000)
   },
-  computed: {},
   watch: {
-    option: {
+    option3: {
       deep: true,
       handler: function (newVal, oldVal) {
-        this.myChart.setOption(newVal, true)
+        myChart_one.setOption(newVal, true)
       }
     }
   },
   methods: {
     drawLine(){
         // 基于准备好的dom，初始化echarts实例
-        this.myChart = this.$echarts.init(document.getElementById('myChart'))
-        // 绘制图表
-        this.myChart.setOption(this.option);
+        myChart_one = this.$echarts.init(document.getElementById('myChart1'))
+        myChart_one.setOption(this.option3);
+         myChart_two = this.$echarts.init(document.getElementById('myChart2'))
+        myChart_two.setOption(this.option2);
+         myChart_three = this.$echarts.init(document.getElementById('myChart3'))
+        myChart_three.setOption(this.option2);
+    },
+    //为图表计算高度
+    chartssize(container, charts) {
+      function getStyle(el, name)
+      {
+        if (window.getComputedStyle) {
+          return window.getComputedStyle(el, null);
+        } else {
+          return el.currentStyle;
+        }
+      }
+      let wi = getStyle(container, 'width').width;
+      let hi = getStyle(container, 'height').height;
+      myChart_one.style.height = hi
+      myChart_two.style.height = hi
+      myChart_three.style.height = hi
     },
     shareOk(res){
       console.log("分享成功分享成功分享成功分享成功分享成功分享成功分享成功", res)
     },
-    // 改变PDF页码,val传过来区分上一页下一页的值,0上一页,1下一页
-            changePdfPage(val) {
-                if(val === 0 && this.currentPage > 1) {
-                    this.currentPage--;
-                }
-                if(val === 1 && this.currentPage < this.pageCount) {
-                    this.currentPage++;
-                }
-            },
-            goBack() {
-                this.$router.go(-1);
-            },
-            // pdf加载时
-            loadPdfHandler(e) {
-                this.currentPage = 1; // 加载的时候先加载第一页
-            },
-            //放大
-            scaleD() {
-                this.scale += 5;
-                // this.$refs.wrapper.$el.style.transform = "scale(" + this.scale + ")";
-                this.$refs.wrapper.$el.style.width = parseInt(this.scale) + "%";
-            },
-
-            //缩小
-            scaleX() {
-                if(this.scale == 100) {
-                    return;
-                }
-                this.scale += -5;
-                this.$refs.wrapper.$el.style.width = parseInt(this.scale) + "%";
-                // this.$refs.wrapper.$el.style.transform = "scale(" + this.scale + ")";
-            },
     back() {
       console.log("wxwxwx", wx);
       wx.miniProgram.postMessage({ data: { status: "377677" } });
       wx.miniProgram.redirectTo({ url: "/pages/index/index?status=888" });
-    },
-    playVideo() {
-      if (!this.isPlay) return;
-      this.isPlay = false;
-      console.log("5555");
-      let _this = this;
-      let _video1 = document.getElementById("video1");
-      let _video2 = document.getElementById("video2");
-      let _video3 = document.getElementById("video3");
-      let _video4 = document.getElementById("video4");
-      let _video5 = document.getElementById("video5");
-      let _video6 = document.getElementById("video6");
-      console.log("_video1", _video1);
-      _video1.play();
-      this.src2 = this.src[1];
-      this.playIndex++;
-      console.log("this.src2", this.src2);
-      _video1.onended = () => {
-        _video2.play();
-        this.src3 = this.src[2];
-        this.playIndex++;
-      };
-      _video2.onended = () => {
-        _video3.play();
-        this.src4 = this.src[3];
-        this.playIndex++;
-      };
-      _video3.onended = () => {
-        _video4.play();
-        this.src5 = this.src[4];
-        this.playIndex++;
-      };
-      _video4.onended = () => {
-        _video5.play();
-        this.src6 = this.src[5];
-        this.playIndex++;
-      };
-      _video5.onended = () => {
-        _video6.play();
-        //  this.src3 = this.src[6]
-      };
     },
     playVideo2() {
       let _video2 = document.getElementById("video1");
@@ -371,61 +262,6 @@ export default {
       setTimeout(() => {
         this.pageLoadingOk = true;
       }, 4000);
-    },
-    pageProgress(callback) {
-      setTimeout(() => {
-        if (this.pageLoadingOk) {
-          this.speed = 50;
-          if (this.pro >= 100) {
-            this.speed = 9999;
-            callback();
-          }
-        } else if (this.pro == 99) {
-          this.speed = 500;
-        } else if (this.pro == 95) {
-          this.speed += 1000;
-        } else if (this.pro == 90) {
-          this.speed += 500;
-        } else if (this.pro == 75) {
-          this.speed += 300;
-        } else if (this.pro == 50) {
-          this.speed += 150;
-        }
-        if (
-          !this.pageLoadingOk ||
-          (this.pageLoadingOk && (this.pro == 99 || this.speed == 50))
-        ) {
-          if (
-            (!this.pageLoadingOk && this.pro < 99) ||
-            (this.pageLoadingOk && (this.pro == 99 || this.speed == 50))
-          )
-            this.pro++;
-          this.pageProgress(callback);
-        }
-      }, this.speed);
-    },
-    loadstart() {
-      console.log("【111】【loadstart】");
-    },
-    durationchange() {
-      console.log("【222】【durationchange】");
-    },
-    loadedmetadata() {
-      console.log("【333】【loadedmetadata】");
-    },
-    loadeddata() {
-      console.log("【444】【loadeddata】");
-    },
-    progress(e) {
-      console.log("【555】【progress】", this.aaa++);
-      console.log("【eee】【progress】", e);
-    },
-    canplay() {
-      console.log("【666】【canplay】");
-    },
-    canplaythrough() {
-      this.$toast("视频加载完成");
-      console.log("【777】【canplaythrough】");
     },
     modifyShare() {
       shareConfigure({
@@ -507,28 +343,6 @@ export default {
           });
       }
     },
-    accSub(num1, num2) {
-      var r1, r2, m, n;
-      try {
-        r1 = num1.toString().split(".")[1].length;
-      } catch (e) {
-        r1 = 0;
-      }
-      try {
-        r2 = num2.toString().split(".")[1].length;
-      } catch (e) {
-        r2 = 0;
-      }
-      m = Math.pow(10, Math.max(r1, r2));
-      n = r1 >= r2 ? r1 : r2;
-      return (Math.round(num1 * m - num2 * m) / m).toFixed(n);
-    },
-    // previewImage() {
-    //   wx.previewImage({
-    //     current: 'https://game.flyh5.cn/resources/game/wechat/szq/code.jpg', // 当前显示图片的http链接
-    //     urls: ['https://game.flyh5.cn/resources/game/wechat/szq/code.jpg'] // 需要预览的图片http链接列表
-    //   });
-    // },
     //开始录音
     soundRecording_start() {
       var _this = this;
@@ -726,4 +540,7 @@ audio {
   z-index: 555;
   background: #aaa;
 }
+.my-echarts div{width:33.33%;background: #23AAF2;width:100%;height: 300px;}
+.my-echarts div:nth-child(2){background: #DC4C40;}
+.my-echarts div:nth-child(3){background: #EB9842;}
 </style>

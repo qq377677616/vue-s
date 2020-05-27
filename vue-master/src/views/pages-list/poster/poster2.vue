@@ -55,6 +55,7 @@ export default {
 </script>
 
 <style scoped>
+  #myCanvas{position: fixed;left:100%;top:0;}
   .poster{font-size: 0;transition: all .5s;}
   .poster.on{background: #333;}
   .poster-box{height: calc(100vh - .92rem);box-sizing: border-box;font-size: .28rem;opacity: 0;}

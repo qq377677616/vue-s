@@ -21,6 +21,6 @@ export default {
 </script>
 
 <style scoped>
-  .body{padding-bottom: 1rem;background: linear-gradient(135deg,#ccc 0%, #999 100%);}
+  .body{padding-bottom: 1rem;background: linear-gradient(135deg,#fff 0%, #977924 100%);}
   .body,.con{height:100%;font-size:.6rem;font-style:italic;color:#000;}
 </style>

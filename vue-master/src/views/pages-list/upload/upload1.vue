@@ -30,6 +30,8 @@
         </div>
       </div>
       <input hidden type="file" multiple id="file" ref="file" />
+      <!-- <input hidden type="file" multiple id="file2" ref="file" />
+      <input hidden type="file" multiple id="file3" ref="file" /> -->
       <button class="submit" @click="submit">确认上传</button>
     </div>
     <show-modal :showModal="showModal"></show-modal>
@@ -40,7 +42,6 @@
 import ShowModal from "base/showModal/showModal"
 import MyHeader from "components/header.vue"
 import { api } from "api/request.js"
-import axios from "axios"
 export default {
   name: "",
   data() {
@@ -69,6 +70,8 @@ export default {
     select(e) {
       let _this = this;
       let file = this.$refs.file;
+      // let _input = document.getElementsByClassName("van-uploader__input")[0]
+        // file.setAttribute("capture", "camcorder")
       e.target.dataset.type != 0 && (this.curType = e.target.dataset.type);
       this.curType == 1
         ? file.setAttribute("accept", "image/*")
@@ -103,7 +106,7 @@ export default {
         this.allSize += this.selectList[i].file.size / 1024 / 1024;
         this.FormData.append("files[]", this.selectList[i].file);
       }
-      console.log("文件总大小：", `${this.allSize.toFixed(2)}M`);
+      console.log("文件总大小：", `${this.allSize.toFixed(2)}M`)
       xhr.onreadystatechange = e => {
         //上传成功/失败回调
         if (xhr.readyState == 4) {

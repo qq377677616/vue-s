@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { PROJECT_CONFIG } from 'api/config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/config'
 import { isSystem, audioContextMusic } from 'assets/js/util'
 import { getProjectConfig } from 'api/api'
 export default {
@@ -32,14 +32,20 @@ export default {
   methods: {
    //背景音乐初始化
     musicInit() {
-      getProjectConfig().then(res => {
-        let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
-        this.musicSrc = _data.res_music
+      if (PROJECT_CONFIG_CODE) {
+        getProjectConfig().then(res => {
+          let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
+          this.musicSrc = _data.res_music
+          this.playAudio(this.musicSrc, "audio", "audio-btn")
+        }).catch(err => {
+          console.log(err)
+          this.autoPlayAudio("audio")
+        })
+      } else {
+        this.musicSrc = this.PROJECT_CONFIG.is_background_music.music_src[0] || this.PROJECT_CONFIG.is_background_music.music_src[1]
+        console.log("this.musicSrc", this.musicSrc)
         this.playAudio(this.musicSrc, "audio", "audio-btn")
-      }).catch(err => {
-        console.log(err)
-        this.autoPlayAudio("audio")
-      })
+      }
     },
     //音乐播放
     playAudio(mp3Url, audioId, controls) {

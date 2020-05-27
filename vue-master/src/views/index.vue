@@ -39,11 +39,13 @@ export default {
         { name: "vuex", url: "/vuex" },
         { name: "多语言", url: "/lang" },
         { name: "直播流", url: "/live" },
+        { name: "弹幕", url: "/baberrage" },
         { name: "下一版本见...", url: "" }
       ]
     }
   },
   methods: {
+    //跳转
     jump(index) {
       if (!this.jumpList[index].url) return
       // sessionStorage.setItem('prevPage', this.jumpList[index].url)

@@ -97,9 +97,17 @@ const isSystem = callback => {
   return new Promise(resolve => {
     let u = navigator.userAgent
     let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+    let isIphone = /iphone/gi.test(window.navigator.userAgent)
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-    resolve({isAndroid: isAndroid, isiOS: isiOS})
+    let windowW = window.screen.width
+    let windowH = window.screen.height
+    let pixelRatio = window.devicePixelRatio
+    let isX = isIphone && pixelRatio && pixelRatio === 3 && windowW === 375 && windowH === 812
+    let isXsMax = isIphone && pixelRatio && pixelRatio === 3 && windowW === 414 && windowH === 896
+    let isXR = isIphone && pixelRatio && pixelRatio === 2 && windowW === 414 && windowH === 896
+    resolve({ isAndroid: isAndroid, isiOS: isiOS, system: u, isX: { isX: isX || isXsMax || isXR, X: isX,XsMax: isXsMax, XR: isXR } })
   })
+
 }
 //audioContext播放音乐
 const audioContextMusic = (mp3Url, clickEle, callback) => {
