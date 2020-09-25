@@ -93,6 +93,6 @@ export default {
 
 <style scoped>
   .currency{z-index: 10;height:100%;overflow: hidden;font-size: 0;}
-  .currency img{height: auto;opacity: 0;top:50%;transform: translateY(-50%);}
+  .currency img{height: auto;opacity: 0;top:50%;transform: translateY(-50%);position: absolute;}
   .currency img.on{opacity: 1;}
 </style>
