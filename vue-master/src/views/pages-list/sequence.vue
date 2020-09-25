@@ -3,7 +3,7 @@
     <my-header :title="pageTitle"></my-header>
     <!-- 背景 -->
     <div class="full-screen">
-      <sequence-effect :sequenceList="sequenceList"></sequence-effect>
+      <sequence-effect :sequenceList="sequenceList" @loadOk="loadOk"></sequence-effect>
     </div>
     <div class="cow-box flex-cen-col">
       <div class="flex-cen">
@@ -86,22 +86,22 @@ export default {
     sequencePlay() {
       if (this.isPlaySmall) return
       this.isPlaySmall = true
-      this.$refs.sequence.sequenceStart()
+      this.$refs.sequence.play()
     },
     //点击中牛开始[初始化在设定的某张，然后点击开始播放（不传则只会播放一次，传true则会循环播放）]
     sequencePlay1() {
       if (this.isPlayModerate) return
       this.isPlayModerate = true
-      this.$refs.sequence1.sequenceStart()
+      this.$refs.sequence1.play()
     },
     //点击大牛开始[点击播放自动停止在设定的某张(传number数字)，然后控制可以播放后续（不传则只会播放一次，传true则会循环播放）]
     sequencePlay2() {
       if (this.isPlayBig) return
       this.isPlayBig = true
-      this.$refs.sequence2.sequenceStart(8)
+      this.$refs.sequence2.play(8)
       setTimeout(() => {
         console.log("【继续播放】")
-        this.$refs.sequence2.sequenceStart().then(() => {
+        this.$refs.sequence2.play().then(() => {
           alert("播放完成")
           this.isPlayBig = false
         })
@@ -112,10 +112,14 @@ export default {
       if (this.isPlayBig2) return
       this.isPlayBig2 = true
       console.log("【循环播放3次】")
-      this.$refs.sequence4.sequenceStart('3').then(() => {
+      this.$refs.sequence4.play('3').then(() => {
         alert("播放完成")
         this.isPlayBig2 = false
       })
+    },
+    //序列加载ok
+    loadOk() {
+      console.log("【第一套序列加载完成】")
     }
   },
   components: {

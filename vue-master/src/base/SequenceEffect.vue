@@ -1,7 +1,7 @@
 <template>
   <div class="sequence poa">
     <div class="currency poa" v-show="sequenceListIndex >= 0">
-      <template v-if="!isSlot"><img class="poa" :class="sequenceListIndex == index ? 'on' : ''" v-for="(item, index) in sequenceLists" :key="index" :src="item.url" /></template>
+      <template v-if="!isSlot"><img class="poa" :class="sequenceListIndex == index ? 'on' : ''" v-for="(item, index) in sequenceLists" :key="index" :src="item.url" @load="load" /></template>
       <slot v-else></slot>
     </div>
   </div>
@@ -21,7 +21,9 @@ export default {
     return {
       page: null,//父组件
       sequenceIndex: null,//动态索引
-      sequenceListIndex: -1//序列索引 
+      sequenceListIndex: -1,//序列索引
+      imgTotalNum: 0,//图片总数
+      loadNum: 0//图片加载数量
     }
   },
   created() {
@@ -31,6 +33,7 @@ export default {
     //序列帧初始化
     sequenceInit(sequence = "sequenceList") {
       let _sequence = [], { url, num, speed, loop, initIndex, autoplay } = this[sequence]
+      this.imgTotalNum = num
       if (url.indexOf('//') == -1) {
         this.page = this[sequence].page
         this.sequenceIndex = this[sequence].sequenceIndex || 'sequenceListIndex'
@@ -41,10 +44,10 @@ export default {
         _sequence.push({ url: `${_getPublicUrl.publicUrl}${i}.${_getPublicUrl.format}`, num, speed: this[sequence].speed, loop, initIndex })
       }
       this.sequenceLists = _sequence
-      if (autoplay) this.sequenceStart()
+      if (autoplay) this.play()
     },
     //序列帧播放
-    sequenceStart(loop = this.sequenceLists[0].loop) {
+    play(loop = this.sequenceLists[0].loop) {
       let _num = 1
       return new Promise(resolve => {
         let autoSequence = setInterval(() => {
@@ -65,6 +68,11 @@ export default {
           }
         }, this.sequenceLists[0].speed)
       })
+    },
+    //图片加载
+    load() {
+      ++this.loadNum
+      this.loadNum == this.imgTotalNum && this.$emit("loadOk")
     },
     //url解析
     getPublicUrl(url) {
