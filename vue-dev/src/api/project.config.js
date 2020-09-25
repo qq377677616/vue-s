@@ -7,6 +7,7 @@ const ERR_Ok = 200
 const ERR_NO = 0
 //微信config注册配置信息请求接口地址
 const WXCONFIG_URL = ['http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[game.flyh5.cn]
+                      'https://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js',//[game.vrupup.com]
                       'http://vrupup.com/shuihu/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[vrupup.com]
                       'http://dev.flyh5.cn/why-online-member/wxAuth/getJsSdk'//[dev.flyh5]
                      ]
@@ -21,10 +22,11 @@ const GET_USER_INFO_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_test
 //本地请求代理请求地址
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址短码code[如果是转移服务器项目，把此项设置为空]
-const PROJECT_CONFIG_CODE = 'tJ4GXH2P2luArDVm0u9'
+const PROJECT_CONFIG_CODE = 'tJ4GXH2P2luArDVm0u9'//tJ4GXH2P2luArDVm0u9
 //静态资源地址(cdn)
 const ASSETS_URL = 'https://game.flyh5.cn/resources/game/wechat/xw/rc_qc/assets_3.0/'
 /**
+ * 
  ************************** 项目配置项 **************************
  */
 //默认分享配置信息
@@ -34,8 +36,9 @@ const ASSETS_URL = 'https://game.flyh5.cn/resources/game/wechat/xw/rc_qc/assets_
  * 在[MySharePage]组件methodsK中声明一个[shareOk]方法来执行回调
  */
 import MySharePage from 'views/index.vue'
-const SHARECONFIG = { 
-  type: 0,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
+const SHARECONFIG = {
+  type: 1,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
+  hideMenuList: { pengyou: false, pengyouquan: false, qq: false, qqkongjian: false, fuzhi: false, shoucang: false, qqliulanqi: false, safariliulanqi: false },//批量隐藏功能按钮
   ShareUrl: window.location.href,
   Title: '[模板默认]专注vue',
   Desc: '[模板默认]vue是一套用于构建用户界面的渐进式JavaScript框架。',
@@ -49,7 +52,7 @@ const SHARECONFIG = {
 const PROJECT_CONFIG = {
   is_loading_page: false,//是否配置loading预加载页
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
-  wx_jssdk_field: 0,//获取不同域名的微信jssdk注册参数：0为[game.flyh5.cn]域名下，1为[vrupup.com]域名下，2为[dev.flyh5]域名下
+  wx_jssdk_field: 1,//获取不同域名的微信jssdk注册参数：0为[game.flyh5.cn]域名下，1为[vrupup.com]域名下，2为[dev.flyh5]域名下
   is_data_statistics: true,//是否统计抵达页、点击分享、时长数据
   /*从后端链接授权后获取后台带过来的用户数据配置*/
   getUserInfo: {
@@ -75,10 +78,10 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 2,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 1,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
     green_label_position: '100',//绿标初始位置boottom，单位px、rem
-    green_label_title: "版本1.1"//浮标文字
+    green_label_title: "V 1.0.2"//浮标文字，一般用于版本号标明
   },
   is_offline_sign_out: false,//项目下线后是否关闭退出项目
 }

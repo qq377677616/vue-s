@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 import 'assets/js/rem'
-import 'assets/js/wx-config'
+import 'assets/js/wx.config'
 import 'assets/css/reset.css'
 import 'assets/css/base.css'
 import Vant from 'vant'

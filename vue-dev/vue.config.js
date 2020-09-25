@@ -4,8 +4,8 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/resources/game/wechat/szq/vue-s/' : '/',
-  // publicPath: process.env.NODE_ENV === 'production' ? '/resources/web/szq/vue-s/' : '/',
+  // publicPath: process.env.NODE_ENV === 'production' ? '/resources/game/wechat/szq/vue-s/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/resources/web/szq/vue-s/' : '/',
   productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
   lintOnSave: true,
   chainWebpack: (config) => {

@@ -40,7 +40,7 @@ body img{max-width: 100%;}
 /*修改swiper的默认样式*/
 .swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
 .swiper-pagination-bullet-active{background: #3DA6FF !important;}
-#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;}
+#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;text-align: center;}
 /*特殊字体*/
 /* @font-face
   font-family DIN
