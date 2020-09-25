@@ -11,7 +11,7 @@
     props: {
       probeType: {
         type: Number,
-        default: 1
+        default: 2
       },
       isX: {
         type: Boolean,
@@ -23,7 +23,7 @@
       },
       listenScroll: {
         type: Boolean,
-        default: false
+        default: true
       },
       data: {
         type: Array,
@@ -31,11 +31,11 @@
       },
       pulldown: {
         type: Boolean,
-        default: false
+        default: true
       },
       pullup: {
         type: Boolean,
-        default: false
+        default: true
       },
       beforeScroll: {
         type: Boolean,
@@ -57,36 +57,32 @@
           return
         }
         this.scroll = new BScroll(this.$refs.wrapper, {
+          useTransition:false,
           probeType: this.probeType,
           scrollX: true,
           click: this.click,
           mouseWheel: true,
-          bounce: false
+          bounce: true
         })
-
-        if (this.listenScroll) {
-          let me = this
+        if (this.listenScroll) {//滚动事件
           this.scroll.on('scroll', (pos) => {
-            me.$emit('scroll', pos)
+            this.$emit('scroll', pos)
           })
         }
-
-        if (this.pulldown) {
+        if (this.pulldown) {//下拉刷新事件
           this.scroll.on('touchEnd', (pos) => {
             if (this.scroll.y > 50) {
               this.$emit('pulldown', pos)
             }
           })
         }  
-
-        if (this.pullup) {
+        if (this.pullup) {//上拉加载事件
           this.scroll.on('scrollEnd', () => {
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
-              this.$emit('scrollToEnd')
+              this.$emit('pullup')
             }
           })
         }
-
         if (this.beforeScroll) {
           this.scroll.on('beforeScrollStart', () => {
             this.$emit('beforeScroll')

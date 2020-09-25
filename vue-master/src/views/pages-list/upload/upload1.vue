@@ -68,27 +68,27 @@ export default {
   methods: {
     //选择图片/视频
     select(e) {
-      let _this = this;
-      let file = this.$refs.file;
+      let _this = this
+      let file = this.$refs.file
       // let _input = document.getElementsByClassName("van-uploader__input")[0]
         // file.setAttribute("capture", "camcorder")
-      e.target.dataset.type != 0 && (this.curType = e.target.dataset.type);
+      e.target.dataset.type != 0 && (this.curType = e.target.dataset.type)
       this.curType == 1
         ? file.setAttribute("accept", "image/*")
-        : file.setAttribute("accept", "video/*");
+        : file.setAttribute("accept", "video/*")
       file.click();
       file.addEventListener("change", function() {
         // if (!this.files) return
-        console.log("this.files", this.files[0]);
-        console.log("this.files.name", this.files[0].name);
-        let _allSelect = this.files;
+        console.log("this.files", this.files[0])
+        console.log("this.files.name", this.files[0].name)
+        let _allSelect = this.files
         let _max =
           _this.curType == 1 ? _this.maxImageZhang : _this.maxVideoZhang;
-        let _num = Math.min(_allSelect.length, _max - _this.selectList.length);
+        let _num = Math.min(_allSelect.length, _max - _this.selectList.length)
         for (let i = 0; i < _num; i++) {
-          _this.selectList.push({ file: _allSelect[i] });
+          _this.selectList.push({ file: _allSelect[i] })
         }
-        file.value = "";
+        file.value = ""
       });
     },
     //删除图片/视频

@@ -29,7 +29,7 @@ if (process.env.NODE_ENV == 'development') {//本地开发模式
 /*********************请求拦截器*********************/
 service.interceptors.request.use(
   config => {
-    // console.log("【请求拦截器】", config)
+    console.log("【请求拦截器】", config)
     // config.headers.token = 'my-token'
     // config.headers["x-access-token"] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJl'
     // config.headers["Content-Type"] = 'application/json'
@@ -66,7 +66,8 @@ export const api = (url, data, type = 'post', isQs = true, isUrl = 0, config) =>
     }) 
   } else {
     if (type !== 'post' && type !== 'get') return Promise.reject({ status: 1001, message: '请求方法不符合规范' }) 
-    return service[type](url, isQs ? qs.stringify(data) : data, config).then(res => {
+    console.log("urlisQsisQs", type, isQs, url, type, data)
+    return service[type](url, type == 'post' ? (isQs ? qs.stringify(data) : data) : { params: data }, config).then(res => {
       return Promise.resolve(res)
     }).catch(err => {
       return Promise.reject(err)

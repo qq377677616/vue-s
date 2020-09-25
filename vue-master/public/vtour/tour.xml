@@ -1,0 +1,658 @@
+﻿<krpano version="1.19" title="Virtual Tour">
+	<include url="skin/vtourskin.xml" />
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               gyro="true"
+	               webvr="true"
+	               webvr_gyro_keeplookingdirection="false"
+	               webvr_prev_next_hotspots="true"
+	               littleplanetintro="false"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext="loading..."
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="20"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+				<!-- <control mouse="moveto"
+	         touch="moveto"
+					 dragrelative = "true"
+					 keybinvert = "true"
+	         zoomtocursor="false"
+	         zoomoutcursor="false"
+	         draginertia="0.1"
+	         dragfriction="0.9"
+	         movetoaccelerate="1.0"
+	         movetospeed="4.0"
+	         movetofriction="0.8"
+	         keybaccelerate="0.09"
+	         keybfriction="0.94"
+	         keybfovchange="0.25"
+	         mousefovchange="1.0"
+	         fovspeed="3.0"
+	         fovfriction="0.9"
+	         bouncinglimits="true"
+	         /> -->
+					 <control touchtype="drag"
+					 dragfriction="0.1"
+						dragrelative = "true"
+						mousespeed="10"
+						keybinvert = "false"
+						fovspeed = "0.5"
+						draginertia = "1"
+						/>
+	<!-- <control mousetype="moveto"
+         touchtype="moveto"      
+	       devices="all"      
+         zoomtocursor="true"    
+         zoomoutcursor="true"   
+         mouseaccelerate="1.0"  
+         mousespeed="4"       
+         mousefriction="0.8"     
+         mousefovchange="1.0"    
+         fovspeed="3.0"          
+         fovfriction="0.9"       
+         touchfriction="0.87"    
+         />							  -->
+	<!-- 注册事件-->
+  <events onenterfullscreen=""          
+					onexitfullscreen=""          
+					onxmlcomplete="js(onxmlcomplete();)"              
+					onpreviewcomplete=""          
+					onloadcomplete="js(onloadcomplete();)"             
+					onnewpano=""                  
+					onremovepano=""               
+					onnewscene=""                 
+					onloaderror=""                
+					οnkeydοwn=""                  
+					οnkeyup=""                    
+					οnclick=""                    
+					οnmοusedοwn=""                
+					οnmοuseup=""                  
+					onmousewheel=""               
+					onidle=""                     
+					onviewchange=""               
+					onviewchanged="js(onviewchanged();)"              
+					οnresize=""                  
+					/>
+	<!-- 
+		自动旋转
+		  enabled 是否开启自动旋转
+			waittime 用户不对屏幕操作后，开始自动旋转的等待秒数
+			accel 旋转扭曲的速度：角度/秒
+			speed 最大旋转速度：角度/秒
+			horizon 旋转到特定的水平位置
+			tofov 缩放到特定的区域视角
+	-->
+	<autorotate enabled="false"
+            waittime="1.5" 
+            accel="1.0"
+            speed="10.0" 
+            horizon="0.0"
+            tofov="off"
+            />
+
+
+  <!-- 为热点注册属性(动态热点) -->
+	<action name="do_crop_animation">
+	  	registerattribute(xframes, calc((imagewidth / %1) BOR 0));
+			registerattribute(yframes, calc((imageheight / %2) BOR 0));
+			registerattribute(frames, calc(xframes * yframes));
+			registerattribute(frame, 0);
+		  set(crop, '0|0|%1|%2');
+	  	setinterval(calc('crop_anim_' + name), calc(1.0 / %3),
+			if(loaded,
+				inc(frame);
+				if(frame GE frames, if(onlastframe !== null, onlastframe() ); set(frame,0); );
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos);
+				mul(xpos, %1);
+				mul(ypos, %2);
+				calc(crop, xpos + '|' + ypos + '|%1|%2');
+				,
+				clearinterval(calc('crop_anim_' + name));
+				);
+			);
+	</action>
+<!-- 为热点注册属性(热点上文字) -->
+	<action name="add_all_the_time_tooltip">
+        txtadd(tooltipname, 'tooltip_', get(name));
+        addplugin(get(tooltipname));
+        txtadd(plugin[get(tooltipname)].parent, 'hotspot[', get(name), ']');
+        set(plugin[get(tooltipname)].url,'%SWFPATH%/plugins/textfield.swf');
+        set(plugin[get(tooltipname)].align,top);
+        set(plugin[get(tooltipname)].edge,bottom);
+        set(plugin[get(tooltipname)].x,0);
+        set(plugin[get(tooltipname)].y,0);
+        set(plugin[get(tooltipname)].autowidth,true);
+        set(plugin[get(tooltipname)].autoheight,true);
+        set(plugin[get(tooltipname)].vcenter,true);
+        set(plugin[get(tooltipname)].background,true);
+        set(plugin[get(tooltipname)].backgroundcolor,0xD9A77B);
+        <!-- set(plugin[get(tooltipname)].backgroundcolor,transparent); -->
+        set(plugin[get(tooltipname)].roundedge,20);
+        set(plugin[get(tooltipname)].backgroundalpha,1);
+        set(plugin[get(tooltipname)].padding,5);
+        set(plugin[get(tooltipname)].border,false);
+        set(plugin[get(tooltipname)].glow,0);
+        set(plugin[get(tooltipname)].glowcolor,0xFFFFFF);
+        set(plugin[get(tooltipname)].css,'text-align:center; color:#FFFFFF; font-family:MicrosoftYahei;font-size:12px;border-radius:40px;');
+        if(device.mobile,'text-align:center; color:#FFFFFF; font-family:MicrosoftYahei; font-weight:bold; font-size:24px;');
+            );
+        set(plugin[get(tooltipname)].textshadow,0);
+        set(plugin[get(tooltipname)].textshadowrange,6.0);
+        set(plugin[get(tooltipname)].textshadowangle,90);
+        if(text == '' OR text === null,
+        copy(plugin[get(tooltipname)].html,scene[get(linkedscene)].title),
+        copy(plugin[get(tooltipname)].html,text)
+        );    
+        set(plugin[get(tooltipname)].enabled,false);
+	</action>		
+	<!-- 为热点注册属性(隐藏皮肤) -->
+	<action name="startup" autorun="onstart">
+		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
+		loadscene(get(startscene), null, MERGE);
+		if(startactions !== null, startactions() );
+	</action>
+	<!-- 场景切换动效 -->
+	<blendmodes name="no blending"       description="无过渡效果"  blend="NOBLEND" />
+	<blendmodes name="simple crossblending" description="简单淡入淡出" blend="BLEND(1.0, easeInCubic)" />
+	<blendmodes name="zoom blend"        description="缩放过渡"  blend="ZOOMBLEND(2.0, 2.0, easeInOutSine)" />
+	<blendmodes name="black-out"         description="黑场过渡"  blend="COLORBLEND(2.0, 0x000000, easeOutSine)" />
+	<blendmodes name="white-flash"       description="白场过渡"  blend="LIGHTBLEND(1.0, 0xFFFFFF, 2.0, linear)" />
+	<blendmodes name="right-to-left"     description="从右至左"  blend="SLIDEBLEND(1.0, 0.0, 0.2, linear)" />
+	<blendmodes name="top-to-bottom"     description="从上至下"   blend="SLIDEBLEND(1.0, 90.0, 0.01, linear)" />
+	<blendmodes name="diagonal"          description="对角线"     blend="SLIDEBLEND(1.0, 135.0, 0.4, linear)" />
+	<blendmodes name="circle open"       description="圆形展开"      blend="OPENBLEND(1.0, 0.0, 0.2, 0.0, linear)" />
+	<blendmodes name="vertical open"     description="垂直展开"     blend="OPENBLEND(0.7, 1.0, 0.1, 0.0, linear)" />
+	<blendmodes name="horizontal open"   description="水平展开"    blend="OPENBLEND(1.0, -1.0, 0.3, 0.0, linear)" />
+	<blendmodes name="elliptic + zoom"   description="椭圆缩放"      blend="OPENBLEND(1.0, -0.5, 0.3, 0.8, linear)" />
+
+	<!-- 
+		
+		所有场景
+
+	 -->
+	<scene name="scene_4a1" title="4a1" onstart="" thumburl="panos/4a1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a1.tiles/pano_%s.jpg" />
+		</image>
+    <!-- <hotspot name="spot2" ath="30.008" atv="39.874" url="images/btn4.png" onclick="openurl('https://www.baidu.com')" scale="0.4" edge="bottom" onloaded="add_all_the_time_tooltip()" text="张三" linkedscene="scene_b-1-1" /> -->
+	</scene>
+
+	<scene name="scene_4a2" title="4a2" onstart="" thumburl="panos/4a2.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a2.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a3" title="4a3" onstart="" thumburl="panos/4a3.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a3.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a4" title="4a4" onstart="" thumburl="panos/4a4.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a4.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a5" title="4a5" onstart="" thumburl="panos/4a5.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a5.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a6" title="4a6" onstart="" thumburl="panos/4a6.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a6.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a7" title="4a7" onstart="" thumburl="panos/4a7.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a7.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a8" title="4a8" onstart="" thumburl="panos/4a8.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a8.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a9" title="4a9" onstart="" thumburl="panos/4a9.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a9.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a9.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a10" title="4a10" onstart="" thumburl="panos/4a10.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a10.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a10.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a11" title="4a11" onstart="" thumburl="panos/4a11.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a11.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a11.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4a12" title="4a12" onstart="" thumburl="panos/4a12.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4a12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4a12.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b1" title="4b1" onstart="" thumburl="panos/4b1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b1.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b2" title="4b2" onstart="" thumburl="panos/4b2.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b2.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b3" title="4b3" onstart="" thumburl="panos/4b3.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b3.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b4" title="4b4" onstart="" thumburl="panos/4b4.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b4.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b5" title="4b5" onstart="" thumburl="panos/4b5.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b5.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b6" title="4b6" onstart="" thumburl="panos/4b6.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b6.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b7" title="4b7" onstart="" thumburl="panos/4b7.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b7.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b8" title="4b8" onstart="" thumburl="panos/4b8.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b8.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b9" title="4b9" onstart="" thumburl="panos/4b9.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b9.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b9.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4b10" title="4b10" onstart="" thumburl="panos/4b10.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4b10.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4b10.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c1" title="4c1" onstart="" thumburl="panos/4c1.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c1.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c2" title="4c2" onstart="" thumburl="panos/4c2.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c2.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c3" title="4c3" onstart="" thumburl="panos/4c3.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c3.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c4" title="4c4" onstart="" thumburl="panos/4c4.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c4.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c5" title="4c5" onstart="" thumburl="panos/4c5.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c5.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c6" title="4c6" onstart="" thumburl="panos/4c6.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c6.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c7" title="4c7" onstart="" thumburl="panos/4c7.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c7.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c8" title="4c8" onstart="" thumburl="panos/4c8.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c8.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c9" title="4c9" onstart="" thumburl="panos/4c9.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c9.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c9.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c10" title="4c10" onstart="" thumburl="panos/4c10.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c10.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c10.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c11" title="4c11" onstart="" thumburl="panos/4c11.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c11.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c11.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c12" title="4c12" onstart="" thumburl="panos/4c12.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c12.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c13" title="4c13" onstart="" thumburl="panos/4c13.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c13.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c13.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c14" title="4c14" onstart="" thumburl="panos/4c14.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c14.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c14.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_4c15" title="4c15" onstart="" thumburl="panos/4c15.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/4c15.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/4c15.tiles/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+</krpano>

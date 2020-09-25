@@ -14,7 +14,8 @@
 .clearfix::after,clear:both,.clearfix{zoom: 1;}
 .fl{float:left;}
 .fr{float:right;}
-.con-fixed{position: fixed;width:100%;height:100%;left:0;top:0;}
+.pof{position: fixed;width:100%;height:100%;left:0;top:0;}
+.poa{position: absolute;width:100%;height:100%;left:0;top:0;}
 .nowrap{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
 .wrap{width:92.53%;margin:0 auto;}
 /*页面初始样式*/

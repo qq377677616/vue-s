@@ -19,7 +19,8 @@ export default {
       jump_list: [
         { title: "vant上传", url: "/upload/upload3", name: 'upload3'},
         { title: "微信jssdk上传", url: "/upload/upload2", name: 'upload2'},
-        { title: "原生上传", url: "/upload/upload1", name: 'upload1'}
+        { title: "原生上传", url: "/upload/upload1", name: 'upload1'},
+        { title: "腾讯云分块上传", url: "/upload/upload4", name: 'upload4'},
       ]
     }
   },

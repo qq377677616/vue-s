@@ -14,14 +14,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-
-export default {
+import { setInterval } from 'timers'
+export default { 
   name: "",
   props: {
     pageLoadingOk: {
       type: Boolean,
       default: false
-    }
+    } 
   },
   data() {
     return {
@@ -32,15 +32,20 @@ export default {
     }
   },
   created() {
-    console.log("this.$slots", this.$slots)
-    console.log(this.$slots.default)
-    this.pageProgress(() => {
-      this.isOk = true
-      setTimeout(() => { this.isShow = false }, 500)
-      this.$emit("loadingOk")
-    })
+    let isShareOk = setInterval(() => {
+      if (this.pro < 2) {
+        this.pro++
+      } else if (window.isShareOk) {
+        clearInterval(isShareOk)
+        this.pageProgress(() => {
+          this.isOk = true
+          setTimeout(() => { this.isShow = false }, 500)
+          this.$emit("loadingOk")
+        })
+      }
+    }, 1500)
   },
-  methods: {
+  methods: { 
     pageProgress(callback) {
       setTimeout(() => {
         if (this.pageLoadingOk) {

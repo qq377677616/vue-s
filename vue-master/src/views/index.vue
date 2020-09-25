@@ -40,6 +40,7 @@ export default {
         { name: "多语言", url: "/lang" },
         { name: "直播流", url: "/live" },
         { name: "弹幕", url: "/baberrage" },
+        { name: "krpano全景", url: "/krpano" },
         { name: "下一版本见...", url: "" }
       ]
     }

@@ -11,7 +11,7 @@
       <button @click="add({num: 20})">加</button>
     </div>
   </div>
-</template>
+</template> 
 
 <script type="text/ecmascript-6">
 import MyHeader from 'components/header.vue'

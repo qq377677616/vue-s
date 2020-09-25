@@ -40,6 +40,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/upload/upload3.vue'], resolve)    
   },
   {
+    path:'/upload/upload4',
+    name: 'upload4',
+    component: resolve => require(['../views/pages-list/upload/upload4.vue'], resolve)    
+  },
+  {
     path:'/cropper',
     name: 'cropper-index',
     component: resolve => require(['../views/pages-list/cropper/index.vue'], resolve)
@@ -173,6 +178,11 @@ const routes = [
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    
+  },
+  {
+    path:'/krpano',
+    name: 'krpano',
+    component: resolve => require(['../views/pages-list/krpano/krpano.vue'], resolve)    
   }
 ]
 

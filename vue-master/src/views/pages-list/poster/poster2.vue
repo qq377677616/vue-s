@@ -32,6 +32,7 @@ export default {
         canvasId: "myCanvas",
         psd_w: 750,
         psd_h: 1480,
+        // bgImg: 'http://cbg2020.oss-cn-beijing.aliyuncs.com/cbg_cfpa/userhead/image/20200611152446919352.png',
         bgImg: this.imgs,
         imgList: [
           { url: "https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132", imgW: 120, imgH: 120, imgX: 50, imgY: 50, radius: "50%" }

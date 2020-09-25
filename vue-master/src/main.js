@@ -20,8 +20,8 @@ import VueJsonp from 'vue-jsonp'
 import echarts from 'echarts'
 import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
-FastClick.attach(document.body);
-Vue.prototype.$echarts = echarts
+// FastClick.attach(document.body)
+Vue.prototype.$echarts = echarts 
 Vue.use(VueJsonp)
 Vue.component('vue-drag-resize', VueDragResize)
 Vue.config.productionTip = false
@@ -44,6 +44,13 @@ const i18n = new VueI18n({
   silentTranslationWarn: true
 })
 Vue.use(clipper)
+
+// router.beforeEach((form, to, next) => {
+//   console.log("form", form)
+//   console.log("to", to)
+//   console.log("next", next)
+// })
+
 new Vue({
   router,
   store,

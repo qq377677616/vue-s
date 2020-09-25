@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <transition :name="transitionName"><router-view class="router-view" :class="{'on': !transitionName}" /></transition>
+    <transition :name="transitionName"><router-view class="router-view" :class="{'on': !transitionName}" @playPause="playPause" /></transition>
     <my-audio ref="audio" v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
     <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro">
       <!-- <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div> -->
@@ -11,7 +11,7 @@
 <script>
 import myAudio from 'base/audio'
 import LoadingPage from 'base/loading-page.vue'
-import { PROJECT_CONFIG } from 'api/project.config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/project.config'
 import { loadingPage } from 'assets/js/imgPreloader'
 import { loadScript } from "assets/js/util"
 import { setDataArrive } from "api/api.config"
@@ -28,17 +28,10 @@ export default {
     }
   },
   created() {
-    // this.vuexConfig()//vuex
-    // loadScript("http://w10.ttkefu.com/k/?fid=8B1HFFI3").then(res => {
-    //   console.log("kkkefu加载完成3")
-    // })
     this.PROJECT_CONFIG = PROJECT_CONFIG//页面配置信息
   },
   mounted() {
     if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }//锁定页面
-    // getTest({ goods_sn: '2060001' }).then(res => {
-    //   console.log("【测试接口返回】", res)
-    // })
   },
   methods: {
     //loading加载
@@ -59,6 +52,10 @@ export default {
     //页面下拉锁定(效果同于在最外层#app盒子上添加@touchmove.prevent事件)
     pageLocking() {
       document.getElementById('app').addEventListener('touchmove', e => { e.preventDefault() /*e.stopPropagation();*/ }, { passive: false })
+    },
+    //外部控制背景音乐播放暂停
+    playPause() {
+      this.$refs.audio.playPause()
     }
   },
   watch: {
@@ -88,7 +85,7 @@ export default {
         this.transitionName = 'left-right'
       }
       //数据统计
-      if (PROJECT_CONFIG.is_data_statistics && _setData.includes(to.path)) setDataArrive({ status: _setData.findIndex(item => item == to.path) + 1 }).then(res => { console.log("【数据统计--抵达页成功】") })
+      if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE && _setData.includes(to.path)) setDataArrive({ status: _setData.findIndex(item => item == to.path) + 1 }).then(res => { console.log("【数据统计--抵达页成功】") })
     }
   },
   components: {
@@ -100,6 +97,7 @@ export default {
 
 <style>
   @import 'assets/fonts/font-icon.css';
+  *{touch-action: pan-y;}
   .body{min-height:100vh;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}
   .item-list dd{border:1px solid #333;padding:.2rem .3rem;margin:.5rem 0;text-align: center;}

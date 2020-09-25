@@ -1,0 +1,90 @@
+<template>
+  <div class="sequence poa">
+    <div class="currency poa" v-show="sequenceListIndex >= 0">
+      <template v-if="!isSlot"><img class="poa" :class="sequenceListIndex == index ? 'on' : ''" v-for="(item, index) in sequenceLists" :key="index" :src="item.url" /></template>
+      <slot v-else></slot>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  name: "",
+  props: {
+    //序列信息
+    sequenceList: {
+      type: Object,
+      default: {}
+    }
+  },
+  data() {
+    return {
+      page: null,//父组件
+      sequenceIndex: null,//动态索引
+      sequenceListIndex: -1//序列索引 
+    }
+  },
+  created() {
+    this.sequenceInit()
+  },
+  methods: {
+    //序列帧初始化
+    sequenceInit(sequence = "sequenceList") {
+      let _sequence = [], { url, num, speed, loop, initIndex, autoplay } = this[sequence]
+      if (url.indexOf('//') == -1) {
+        this.page = this[sequence].page
+        this.sequenceIndex = this[sequence].sequenceIndex || 'sequenceListIndex'
+      }
+      this.sequenceListIndex = this[sequence].initIndex - 1
+      let _getPublicUrl = this.getPublicUrl(url)
+      for (let i = _getPublicUrl.startNum; i < num + _getPublicUrl.startNum; i++) {
+        _sequence.push({ url: `${_getPublicUrl.publicUrl}${i}.${_getPublicUrl.format}`, num, speed: this[sequence].speed, loop, initIndex })
+      }
+      this.sequenceLists = _sequence
+      if (autoplay) this.sequenceStart()
+    },
+    //序列帧播放
+    sequenceStart(loop = this.sequenceLists[0].loop) {
+      let _num = 1
+      return new Promise(resolve => {
+        let autoSequence = setInterval(() => {
+          let _curSequenceIndex = this.page ? this.page[this.sequenceIndex] : this.sequenceListIndex || 0
+          _curSequenceIndex++
+          if ((_curSequenceIndex <= this.sequenceLists[0].num - 1 && typeof loop != 'number') || (typeof loop == 'number' && _curSequenceIndex < parseInt(loop) - 1)) {
+            this.page ? this.page[this.sequenceIndex] = _curSequenceIndex : this.sequenceListIndex = _curSequenceIndex
+          } else {
+            if (((typeof loop == 'boolean' && loop) || (typeof loop == 'string' && _num < loop)) && !(typeof loop == 'number')) {
+              _num++
+              this.page ? this.page[this.sequenceIndex] = 0 : this.sequenceListIndex = 0
+            } else {
+              this.page ? (this.page[this.sequenceIndex] = typeof loop == 'number' ? parseInt(loop) - 1 : this.sequenceLists[0].initIndex ? this.sequenceLists[0].initIndex - 1 :  -1) : (this.sequenceListIndex = typeof loop == 'number' ? parseInt(loop) - 1 : this.sequenceLists[0].initIndex ? this.sequenceLists[0].initIndex - 1 :  -1)
+              if (typeof loop == 'number') this.sequenceLists[0].loop = false
+              clearInterval(autoSequence)
+              resolve()
+            }
+          }
+        }, this.sequenceLists[0].speed)
+      })
+    },
+    //url解析
+    getPublicUrl(url) {
+      let urlArray = url.split("/")    
+      let order = urlArray[urlArray.length - 1].replace(/[^\d]/ig, '')     
+      let _index = url.indexOf(`${order}.`)
+      return { publicUrl: url.slice(0, _index), format: url.slice(url.indexOf(`${order}.`) + order.length + 1), startNum: parseInt(order) }
+    }
+  },
+  computed: {
+    //插槽
+    isSlot() {
+      return this.$slots.default
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .currency{z-index: 10;height:100%;overflow: hidden;font-size: 0;}
+  .currency img{height: auto;opacity: 0;top:50%;transform: translateY(-50%);}
+  .currency img.on{opacity: 1;}
+</style>

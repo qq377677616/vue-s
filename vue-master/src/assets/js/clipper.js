@@ -91,6 +91,7 @@ export default {
 
     //外部接口，用于input['file']对象change时的调用
     Vue.prototype.clip = function (e, opt) {
+      console.log("开始裁剪")
       let self = this;
 
       this.fileObj = e.srcElement;
@@ -108,7 +109,7 @@ export default {
       //去获取拍照时的信息，解决拍出来的照片旋转问题
       Exif.getData( files[0] , function(){
         self.Orientation = Exif.getTag( files[0], 'Orientation');
-        // console.log(self.Orientation)
+        console.log(self.Orientation)
       });
 
 

@@ -36,9 +36,9 @@ export default {
   methods: {
     onload() {
       setTimeout(() => {
-       this.html2canvas()
-       Toast.loading({ message: '海报生成中', forbidClick: true, duration: 0 })
-    }, 500)
+        this.html2canvas()
+        Toast.loading({ message: '海报生成中', forbidClick: true, duration: 0 })
+      }, 500)
     },
     html2canvas() {
       this.isScreenShot = true  
@@ -77,7 +77,7 @@ export default {
   .poster-box .box{width:70%;}
   .poster-box .text{padding:.4rem .3rem;background: #fff;margin-top: -1.5rem;position: relative;z-index: 5;}
   .poster-box img{width:105%;}
-  .poster-box .left{flex:2;}
+  .poster-box .left{flex:2;font-family: "楷体";}
   .poster-box .left span{font-size: 20px;color:red;}
   .poster-box .right{flex:1;text-align: center;}
   .poster-box .right p{font-size: .36rem;padding-bottom: .1rem;}

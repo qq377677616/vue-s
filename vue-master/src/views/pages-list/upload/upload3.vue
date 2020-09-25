@@ -28,7 +28,7 @@ export default {
     return {
       pageTitle: "vant上传",
       upLoadUrl: 'http://game.flyh5.cn/game/walmartShare/public/index/index/upload_szq',//上传接口地址
-      accept: "video/*",//上传文件类型[image/*、audio/*、video/*]
+      accept: "image/*",//上传文件类型[image/*、audio/*、video/*]
       maxImageZhang: 9, //最大可以上传图片数量
       maxVideoZhang: 9, //最大可以上传视频数量
       FormData: new FormData(), //序列化键值对表单数据

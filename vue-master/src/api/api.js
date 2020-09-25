@@ -7,16 +7,30 @@ import { api } from 'api/request.js'
  */ 
 //上传多段录制音频
 const uploadAudio = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/ljy_wzyh_3/public/index/demo/message', type = 'post') => { return api(url, data, type, true, 0) }
+const getTeam = (data, url = 'http://cbg2020.cfpa.org.cn/backend/public/api/team/team_rand?openid=oJQbqt6fn9B6AHIGWPjK9ws26Am8', type = 'post') => { return api(url, data, type, true, 0) }
 //测试接口
 const getPostTest = (data, url = '/index/index/bis_detail', type = 'post') => { return api(url, data, type, true, 1) }
 //上传图片
 const uploadImg = (data, url = '', type = 'post', config) => { return api(url, data, type, false, 0, config) }
+//获取cos临时密钥
+const getCredentials = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/shj_sing/public/api/Add/sign2', type = 'get') => { return api(url, data, type, true, 0) }
+//视频转码
+const videoTransCoding = (data, url = 'https://mps.tencentcloudapi.com/', type = 'get') => { return api(url, data, type, false, 0) }
+//转码
+const transcoding = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/shj_sing/public/api/Upload/video', type = 'post') => { return api(url, data, type, true, 0) }
 //测试接口
 const getTest = (data, url = 'http://game.vrupup.com/sanguo/wx38da89ddf8b76665/sye_lizhiyuan/public/api.php/index/getGoods', type = 'post') => { return api(url, data, type, true, 0) }
+//查找公司名
+const getCompanyName = (data, url = 'https://sp0.tianyancha.com/search/suggestV2.json', type = 'get') => { return api(url, data, type, true, 0) }
 
 export {
   uploadAudio,
+  getTeam,
   getPostTest,
   uploadImg,
-  getTest
+  getCredentials,
+  videoTransCoding,
+  transcoding,
+  getTest,
+  getCompanyName
 }

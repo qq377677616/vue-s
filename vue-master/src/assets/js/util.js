@@ -11,6 +11,113 @@ const getQueryString = name => {
     }
   }
 }
+//获取当前时间
+const getDate = () => {
+  let dates = new Date()
+  let years = dates.getYear() //获取当前年份(2位)
+  let year = dates.getFullYear()//获取完整的年份(4位)
+  let month = dates.getMonth() + 1//获取当前月份(0-11,0代表1月)
+  let date = dates.getDate()//获取当前日(1-31)
+  let day = dates.getDay()//获取当前星期X(0-6,0代表星期天)
+  let hours = dates.getHours() //获取当前小时数(0-23)
+  let minute = dates.getMinutes() //获取当前分钟数(0-59)
+  let second = dates.getSeconds() //获取当前秒数(0-59)
+  let timeStamp = dates.getTime() //获取当前时间(从1970.1.1开始的毫秒数)
+  let secs = dates.getMilliseconds() //获取当前毫秒数(0-999)
+  let dateDate = dates.toLocaleDateString() //获取当前日期
+  let dateTime = dates.toLocaleTimeString() //获取当前时间
+  let dateDateTime = dates.toLocaleString() //获取日期与时间
+  return { year, month, date, hours, minute, second, day, timeStamp, dateDateTime, dates: dateDateTime.split(' ')[0].replace(/\//g, '-') }
+}
+//获取距离某个日期固定天数的日期
+const getDistance = (days = 7, ori_data) => {
+  if (ori_data) ori_data = ori_data.replace(/-/g, "/")
+  let date = ori_data ? new Date(ori_data) : new Date()
+  date.setDate(date.getDate() + days)
+  return { year: date.getFullYear(), month: date.getMonth() + 1, date: date.getDate(), dates: date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate()}
+}
+//时间戳转换时间
+const timestampToTime = (timestamp, type = 0) => {
+  var date = new Date(type ? timestamp : timestamp * 1000)//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  var Y = date.getFullYear() + '-'
+  var M = (date.getMonth()+1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+  var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
+  var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+  var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
+  var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+  return Y + M + D + h + m + s
+}
+//倒计时(传秒数)
+const minutesAndSeconds = (time, symbols) => {
+  let _d, _h, _m, _s
+  _d = parseInt(time / 86400)
+  _h = parseInt(time / 3600) - _d * 24
+  _m = parseInt(time / 60) - _d * 1440 - _h * 60
+  _s = parseInt(time) - _d * 86400 - _h * 3600 - _m * 60
+  _d < 10 ? (_d = '0' + _d) : _d = String(_d)
+  _h < 10 ? (_h = '0' + _h) : _h = String(_h)
+  _m < 10 ? (_m = '0' + _m) : _m = String(_m)
+  _s < 10 ? (_s = '0' + _s) : _s = String(_s)
+  return {
+    tiem: _d + (symbols || '天') + _h + (symbols || '时') + _m + (symbols || '分') + _s + (symbols ? '' : '秒'),
+    tiems: { d: _d, h: _h, m: _m, s: _s }
+  }
+}
+/*某个时间距离当前时间转换*/
+const distanceTime = (time) => {
+  time = time.replace(/-/g, '/')
+  let _str
+  let _date = new Date().getTime()
+  let _curDate = new Date(time).getTime()
+  let _differDate = _date - _curDate
+  let _min = parseInt(_differDate / 60000) > 0 ? parseInt(_differDate / 60000) : 1
+  let _hour = parseInt(_min / 60)
+  let _day = parseInt(_hour / 24)
+  let _mon = parseInt(_day / 30)
+  if (_min < 60) {
+    _str = { ch: _min + "分钟前", en: _min + ' minutes ago' }
+  } else if (_hour < 24) {
+    _str = { ch: _hour + "小时前", en: _hour + ' hours ago' }
+  } else if (_day < 30) {
+    _str = { ch: _day + "天前", en: _day + ' days ago' }
+  } else if (_mon < 12) {
+    _str = { ch: _mon + "月前", en: _mon + ' months ago' }
+  }
+  return _str
+}
+//生成随机字符串
+const randomString = len => {
+　len = len || 32
+　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'  /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+　var maxPos = $chars.length
+　var pwd = ''
+　for (let i = 0; i < len; i++) {
+　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
+　}
+　return pwd
+}
+//序列帧
+const sequenceStart = (page, sequence) => {
+  let _num = 1
+  return new Promise(resolve => {
+    let autoSequence = setInterval(() => {
+      let _curSequenceIndex = page[`${sequence}Index`] || 0
+      _curSequenceIndex++
+      if (_curSequenceIndex <= page[sequence][0].num - 1) {
+        page[`${sequence}Index`] = _curSequenceIndex
+      } else {
+        if ((typeof (page[sequence][0].loop) == 'boolean' && page[sequence][0].loop) || (typeof (page[sequence][0].loop) == 'number' && _num < page[sequence][0].loop)) {
+          _num++
+          page[`${sequence}Index`] = 0
+        } else {
+          page[`${sequence}Index`] = -1
+          clearInterval(autoSequence)
+          resolve()
+        }
+      }
+    }, page[sequence][0].speed)
+  })
+}
 //数组洗牌打乱
 const shuffle = arr => {
   let _arr = arr.slice()
@@ -27,6 +134,7 @@ const shuffle = arr => {
 }
 //设置页面滚动高度
 const setPageScrollTop = scrollTop => {
+  window.scrollTo(0, scrollTop)
   window.pageYOffset = scrollTop
   document.body.scrollTop = scrollTop
   document.documentElement.scrollTop = scrollTop
@@ -41,6 +149,21 @@ const getScreenWidthHeight = () => {
 const getDomPageDistance = dom => {
   return new Promise(resolve => {
     resolve({ left: dom.offsetLeft, top: dom.offsetTop })
+  })
+}
+//base64转文件流
+const base64toFile = (dataurl, filename = 'file') => {
+  let arr = dataurl.split(',')
+  let mime = arr[0].match(/:(.*?);/)[1]
+  let suffix = mime.split('/')[1]
+  let bstr = atob(arr[1])
+  let n = bstr.length
+  let u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new File([u8arr], `${filename}.${suffix}`, {
+    type: mime
   })
 }
 //创建script标签并加载
@@ -89,7 +212,17 @@ const getBrowserEnvironment = () => {
     } else {
       environment = { status: 6, name: "其它浏览器" }
     }
+    Object.assign(environment, { isweChat: u.includes('micromessenger')|| u.includes('MicroMessenger') })
     resolve(environment)
+  })
+}
+//浏览器环境
+const getIsWxClient = () => {
+  return new Promise(resolve => {
+    let ua = navigator.userAgent.toLowerCase()
+    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+      return true
+    }
   })
 }
 //判断当前手机系统（Android/ios） 
@@ -188,15 +321,6 @@ const retainedDecimal = (x, n, math) => {
 //图片base64路径处理
 const base64Switch = base64 => {
   return "data:image/jpg;base64," + base64.slice(base64.indexOf("/9j"))
-}
-//浏览器环境
-const getIsWxClient = () => {
-  return new Promise(resolve => {
-    let ua = navigator.userAgent.toLowerCase()
-    if (ua.match(/MicroMessenger/i) == "micromessenger") {
-      return true
-    }
-  })
 }
 //js浮点数精度--两数相加
 const accAdd = (num1, num2) => {
@@ -423,11 +547,18 @@ const canvasImg = (options) => {
 }
 export {
   getQueryString,
+  getDate,
+  getDistance,
+  timestampToTime,
+  minutesAndSeconds,
+  distanceTime,
   shuffle,
   setPageScrollTop,
   getScreenWidthHeight,
   getDomPageDistance,
+  base64toFile,
   loadScript,
+  randomString,
   getBrowserEnvironment,
   isSystem,
   audioContextMusic,
