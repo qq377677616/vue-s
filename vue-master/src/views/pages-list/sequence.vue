@@ -67,7 +67,7 @@ export default {
        * @param { Boolean } autoplay 是否自动播放
        * @param { String } sequenceIndex 为本地图片时索引变量（img的动态class中、data中、组件传参中三者保持一致）[当为本地图片时生效]
        * @param { Object } page 当前页面[当为本地图片时生效]
-       * @method: loadOk 序列加载完成
+       * @method: loadOk 序列加载完成回调
        * 
        */
       sequenceList: { url: `${ASSETS_URL}images/sequence/home/bg_huanghun/huanghun_0.jpg`, num: 22, initIndex: 1, speed: 100, loop: true, autoplay: true },//背景
