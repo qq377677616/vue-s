@@ -34,6 +34,7 @@ export default {
     sequenceInit(sequence = "sequenceList") {
       let _sequence = [], { url, num, speed, loop, initIndex, autoplay } = this[sequence]
       this.imgTotalNum = num
+      // if (this[sequence].autoSequence) this.autoSequence = this[sequence].autoSequence
       if (url.indexOf('//') == -1) {
         this.page = this[sequence].page
         this.sequenceIndex = this[sequence].sequenceIndex || 'sequenceListIndex'
@@ -47,27 +48,42 @@ export default {
       if (autoplay) this.play()
     },
     //序列帧播放
-    play(loop = this.sequenceLists[0].loop) {
+    play(loop = this.sequenceLists[0].loop, sequence = "sequenceList") {
       let _num = 1
+      clearInterval(this[sequence].autoSequence)
+      if (typeof loop == 'object') {
+        if (typeof loop[0] != 'number' || typeof loop[1] != 'number' || loop[0] >= loop[1]) {
+          console.warn("传参有误，正确示例：this.$refs.sequence.play([5, 12])")
+          return
+        }
+        this.page ? this.page[this.sequenceIndex] = loop[0] - 1 : this.sequenceListIndex = loop[0] - 1
+      } 
       return new Promise(resolve => {
-        let autoSequence = setInterval(() => {
+        this[sequence].autoSequence = setInterval(() => {
           let _curSequenceIndex = this.page ? this.page[this.sequenceIndex] : this.sequenceListIndex || 0
           _curSequenceIndex++
-          if ((_curSequenceIndex <= this.sequenceLists[0].num - 1 && typeof loop != 'number') || (typeof loop == 'number' && _curSequenceIndex < parseInt(loop) - 1)) {
+          if ((_curSequenceIndex <= this.sequenceLists[0].num - 1 && typeof loop != 'number' && typeof loop != 'object') || (typeof loop == 'number' && _curSequenceIndex < parseInt(loop) - 1) || (typeof loop == 'object' && _curSequenceIndex < loop[1])) {
             this.page ? this.page[this.sequenceIndex] = _curSequenceIndex : this.sequenceListIndex = _curSequenceIndex
           } else {
-            if (((typeof loop == 'boolean' && loop) || (typeof loop == 'string' && _num < loop)) && !(typeof loop == 'number')) {
+            if ((((typeof loop == 'boolean' && loop) || (typeof loop == 'string' && _num < loop)) && !(typeof loop == 'number')) || (typeof loop == 'object')) {
               _num++
-              this.page ? this.page[this.sequenceIndex] = 0 : this.sequenceListIndex = 0
+              this.page ? this.page[this.sequenceIndex] = (typeof loop == 'object' ? loop[0] - 1 : 0) : this.sequenceListIndex = (typeof loop == 'object' ? loop[0] - 1 : 0)
             } else {
               this.page ? (this.page[this.sequenceIndex] = typeof loop == 'number' ? parseInt(loop) - 1 : this.sequenceLists[0].initIndex ? this.sequenceLists[0].initIndex - 1 :  -1) : (this.sequenceListIndex = typeof loop == 'number' ? parseInt(loop) - 1 : this.sequenceLists[0].initIndex ? this.sequenceLists[0].initIndex - 1 :  -1)
               if (typeof loop == 'number') this.sequenceLists[0].loop = false
-              clearInterval(autoSequence)
+              clearInterval(this[sequence].autoSequence)
               resolve()
             }
           }
         }, this.sequenceLists[0].speed)
       })
+    },
+    //序列帧暂停
+    pause(pauseNum, sequence = "sequenceList") {
+      if (pauseNum) {
+        this.page ? this.page[this.sequenceIndex] = pauseNum - 1 : this.sequenceListIndex = pauseNum - 1
+      } 
+      clearInterval(this[sequence].autoSequence)
     },
     //图片加载
     load() {
