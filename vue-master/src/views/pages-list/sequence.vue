@@ -79,13 +79,13 @@ export default {
        * @param { Number } initIndex 初始展示第几张图片（从1开始）
        * @param { Number } pauseIndex 自动播放到第几张图片暂停（从1开始）
        * @param { Number } speed 播放速率（毫秒，越小越快）
-       * @param { Boolean || String } loop 是否循环播放(true：循环、false：不循环、'3'：循环播放3次、5：播放到第5张暂停)
+       * @param { Boolean || Number || String || Array } loop 是否循环播放(true：循环 || false：不循环 || 字符串数字：循环播放x次 || number数字：暂停在某帧 || 数组:播放区间)
        * @param { Boolean } autoplay 是否自动播放
        * @param { String } sequenceIndex 为本地图片时索引变量（img的动态class中、data中、组件传参中三者保持一致）[当为本地图片时生效]
        * @param { Object } page 当前页面[当为本地图片时生效]
-       * @callback: loadOk 序列加载完成回调
-       * @api: play 控制播放，可选传参[数字：播放后自动暂停在某帧、字符串数字：循环播放次数、数组：循环播放区间]
-       * @api: pause 暂停播放，可选传参[数字：暂停在某帧]
+       * @callback: loadOk 序列加载完成回调函数
+       * @api: play 控制播放方法，可选传参[数字：播放后自动暂停在某帧 || 字符串数字：循环播放次数 || 数组：循环播放区间]
+       * @api: pause 暂停播放方法，可选传参[数字：暂停在某帧]
        * 
        */
       sequenceList: { url: `${ASSETS_URL}images/sequence/home/bg_huanghun/huanghun_0.jpg`, num: 22, initIndex: 1, speed: 100, loop: true, autoplay: true },//背景
