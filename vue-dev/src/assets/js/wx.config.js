@@ -3,8 +3,11 @@ import { getQueryString, getBrowserEnvironment, loadScript } from 'assets/js/uti
 import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/project.config'
 import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
-
 //获取微信配置参数信息
+if (!PROJECT_CONFIG_CODE) {
+  _openDebugging()
+  _mtaInit(PROJECT_CONFIG.mta.appid)
+}
 let re_request_num = 0, NUM_RETRIES = 0;
 (function _configStart() {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime()
@@ -42,7 +45,6 @@ function setLookPageTime() {
 function _getPageConfig(config) {
   if (!PROJECT_CONFIG_CODE) {
     _wxConfig(config)
-    _openDebugging()
   } else {
     getProjectConfig().then(res => {
       let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
@@ -55,7 +57,7 @@ function _getPageConfig(config) {
       SHARECONFIG.ShareImage = _data.shareImg 
       _openDebugging(_data['online-date'], _data['offline-date'])
       _wxConfig(config)
-      if (PROJECT_CONFIG.is_tx_mtah5) _mtaInit(_data.res_appid)
+      if (PROJECT_CONFIG.mta.is_open) _mtaInit(_data.res_appid)
     }).catch(err => {
       console.log("【获取核弹配置信息失败】", err)
       _wxConfig(config)
@@ -85,7 +87,7 @@ function _openDebugging(onlineDate, offlinedate) {
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfo()
 }
 //从本地缓存、url或者接口请求获取后台授权传过来的用户信息
-const getUserInfo = () => {
+function getUserInfo(){
   // if (PROJECT_CONFIG.getUserInfo.type !== 1 && PROJECT_CONFIG.getUserInfo.type !== 2) return
   return new Promise((resolve, reject) => {
     let _userInfo = {}
@@ -132,6 +134,10 @@ function _mtaInit(sid) {
 }
 //微信jssdk注册配置
 function _wxConfig(config) {
+  if (window.location.href.indexOf('192.') != -1 || window.location.href.indexOf('localhost') != -1) {
+    window.isShareOk = true
+    return
+  }
   try{
     console.log("【获取最终微信jssdk注册参数】", config)
   }
@@ -147,13 +153,15 @@ function _wxConfig(config) {
     signature: config.signature,
     jsApiList: [
     'checkJsApi', 'onMenuShareTimeline', 'updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'translateVoice', 'startRecord', 'stopRecord', 'onVoiceRecordEnd', 'playVoice','onVoicePlayEnd', 'pauseVoice', 'stopVoice', 'uploadVoice', 'downloadVoice', 'chooseImage', 'getLocalImgData', 'previewImage', 'uploadImage', 'downloadImage', 'getNetworkType', 'openLocation', 'getLocation', 'hideOptionMenu', 'showOptionMenu', 'closeWindow', 'scanQRCode', 'chooseWXPay', 'openProductSpecificView', 'addCard', 'chooseCard', 'openCard'
-    ]
+    ],
+    openTagList:['wx-open-launch-weapp', 'wx-open-launch-app']
   })
   wx.ready(() => {
     checkJsApi(["chooseWXPay"]).then(res => {
       console.log("【检测是否支持某些功能】", res, res.checkResult.chooseWXPay)
       if (res.checkResult.chooseWXPay) {
         console.log("【wx.ready OK】")
+        window.isShareOk = true
         hideMenuItems()
         if (PROJECT_CONFIG.is_wx_share) shareConfigure().then(res => {
           console.log("【分享配置成功】", res)
@@ -161,7 +169,7 @@ function _wxConfig(config) {
         }).catch(err => {
           console.log("【分享配置失败】", err)
           // window.location.reload()
-          return;
+          return
         })
       }
     })
@@ -183,24 +191,15 @@ function hideMenuItems() {
   })
   if (menuList.length == 0) return
   wx.hideMenuItems({
-    menuList: menuList // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+    menuList: menuList // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮
   })
-// 传播类
-// 发送给朋友: "menuItem:share:appMessage"
-// 分享到朋友圈: "menuItem:share:timeline"
-// 分享到QQ: "menuItem:share:qq"
-// 收藏: "menuItem:favorite"
-// 分享到 QQ 空间 "menuItem:share:QZone"
-// 复制链接: "menuItem:copyUrl"
-// 在QQ浏览器中打开: "menuItem:openWithQQBrowser"
-// 在Safari中打开: "menuItem:openWithSafari"
 }
 //微信、QQ分享配置
 const shareConfigure = shareConfig => {
   return new Promise((resolve, reject) => {
     let isShareConfigure = 0, shareMessage = []
     if (shareConfig && typeof shareConfig == 'object') Object.assign(SHARECONFIG, shareConfig)
-    if (SHARECONFIG.type) {
+    if (SHARECONFIG.type) { 
       // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容（1.4.0）
       wx.updateAppMessageShareData({ 
         title: SHARECONFIG.Title, // 分享标题
@@ -292,6 +291,5 @@ function checkJsApi(jsApiList) {
   })
 }
 export {
-  shareConfigure,
-  getUserInfo
+  shareConfigure
 }
