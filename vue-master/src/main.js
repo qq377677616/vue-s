@@ -20,7 +20,7 @@ import VueJsonp from 'vue-jsonp'
 import echarts from 'echarts'
 import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
-// FastClick.attach(document.body)
+FastClick.attach(document.body)
 Vue.prototype.$echarts = echarts 
 Vue.use(VueJsonp)
 Vue.component('vue-drag-resize', VueDragResize)
@@ -29,7 +29,7 @@ Vue.use(VueI18n)
 Vue.use(VueTouch, { name: 'v-touch' })
 Vue.use(Vant)
 Vue.use(VueBus)
-// Vue.use(vueBaberrage)
+//懒加载
 Vue.use(VueLazyload, {
   // loading: require('assets/images/default.png')
 })

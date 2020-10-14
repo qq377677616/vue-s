@@ -22,7 +22,7 @@ export default {
       page: null,//父组件
       sequenceIndex: null,//动态索引
       sequenceListIndex: -1,//序列索引
-      imgTotalNum: 0,//图片总数
+      imgTotalNum: 0,//图片总数 
       loadNum: 0//图片加载数量
     }
   },

@@ -85,6 +85,15 @@ const distanceTime = (time) => {
   }
   return _str
 }
+//判断屏幕方向
+const getScreenOrientation = () => {
+  if (window.orientation === 180 || window.orientation === 0) { 
+    return ('竖屏状态')
+  } 
+  if (window.orientation==90 || window.orientation==-90) {
+    return("横屏状态")
+  }
+}
 //生成随机字符串
 const randomString = len => {
 　len = len || 32
@@ -96,26 +105,33 @@ const randomString = len => {
 　}
 　return pwd
 }
-//序列帧
-const sequenceStart = (page, sequence) => {
-  let _num = 1
+//获取图片旋转信息 返回值& 0°：1、顺时针90°：6、逆时针90°：8、180°：3
+const getOrientation = file => {
   return new Promise(resolve => {
-    let autoSequence = setInterval(() => {
-      let _curSequenceIndex = page[`${sequence}Index`] || 0
-      _curSequenceIndex++
-      if (_curSequenceIndex <= page[sequence][0].num - 1) {
-        page[`${sequence}Index`] = _curSequenceIndex
-      } else {
-        if ((typeof (page[sequence][0].loop) == 'boolean' && page[sequence][0].loop) || (typeof (page[sequence][0].loop) == 'number' && _num < page[sequence][0].loop)) {
-          _num++
-          page[`${sequence}Index`] = 0
-        } else {
-          page[`${sequence}Index`] = -1
-          clearInterval(autoSequence)
-          resolve()
+    var reader = new FileReader()
+    reader.onload = function(e) {
+      var view = new DataView(e.target.result)
+      if (view.getUint16(0, false) != 0xFFD8) resolve(-2)
+      var length = view.byteLength, offset = 2
+      while (offset < length) {
+        var marker = view.getUint16(offset, false)
+        offset += 2
+        if (marker == 0xFFE1) {
+          if (view.getUint32(offset += 2, false) != 0x45786966) resolve(-1)
+          var little = view.getUint16(offset += 6, false) == 0x4949
+          offset += view.getUint32(offset + 4, little)
+          var tags = view.getUint16(offset, little)
+          offset += 2
+          for (var i = 0; i < tags; i++)
+            if (view.getUint16(offset + (i * 12), little) == 0x0112)
+            resolve(view.getUint16(offset + (i * 12) + 8, little))
         }
+        else if ((marker & 0xFF00) != 0xFF00) break
+        else offset += view.getUint16(offset, false)
       }
-    }, page[sequence][0].speed)
+      resolve(-1)
+    }
+    reader.readAsArrayBuffer(file)
   })
 }
 //数组洗牌打乱
@@ -381,7 +397,7 @@ const accDiv = (num1, num2) => {
 }
 /*h5生成图片*/
 const canvasImg = (options) => {
-  return new Promise(reject => {
+  return new Promise(resolve => {
     var P_W = window.innerWidth
     var P_H = window.innerHeight
     var PSD_W = options.psd_w
@@ -416,7 +432,7 @@ const canvasImg = (options) => {
         if (progress === 2520) {
           startDraw()
         }
-      };
+      }
     }
     function addRoundRectFunc() {
       CanvasRenderingContext2D.prototype.roundRect = function(
@@ -434,7 +450,7 @@ const canvasImg = (options) => {
         if (typeof radius === "undefined") {
           radius = 5
         }
-        this.beginPath();
+        this.beginPath()
         this.moveTo(x + radius, y)
         this.lineTo(x + width - radius, y)
         this.quadraticCurveTo(x + width, y, x + width, y + radius)
@@ -444,7 +460,7 @@ const canvasImg = (options) => {
           y + height,
           x + width - radius,
           y + height
-        );
+        )
         this.lineTo(x + radius, y + height)
         this.quadraticCurveTo(x, y + height, x, y + height - radius)
         this.lineTo(x, y + radius)
@@ -456,30 +472,30 @@ const canvasImg = (options) => {
         if (fill) {
           this.fill()
         }
-      };
+      }
     }
     function startDraw() {
       //绘制图片
       for (var n in options.imgList) {
         if (!options.imgList[n].radius) {
-          drawImg();
+          drawImg()
         } else if (options.imgList[n].radius == "50%") {
-          ctx.save();
-          var r = options.imgList[n].imgW * 0.5;
+          ctx.save()
+          var r = options.imgList[n].imgW * 0.5
           ctx.arc(
             options.imgList[n].imgX + r,
             options.imgList[n].imgY + r,
             r,
             0,
             2 * Math.PI
-          );
-          ctx.clip();
-          ctx.fill();
-          drawImg(true);
-          ctx.restore();
+          )
+          ctx.clip()
+          ctx.fill()
+          drawImg(true)
+          ctx.restore()
         } else {
-          ctx.save();
-          addRoundRectFunc();
+          ctx.save()
+          addRoundRectFunc()
           ctx.roundRect(
             options.imgList[n].imgX,
             options.imgList[n].imgY,
@@ -487,11 +503,11 @@ const canvasImg = (options) => {
             options.imgList[n].imgH,
             options.imgList[n].radius,
             true
-          );
+          )
           ctx.globalCompositeOperation = "source-in"
-          ctx.clip();
-          drawImg();
-          ctx.restore();
+          ctx.clip()
+          drawImg()
+          ctx.restore()
         }
         function drawImg(arc) {
           ctx.drawImage(
@@ -504,22 +520,67 @@ const canvasImg = (options) => {
             options.imgList[n].imgY,
             options.imgList[n].imgW,
             arc ? options.imgList[n].imgW : options.imgList[n].imgH
-          );
+          )
         }
       }
       //绘制文字
       function drawFont() {
-        var fonts = options.textList
+        let fonts = options.textList
+        for (let i = 0; i < fonts.length; i++) {
+          let _wrap = fonts[i].wrap
+          let _h = fonts[i].textY
+          let _string = fonts[i].string
+          if ((_string.length > _wrap) && !fonts[i].isWrap) {
+            let _arrText = []
+            _arrText = [(_string).replace(/\s+/g,"")]
+            let _x = 0
+            let _this = this
+            calcImgText(_x)
+            function calcImgText(x) {
+              var res = []
+              var str = ''
+              var nums = 0
+              for (var k = 0; k <= _arrText[x].length; k++) {
+                if (nums < _wrap && !(k == _arrText[x].length)) {
+                  (/[0-9a-ln-z.]/.test(_arrText[x][k])) ? nums += 0.5 : nums++
+                  str += _arrText[x][k] 
+                } else {
+                  res.push(str)
+                  let _item = cloneObj(fonts[i])
+                  _item.string = str
+                  _item.textY = _h
+                  if (_item.string.length > _wrap) _item.isWrap = true
+                  fonts.push(_item)
+                  _h += _item.lineHeight
+                  str = _arrText[x][k]
+                  nums = 1
+                }
+              }
+            }
+            function cloneObj(obj) {
+              var newObj = {};
+              if (obj instanceof Array) {
+                newObj = [];
+              }
+              for (var key in obj) {
+                var val = obj[key];
+                newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
+              }
+              return newObj;
+            }
+            fonts.splice(i, 1)
+          }
+        }
         for (var k in fonts) {
           ctx.fillStyle = fonts[k].color
           ctx.font = fonts[k].style
           ctx.textBaseline = "hanging"
-          ctx.textAlign = fonts[k].textAlign ? fonts[k].textAlign : "start";
+          ctx.textAlign = fonts[k].textAlign ? fonts[k].textAlign : "start"
           isSystem(function(res) {
             if (res.isiOS) {
-              fonts[k].textY -= 10;
+              fonts[k].textY -= 10
             }
-          });
+          })
           if (fonts[k].vel) {
             for (var z in fonts[k].string) {
               ctx.fillText(
@@ -541,7 +602,7 @@ const canvasImg = (options) => {
         callback({ isAndroid: isAndroid, isiOS: isiOS })
       }
       drawFont()
-      reject(canvas.toDataURL("image/png"))
+      resolve(canvas.toDataURL("image/png"))
     }
   })
 }
@@ -552,12 +613,14 @@ export {
   timestampToTime,
   minutesAndSeconds,
   distanceTime,
+  getOrientation,
   shuffle,
   setPageScrollTop,
   getScreenWidthHeight,
   getDomPageDistance,
   base64toFile,
   loadScript,
+  getScreenOrientation,
   randomString,
   getBrowserEnvironment,
   isSystem,

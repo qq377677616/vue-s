@@ -165,25 +165,35 @@ const routes = [
     component: resolve => require(['../views/pages-list/scroll-show.vue'], resolve)    
   },
   {
+    path:'/baberrage',
+    name: 'baberrage',
+    component: resolve => require(['../views/pages-list/baberrage.vue'], resolve)    
+  },
+  {
+    path:'/krpano',
+    name: 'krpano',
+    component: resolve => require(['../views/pages-list/krpano/krpano.vue'], resolve)    
+  },
+  {
     path:'/live',
     name: 'live',
     component: resolve => require(['../views/pages-list/live.vue'], resolve)    
   },
   {
-    path:'/baberrage',
-    name: 'baberrage',
-    component: resolve => require(['../views/pages-list/baberrage.vue'], resolve)    
+    path:'/three',
+    name: 'three',
+    component: resolve => require(['../views/pages-list/three.vue'], resolve)    
+  },
+  {
+    path:'/panorama360',
+    name: 'panorama360',
+    component: resolve => require(['../views/pages-list/panorama360.vue'], resolve)    
   },
   {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    
   },
-  {
-    path:'/krpano',
-    name: 'krpano',
-    component: resolve => require(['../views/pages-list/krpano/krpano.vue'], resolve)    
-  }
 ]
 
 const router = new VueRouter({

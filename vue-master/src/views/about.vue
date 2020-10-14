@@ -3,7 +3,8 @@
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
     <button @click="modifyShare">修改分享路径</button>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" />
-    <input type="text" v-model.lazy="inputs" @input="input" @change="change" placeholder="搜索公司吧">
+    <input type="text" @input="input" v-model="inputs">
+    <input type="file" id="file" @change="inputChange">
     <!-- <wx-open-launch-weapp id="launch-btn" username="gh_3547ec19af8c" path="pages/index/index.html?user=123&action=abc" >
       <script type="text/wxtag-template">
         <style>.btn { padding: 12px; }</style>
@@ -26,7 +27,8 @@ import wx from "weixin-js-sdk"
 import Scroll from 'base/scroll/scroll.vue'
 // import Shake from "assets/js/shake.js"
 import Tab from "components/tab.vue"
-import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate } from "assets/js/util"
+import EXIF from "exif-js"
+import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation } from "assets/js/util"
 import {
   getLocation_qq,
   getLocation_baidu,
@@ -37,16 +39,18 @@ import {
   getIpLocation_k780
 } from "assets/js/get-third-party.js"
 import MyHeader from "components/header.vue"
-import {
-  uploadAudio,
-  getIpLocation,
-  getWxConfig,
-  getProjectConfig,
-  getPostTest,
-  getTest,
-  getCompanyName,
-  getTeam
-} from "api/api"
+// import {
+//   uploadAudio,
+//   getIpLocation,
+//   getWxConfig, 
+//   getProjectConfig,
+//   getPostTest,
+//   getTest,
+//   getCompanyName,
+//   getTeam,
+//   getGrab
+// } from "api/api"
+import api from 'api/api'
 import { shareConfigure, getUserInfo } from "assets/js/wx.config"
 // import { AUTH_URL } from "api/config";
 import pdf from "vue-pdf"
@@ -66,7 +70,7 @@ export default {
     }
   },
   created() {
-    console.log("getDate", getDate())
+
   },
   computed: {
     
@@ -75,38 +79,37 @@ export default {
     
   },
   mounted() {
-    getTeam().then(res => {
-      console.log("res", res)
-    })
-    setTimeout(() => {
-      console.log("888888888888888")
-      getBrowserEnvironment().then(res => {
-      console.log(res)
-      })
-    }, 5000)
-    // 实例化一个 shake 对象
-    console.log("Shake", Shake)
-    let myShakeEvent = new Shake({
-      threshold: 20, // 默认摇动阈值
-      timeout: 1200 // 默认两次事件间隔时间
-    })
-    console.log("myShakeEvent", myShakeEvent)
-    console.log("myShakeEvent.start", myShakeEvent.start)
-    // 监听设备的动作
-    myShakeEvent.start()
-    // 添加一个事件监听
-    window.addEventListener('shake', this.shakeEventDidOccur, false)
+    // getTeam().then(res => {
+    //   console.log("res", res)
+    // })
+    // setTimeout(() => {
+    //   getBrowserEnvironment().then(res => {
+    //   console.log(res)
+    //   })
+    // }, 5000)
   },
   watch: {
     
   },
   methods: {
+    inputChange() {
+      let files = document.getElementById("file").files[0]
+      console.log("files", files)
+      getOrientation(files).then(res => {
+        console.log("旋转角度1", res)
+      })
+      console.log("EXIF", EXIF)
+      EXIF.getData(files, function(){
+        console.log("图片信息", EXIF.getAllTags(this));
+        console.log("旋转角度2", EXIF.getTag(this, 'Orientation'));
+      });
+    },
      change() {
         console.log("【changechange】", this.inputs)
      },
      input() {
        console.log("【inputinput】", this.inputs)
-       getCompanyName({ key: this.inputs, _: getDate().timeStamp}).then(res => {
+       api.getCompanyName({ key: this.inputs, _: getDate().timeStamp}).then(res => {
          console.log("公司名", res.data.data)
        })
      },

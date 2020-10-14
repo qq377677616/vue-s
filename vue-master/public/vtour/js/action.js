@@ -1,5 +1,5 @@
-var krpano;
-function creatKrpano(fun) { krpano = fun; }//初始化
+var krpano
+function creatKrpano(fun) { krpano = fun }//初始化
 //xml加载生命周期
 function xmlcomplete(isLittleplanetintro) {
   krpano.set("skin_settings.littleplanetintro", true)
@@ -8,21 +8,19 @@ function xmlcomplete(isLittleplanetintro) {
 function setAutoRotate(type = true) {
   krpano.set("autorotate.enabled", type)
 }
-//调整水平垂直视角
-function setVlookatHlookat(fov, type) {
-  type ? krpano.set("view.hlookat", fov) : krpano.set("view.vlookat", fov)
-}
 //切换到指定缩放视角
 function setFov(fov) {
   krpano.set("view.fov", fov)
 }
 //旋转到指定视角
-function rotationAngle(deg, speed) {
+function rotationAngle(deg, speed, direction) {
+  let _direction = direction ? 'view.vlookat' : 'view.hlookat'
+  console.log("_direction", _direction)
   if (!speed) { 
-    krpano.set("view.hlookat", deg)
+    krpano.set(_direction, deg)
     return
   }
-  var hlookat = Number(krpano.get("view.hlookat")).toFixed(0);
+  var hlookat = Number(krpano.get(_direction)).toFixed(0)
   var quyu = 0
   if (hlookat > 360) {
     quyu = Math.floor(hlookat / 360)
@@ -33,13 +31,13 @@ function rotationAngle(deg, speed) {
   hlookat = hlookat - 360 * quyu
   var t = setInterval(function() {
     if (hlookat == deg) {
-      clearInterval(t);
+      clearInterval(t)
     } else if (hlookat < deg) {
-      hlookat++;
-      krpano.set("view.hlookat", hlookat);
+      hlookat++
+      krpano.set(_direction, hlookat)
     } else if (hlookat > deg) {
-      hlookat--;
-      krpano.set("view.hlookat", hlookat);
+      hlookat--
+      krpano.set(_direction, hlookat)
     }
   }, speed)
 }

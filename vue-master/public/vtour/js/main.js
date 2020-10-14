@@ -15,6 +15,6 @@ function onloadcomplete() {
 }
 //测试方法
 function test(e) { postMessage({ eventName: getFunctionName(arguments.callee.toString()), data: e }) }
-function runScript() {
-  alert()
-}
+// function runScript() {
+//   alert()
+// }

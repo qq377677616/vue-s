@@ -4,6 +4,10 @@ import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/project.config'
 import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
 //获取微信配置参数信息
+if (!PROJECT_CONFIG_CODE) {
+  _openDebugging()
+  _mtaInit(PROJECT_CONFIG.mta.appid)
+}
 let re_request_num = 0, NUM_RETRIES = 0;
 (function _configStart() {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime()
@@ -53,7 +57,7 @@ function _getPageConfig(config) {
       SHARECONFIG.ShareImage = _data.shareImg 
       _openDebugging(_data['online-date'], _data['offline-date'])
       _wxConfig(config)
-      if (PROJECT_CONFIG.is_tx_mtah5) _mtaInit(_data.res_appid)
+      if (PROJECT_CONFIG.mta.is_open) _mtaInit(_data.res_appid)
     }).catch(err => {
       console.log("【获取核弹配置信息失败】", err)
       _wxConfig(config)
@@ -83,7 +87,7 @@ function _openDebugging(onlineDate, offlinedate) {
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfo()
 }
 //从本地缓存、url或者接口请求获取后台授权传过来的用户信息
-const getUserInfo = () => {
+function getUserInfo(){
   // if (PROJECT_CONFIG.getUserInfo.type !== 1 && PROJECT_CONFIG.getUserInfo.type !== 2) return
   return new Promise((resolve, reject) => {
     let _userInfo = {}
@@ -287,6 +291,5 @@ function checkJsApi(jsApiList) {
   })
 }
 export {
-  shareConfigure,
-  getUserInfo
+  shareConfigure
 }

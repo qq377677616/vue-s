@@ -41,7 +41,9 @@ export default {
         { name: "直播流", url: "/live" },
         { name: "弹幕", url: "/baberrage" },
         { name: "krpano全景", url: "/krpano" },
-        { name: "下一版本见...", url: "" }
+        { name: "360全景", url: "/panorama360" },
+        { name: "视频插件", url: "/live" },
+        { name: "three.js", url: "/three" }
       ]
     }
   },

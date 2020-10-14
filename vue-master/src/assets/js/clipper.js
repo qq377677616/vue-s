@@ -109,7 +109,7 @@ export default {
       //去获取拍照时的信息，解决拍出来的照片旋转问题
       Exif.getData( files[0] , function(){
         self.Orientation = Exif.getTag( files[0], 'Orientation');
-        console.log(self.Orientation)
+        console.log("【self.Orientation】", self.Orientation)
       });
 
 

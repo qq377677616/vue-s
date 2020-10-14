@@ -70,16 +70,16 @@
 	         fovfriction="0.9"
 	         bouncinglimits="true"
 	         /> -->
-					 <control touchtype="drag"
+					 <!-- <control touchtype="drag"
 					 dragfriction="0.1"
 						dragrelative = "true"
 						mousespeed="10"
 						keybinvert = "false"
 						fovspeed = "0.5"
 						draginertia = "1"
-						/>
-	<!-- <control mousetype="moveto"
-         touchtype="moveto"      
+						/> -->
+	<control mousetype="moveto"
+         touchtype="drag"      
 	       devices="all"      
          zoomtocursor="true"    
          zoomoutcursor="true"   
@@ -90,7 +90,7 @@
          fovspeed="3.0"          
          fovfriction="0.9"       
          touchfriction="0.87"    
-         />							  -->
+         />							 
 	<!-- 注册事件-->
   <events onenterfullscreen=""          
 					onexitfullscreen=""          

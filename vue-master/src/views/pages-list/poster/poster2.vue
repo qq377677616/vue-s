@@ -38,7 +38,8 @@ export default {
           { url: "https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132", imgW: 120, imgH: 120, imgX: 50, imgY: 50, radius: "50%" }
         ],
         textList: [ { string: "证书编号TPBJ202000001", color: "#A37582", style: "bold 26px Arial", textX: 352, textY: 64, textAlign: "left" },
-                    { string: "张三丰", color: "#ffffff", style: "bold 28px Arial", textX: 375, textY: 524, textAlign: "center" }
+                    { string: "张三丰", color: "#ffffff", style: "bold 28px Arial", textX: 375, textY: 524, textAlign: "center" },
+                    { string: '一份份捐赠，如星火燎原之势，点亮孩子的希望，爱润童心，助力成长！特发此证，感恩您的爱心义举！', color: '#60294E', style: "bold 28px Arial", textAlign: "center", textX: 375, textY: 733, wrap: 12, lineHeight: 50 }
                   ]
       }
       canvasImg(options).then(res => {
