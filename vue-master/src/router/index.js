@@ -190,6 +190,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/panorama360.vue'], resolve)    
   },
   {
+    path:'/book',
+    name: 'book',
+    component: resolve => require(['../views/pages-list/book.vue'], resolve)    
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    

@@ -42,6 +42,7 @@ export default {
         { name: "弹幕", url: "/baberrage" },
         { name: "krpano全景", url: "/krpano" },
         { name: "360全景", url: "/panorama360" },
+        { name: "翻书特效", url: "/book" },
         { name: "视频插件", url: "/live" },
         { name: "three.js", url: "/three" }
       ]

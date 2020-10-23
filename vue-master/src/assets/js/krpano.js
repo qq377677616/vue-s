@@ -7,6 +7,10 @@ const krpanoApi =  {
     krpanoLoadscene(hotNameNum, blend) {
       this.krpanoPage.loadscene(hotNameNum, blend)
     },
+    //开启陀螺仪
+    openGyro(type) {
+      this.krpanoPage.openGyro(type)
+    },
     // 添加热点
     krpanoAddHotspot(hotArr) {
       if (!hotArr.length) return

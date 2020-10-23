@@ -1,12 +1,12 @@
 <template>
   <div class="body">
-    <my-header :title="pageTitle"></my-header>
+    <!-- <my-header :title="pageTitle"></my-header> -->
     <div class="con full-screen flex-cen-col">
-      <div class="top flex">
+      <div class="top flex-cen">
         <img :src="item" alt="" v-for="(item, index) in imgList" :key="'key' + index">
       </div>
-      <button :class="{'dis': gifUrl}" @click="compose">一键合成</button>
-      <div class="bottom">
+      <button :class="{'dis': gifUrl}" @click="compose">一键合成gif</button>
+      <div class="bottoms">
         <img :src="gifUrl" alt="">
       </div>
     </div>
@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       pageTitle: "合成gif图",
-      imgList: ['https://game.flyh5.cn/resources/game/wechat/szq/images/img_09.jpg', 'https://game.flyh5.cn/resources/game/wechat/szq/images/img_10.jpg', 'https://game.flyh5.cn/resources/game/wechat/szq/images/img_11.jpg'],
+      imgList: ['https://img.vrupup.com/web/szq/images/avatar_01.png', 'https://img.vrupup.com/web/szq/images/avatar_02.png', 'https://img.vrupup.com/web/szq/images/avatar_03.png', 'https://img.vrupup.com/web/szq/images/avatar_04.png'],
       gifUrl: ''
     }
   },
@@ -31,8 +31,8 @@ export default {
       this.$toast.loading({ message: "合成中", duration: 0, loadingType: "spinner" })
       gifshot.createGIF({
         'interval': .7,//gif速率
-        'gifWidth': 601,//gif宽    
-        'gifHeight': 805,//gif高
+        'gifWidth': 200,//gif宽    
+        'gifHeight': 200,//gif高
         'images': this.imgList//图片列表
       }, obj => {
         if (!obj.error) {
@@ -51,8 +51,9 @@ export default {
 </script>
 
 <style scoped>
+  .body{background: #eee;}
   .con{text-align: center;}
-  .top img{width:30%;margin:0 1%;}
+  .top img{width:22%;margin:0 1%;}
   .bottom img{width:40%;}
   button{width:30%;height:.6rem;background: #1AAD19;font-size: .3rem;color:#fff;border-radius: .1rem;margin:.4rem 0;}
   button.dis{background: #ccc;}

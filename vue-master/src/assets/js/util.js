@@ -1,6 +1,6 @@
 //从地址栏获取传参
 const getQueryString = name => {
-  let after = window.location.hash.split("?")[1]
+  let after = window.location.href.split("?")[1]
   if (after) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)")
     let r = after.match(reg)
@@ -147,6 +147,15 @@ const shuffle = arr => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
   return _arr
+}
+/*两个数组之间的交集、差集、补集、并集 */
+const getArrGather = (arr1, arr2) => {
+  let sa = new Set(arr1), sb = new Set(arr2)
+  let intersect = arr1.filter(x => sb.has(x))// 交集
+  let minus = arr1.filter(x => !sb.has(x))// 差集
+  let complement = [...arr1.filter(x => !sb.has(x)), ...arr2.filter(x => !sa.has(x))]// 补集
+  let unionSet = Array.from(new Set([...arr1, ...arr2]))// 并集
+  return { intersect, minus, complement, unionSet }
 }
 //设置页面滚动高度
 const setPageScrollTop = scrollTop => {
@@ -615,6 +624,7 @@ export {
   distanceTime,
   getOrientation,
   shuffle,
+  getArrGather,
   setPageScrollTop,
   getScreenWidthHeight,
   getDomPageDistance,

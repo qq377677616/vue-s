@@ -66,7 +66,6 @@ export const api = (url, data, type = 'post', isQs = true, isUrl = 0, config) =>
     }) 
   } else {
     if (type !== 'post' && type !== 'get') return Promise.reject({ status: 1001, message: '请求方法不符合规范' }) 
-    console.log("urlisQsisQs", type, isQs, url, type, data)
     return service[type](url, type == 'post' ? (isQs ? qs.stringify(data) : data) : { params: data }, config).then(res => {
       return Promise.resolve(res)
     }).catch(err => {

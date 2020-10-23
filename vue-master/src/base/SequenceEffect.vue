@@ -90,7 +90,7 @@ export default {
       ++this.loadNum
       this.loadNum == this.imgTotalNum && this.$emit("loadOk")
     },
-    //url解析
+    //图片src解析
     getPublicUrl(url) {
       let urlArray = url.split("/")    
       let order = urlArray[urlArray.length - 1].replace(/[^\d]/ig, '')     

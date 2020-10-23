@@ -4,23 +4,28 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
-  // publicPath: process.env.NODE_ENV === 'production' ? '/resources/game/wechat/szq/vue-s/' : '/',
-  publicPath: process.env.NODE_ENV === 'production' ? '/resources/web/szq/vue-s/' : '/',
+  // 基本路径
+  // publicPath: process.env.NODE_ENV === 'production' ? '/resources/game/wechat/szq/vue-s/' : '/',//老路径http://game.flyh5.cn
+  publicPath: process.env.NODE_ENV === 'production' ? '/resources/web/szq/vue-s/' : '/',//新路径//http://game.vrupup.com
+  // 生产环境是否生成 sourceMap 文件
   productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
+  // eslint-loader 是否在保存的时候检查
   lintOnSave: true,
+  //webpack中loader配置
   chainWebpack: (config) => {
     config.resolve.alias
-      .set('vue$', 'vue/dist/vue.esm.js')
-      .set('@',resolve('src'))
-      .set('components',resolve('src/components'))
-      .set('views',resolve('src/views'))
-      .set('assets',resolve('src/assets'))
-      .set('utils',resolve('src/utils'))
-      .set('base',resolve('src/base'))
-      .set('api',resolve('src/api'))
+    .set('vue$', 'vue/dist/vue.esm.js')
+    .set('@',resolve('src'))
+    .set('components',resolve('src/components'))
+    .set('views',resolve('src/views'))
+    .set('assets',resolve('src/assets'))
+    .set('utils',resolve('src/utils'))
+    .set('base',resolve('src/base'))
+    .set('api',resolve('src/api'))
   },
+  // webpack-dev-server 相关配置
   devServer: {
-    port: 5555,// 端口
+    port: 8888,// 端口
     proxy: {
       '/api': {
         target: 'https://api.topsales.net.cn/open', //对应自己的接口
@@ -32,9 +37,12 @@ module.exports = {
       }
     }
   },
+  // 输出文件目录
+  outputDir: 'webdist',
+  // css相关配置
   css: {
     sourceMap: true, // 开启 CSS source maps
-    loaderOptions: {
+    loaderOptions: {// css预设器配置项
       less: {
         javascriptEnabled: true,
       },
@@ -43,6 +51,7 @@ module.exports = {
       }
     }
   },
+  //webpack配置
   configureWebpack: config => {
     // if (process.env.NODE_ENV === 'production') {
     //   // 为生产环境修改配置
@@ -61,5 +70,6 @@ module.exports = {
     //   );
     // }
   },
-  lintOnSave: false  
+  // 第三方插件配置
+  pluginOptions: { } 
 }

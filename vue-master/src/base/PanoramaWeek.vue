@@ -5,7 +5,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-
 import MyHeader from "components/header.vue"
 export default {
   name: "",
@@ -17,7 +16,7 @@ export default {
   },
   data() {
     return {
-      
+      anta: null//C3D主程序
     }
   },
   mounted() {
@@ -34,15 +33,19 @@ export default {
       this.panorama()
     },
     //全景场景创建主程序
-    panorama(){
+    panorama() {
       //创建场景
       let { panoramaConfig } = this, _this = this
-      let anta = new C3D.Stage({ el: this.$refs.panorama });
-      anta.size(window.innerWidth, window.innerHeight).update();
-      //容器
+      this.anta = new C3D.Stage({ el: this.$refs.panorama, fov: panoramaConfig.fov })
+      let { anta } = this
+      anta.size(window.innerWidth, window.innerHeight).material({  
+        color : panoramaConfig.backColor
+      }).update();
+      //容器 
       var spMain = new C3D.Sprite();
       spMain.position(0, 0, -600).update();
       anta.addChild(spMain);
+      console.log("anta.fov", anta.fov)
       //loading列表
       var loader = new window.PxLoader();
       loader.addImage("");
@@ -51,7 +54,8 @@ export default {
       var bg_num = panoramaConfig.backImgSrc[1];
       var o = { w: panoramaConfig.fullImg[0], h: panoramaConfig.fullImg[1] },
       M = o.w / bg_num,
-      h = 414,
+      h = o.w / (Math.PI * 2) * 0.9764,
+      // h = 414,
       Y = panoramaConfig.panoramaBackImg;
       var panoBg = new C3D.Sprite();
       var d = { lat: 0, lon: 0 },
@@ -236,6 +240,12 @@ export default {
       // $(window).on("resize",function(){resize()});       
       loader.start();
     },
+    //场景更新
+    c3dUpdate() {
+      // this.panoramaConfig = {}
+      // this.panorama()
+      this.anta.size(window.innerWidth, window.innerHeight).update()
+    },
     //url解析
     getPublicUrl(url) {
       let urlArray = url.split("/")    
@@ -253,6 +263,8 @@ export default {
 <style scoped>
   #panorama>>>div{
     background-repeat: no-repeat;
+    background-size: 100%;
+    /* opacity: 1 !important; */
   }
-  #panorama>>>div[data-name="title1"]{animation:wobble 2s infinite alternate;}
+  /* #panorama>>>div[data-name="title1"]{animation:wobble 2s infinite alternate;} */
 </style>

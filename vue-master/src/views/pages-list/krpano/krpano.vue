@@ -9,6 +9,9 @@
         <button @click="krpanoLoadscene(1)">切换场景</button>
         <button @click="showHideHot(1)">第一批热点</button>
         <button @click="showHideHot(2)">第二批热点</button>
+        <button @click="getOpenGyroAuth">ios获取陀螺仪权限</button>
+        <button @click="openGyro">开启陀螺仪</button>
+        <button @click="openGyro(true)">关闭陀螺仪</button>
       </div>
       <div class="angle flex-cen">
         <div><span class="iconfont icon-ziyuanldpi" :style="{transform: 'rotate('+currentAngle+'deg)'}"></span></div>
@@ -29,7 +32,7 @@ export default {
       pageTitle: "krpano全景",//网页标题
       krpanoPage: null,//krpano页面
       hotspotList1: [//热点组1
-        { hotName: "hot1", x: '55', y: '2', w: '112', h: '100', imgSrc:'images/img_01.png', text: '西安市第一', isShow: true, animation: '', click: "switchScene(0)" },
+        { hotName: "hot1", x: '0', y: '2', w: '112', h: '100', imgSrc:'images/img_01.png', text: '西安市第一', isShow: true, animation: '', click: "switchScene(0)" },
         { hotName: "hot2", x: '300', y: '0', w: '80', h: '80', imgSrc:'images/points_01.png', text: '去餐厅', isShow: true, animation: '64,64,50', click: "switchScene(1)" }
       ],
       hotspotList2: [//热点组2
@@ -43,6 +46,20 @@ export default {
     this.hotspotInit()
   },
   methods: {
+    getOpenGyroAuth() {
+      // ios 提示授权， 返回的是一个 promise
+      window.DeviceOrientationEvent.requestPermission().then(state => {
+        console.log("state", state)
+        if (state === "granted") {//允许
+            console.log("【允许使用陀螺仪】", state)
+            this.openGyro()
+        } else if (state === "denied") {//拒绝
+            console.log("【拒绝使用陀螺仪】", state)
+        } else if (state === "prompt") {
+            console.log("【用户进行其他操作】", state)
+        }
+      })    
+    },
     switchScene(e) {
       this.krpanoLoadscene(e.data, 'elliptic + zoom')
     },
@@ -53,11 +70,10 @@ export default {
     onloadcomplete() {
       console.log("【全景初始化完成】")
       this.batchAddHot()
-      setTimeout(() => {
-        console.log("改变视角")
-        this.rotationAngle(50, 10, 1)
-        // this.setVlookatHlookat(50)
-      }, 2000)
+      // setTimeout(() => {
+      //   console.log("改变视角")
+      //   this.rotationAngle(50, 10, 1)
+      // }, 2000)
     },
     //监听全景加载
     // onxmlcomplete() {
@@ -81,7 +97,7 @@ export default {
       this.krpanoAddHotspot(this.hotspotList1)
       this.krpanoAddHotspot(this.hotspotList2)
     },
-    //热点显示隐藏
+    //热点显示隐藏 
     showHideHot(type) {
       this.krpanoHideHotspot(this.hotspotList1, type == 1 ? true : false)
       this.krpanoHideHotspot(this.hotspotList2, type == 2 ? true : false)

@@ -87,7 +87,7 @@ export default {
        * @api: play 控制播放方法，可选传参[数字：播放后自动暂停在某帧 || 字符串数字：循环播放次数 || 数组：循环播放区间]
        * @api: pause 暂停播放方法，可选传参[数字：暂停在某帧]
        * 
-       */
+       */ 
       sequenceList: { url: `${ASSETS_URL}images/sequence/home/bg_huanghun/huanghun_0.jpg`, num: 22, initIndex: 1, speed: 100, loop: true, autoplay: true },//背景
       sequenceList2: { url: `${ASSETS_URL}images/sequence/home/cow/xiao/richang/xiaoniu_0.png`, num: 20, initIndex: 1, speed: 100, loop: true, autoplay: false },//小牛
       sequenceList3: { url: `${ASSETS_URL}images/sequence/home/cow/zhong/chicao/zhongcao_0.png`, num: 20, initIndex: 1, speed: 100, loop: 5, autoplay: true },//中牛

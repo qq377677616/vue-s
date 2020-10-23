@@ -3,6 +3,9 @@
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
     <button @click="modifyShare">修改分享路径</button>
     <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" />
+    <button @click="showHidePopup('showPopup')">显示弹窗{{showPopup}}</button>
+    <button @click="showHidePopup('showPopup', true)">隐藏弹窗{{showPopup}}</button>
+    <button @click="getUser">获取</button>
     <input type="text" @input="input" v-model="inputs">
     <input type="file" id="file" @change="inputChange">
     <!-- <wx-open-launch-weapp id="launch-btn" username="gh_3547ec19af8c" path="pages/index/index.html?user=123&action=abc" >
@@ -11,6 +14,9 @@
         <button class="btn">打开小程序1</button>
       </script>
     </wx-open-launch-weapp> -->
+    <!-- <div class="popup fade-show" :class="{ 'fade-show-close': showPopup == 2 }" v-show="showPopup != 0"></div> -->
+    <div class="popup rl-fd" :class="{ 'rl-fd-close': showPopup == 2 }" v-show="showPopup != 0"></div>
+    <!-- <div class="popup" v-show="showPopup1 != 0"></div> -->
     <div class="scroll-box">
       <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
         <div>
@@ -18,6 +24,7 @@
         </div>
       </scroll>
     </div>
+    <tab></tab>
   </div>
 </template>
 
@@ -66,11 +73,15 @@ export default {
       inputs: '',
       obj: { song: 377 },
       imgs: require("../assets/images/poster_02.png"),
-      isVideo: false
+      isVideo: false,
+      showPopup: 0,
+      showPopup1: 0,
+      appid: 'wx2fbd0f121ad7f27b',
+      secret: '788eee27241b4653a2ae2b71fdd21505'
     }
   },
   created() {
-
+    console.log("getQueryString('code')", getQueryString('code'))
   },
   computed: {
     
@@ -92,6 +103,41 @@ export default {
     
   },
   methods: {
+    getUser() {
+      console.log("getQueryString('code')", getQueryString('code'))
+      this.getAccessToken(getQueryString('code'))
+    },
+    getAccessToken(code) {
+      var _data = {
+        appid: this.appid,
+        secret: this.secret,
+        code: code,
+        grant_type: 'authorization_code'
+      }
+      api.getAccessToken(_data).then( res =>{
+        console.log("【通过code获取access_token】", res)
+        this.getUserInfo(res.access_token, res.openid)
+      })
+    },
+    getUserInfo(access_token, openid) {
+      console.log("getQueryString('code')", getQueryString('code'))
+      var _data = {
+        access_token: access_token,
+        openid: openid
+      }
+      api.getUserInfo("https://api.weixin.qq.com/sns/userinfo", _data, function(res){
+        console.log("【获取用户信息】", res)
+      })
+    },
+    //弹出、关闭弹窗
+    showHidePopup(popupType, type) {
+      if (!type) {
+        this[popupType] = 1
+      } else {
+        this[popupType] = 2
+        setTimeout(() => { this[popupType] = 0 }, 400)
+      }
+    },
     inputChange() {
       let files = document.getElementById("file").files[0]
       console.log("files", files)
@@ -193,7 +239,7 @@ video.on {
 #pro {
   padding: 0.6rem;
   background: #fff;
-  font-size: 0.3rem;
+  font-size: 0.3rem; 
   position: fixed;
   left: 0;
   top: 0;
@@ -262,4 +308,5 @@ audio {
 .box{height: 500px;overflow: hidden;}
 .box div{line-height: 1.5;font-size: 20px;text-align: center;}
 input{padding-left: .2rem;}
+.popup{width:60vw;height: 300px;background: green;border-radius: 10px;position: absolute;left:20vw;top:100px;}
 </style>
