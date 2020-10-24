@@ -2,28 +2,33 @@
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
     <button @click="modifyShare">修改分享路径</button>
-    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" />
-    <button @click="showHidePopup('showPopup')">显示弹窗{{showPopup}}</button>
-    <button @click="showHidePopup('showPopup', true)">隐藏弹窗{{showPopup}}</button>
-    <button @click="getUser">获取</button>
-    <input type="text" @input="input" v-model="inputs">
-    <input type="file" id="file" @change="inputChange">
+    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" style="opacity:0;" />
+    <button @click="showHidePopup()">显示弹窗</button>
+    <button @click="showHidePopup(true)">隐藏弹窗</button>
+    <!-- <button @click="getUser">获取</button> -->
+    <!-- <input type="text" @input="input" v-model="inputs">
+    <input type="file" id="file" @change="inputChange"> -->
     <!-- <wx-open-launch-weapp id="launch-btn" username="gh_3547ec19af8c" path="pages/index/index.html?user=123&action=abc" >
       <script type="text/wxtag-template">
         <style>.btn { padding: 12px; }</style>
         <button class="btn">打开小程序1</button>
       </script>
     </wx-open-launch-weapp> -->
-    <!-- <div class="popup fade-show" :class="{ 'fade-show-close': showPopup == 2 }" v-show="showPopup != 0"></div> -->
-    <div class="popup rl-fd" :class="{ 'rl-fd-close': showPopup == 2 }" v-show="showPopup != 0"></div>
-    <!-- <div class="popup" v-show="showPopup1 != 0"></div> -->
-    <div class="scroll-box">
+    <div class="popup fade-show" :class="{ 'fade-show-close': showPopup0 == 2 }" v-show="showPopup0 != 0"></div>
+    <div class="popup rs-fd" :class="{ 'rs-fd-close': showPopup1 == 2 }" v-show="showPopup1 != 0"></div>
+    <div class="popup bt-fd" :class="{ 'bt-fd-close': showPopup2 == 2 }" v-show="showPopup2 != 0"></div>
+    <div class="popup tb-fd" :class="{ 'tb-fd-close': showPopup3 == 2 }" v-show="showPopup3 != 0"></div>
+    <div class="popup lr-fd" :class="{ 'lr-fd-close': showPopup4 == 2 }" v-show="showPopup4 != 0"></div>
+    <div class="popup rl-fd" :class="{ 'rl-fd-close': showPopup5 == 2 }" v-show="showPopup5 != 0"></div>
+
+
+    <!-- <div class="scroll-box">
       <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
         <div>
           <div v-for="item in 30" :key="item">这是内容这是内容这是内容这是内容这是内容这是内容这是内容{{item}}</div>
         </div>
       </scroll>
-    </div>
+    </div> -->
     <tab></tab>
   </div>
 </template>
@@ -35,7 +40,7 @@ import Scroll from 'base/scroll/scroll.vue'
 // import Shake from "assets/js/shake.js"
 import Tab from "components/tab.vue"
 import EXIF from "exif-js"
-import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation } from "assets/js/util"
+import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation, showHidePopup } from "assets/js/util"
 import {
   getLocation_qq,
   getLocation_baidu,
@@ -74,8 +79,14 @@ export default {
       obj: { song: 377 },
       imgs: require("../assets/images/poster_02.png"),
       isVideo: false,
-      showPopup: 0,
+      popupIndex: 0,
+      showPopup0: 0,
       showPopup1: 0,
+      showPopup2: 0,
+      showPopup3: 0,
+      showPopup4: 0,
+      showPopup5: 0,
+      showPopup6: 0,
       appid: 'wx2fbd0f121ad7f27b',
       secret: '788eee27241b4653a2ae2b71fdd21505'
     }
@@ -129,14 +140,11 @@ export default {
         console.log("【获取用户信息】", res)
       })
     },
-    //弹出、关闭弹窗
-    showHidePopup(popupType, type) {
-      if (!type) {
-        this[popupType] = 1
-      } else {
-        this[popupType] = 2
-        setTimeout(() => { this[popupType] = 0 }, 400)
-      }
+    // //弹出、关闭弹窗
+    showHidePopup(type) {
+      showHidePopup(this, 'showPopup0', type)
+      // showHidePopup(this, `showPopup${this.popupIndex}`, type)
+      // if (type) this.popupIndex >= 5 ? this.popupIndex = 0 : ++this.popupIndex
     },
     inputChange() {
       let files = document.getElementById("file").files[0]

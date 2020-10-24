@@ -10,11 +10,11 @@ if (!PROJECT_CONFIG_CODE) {
 }
 let re_request_num = 0, NUM_RETRIES = 0;
 (function _configStart() {
-  if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime()
+  if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime() 
   if (PROJECT_CONFIG.wx_jssdk_type) {
     getWxConfig({ url: encodeURIComponent(window.location.href) }).then(res => {
       console.log("【微信注册信息4个参数获取成功】", res)
-      _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 2 ? res.data.result : res.data)
+      _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 3 ? res.data.result : res.data)
     }).catch(err => {
       console.log("【微信注册信息4个参数获取失败】", err)
       if ( re_request_num < 10) {

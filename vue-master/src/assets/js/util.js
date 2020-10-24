@@ -11,6 +11,15 @@ const getQueryString = name => {
     }
   }
 }
+//弹出、关闭弹窗
+const showHidePopup = (page, popupType, type) => {
+  if (!type) {
+    page[popupType] = 1
+  } else {
+    page[popupType] = 2
+    setTimeout(() => { page[popupType] = 0 }, 500)
+  }
+}
 //获取当前时间
 const getDate = () => {
   let dates = new Date()
@@ -617,6 +626,7 @@ const canvasImg = (options) => {
 }
 export {
   getQueryString,
+  showHidePopup,
   getDate,
   getDistance,
   timestampToTime,

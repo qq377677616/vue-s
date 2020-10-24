@@ -49,34 +49,34 @@ body img{max-width: 100%;}
   
 /***************关键帧动画***************/
 /*弹窗式--放大缩小淡出*/
-.fade-show{animation:fade-show .4s forwards;}
+.fade-show{animation:fade-show .5s forwards;}
 @keyframes fade-show{ 0%{transform:scale(.1);opacity:0;} 90%{transform:scale(1.1);opacity:1;} 100%{transform:scale(1);opacity:1;} }      
-.fade-show-close{animation:fade-show-close .4s forwards;}
+.fade-show-close{animation:fade-show-close .5s forwards;}
 @keyframes fade-show-close{ 0%{transform:scale(1);opacity:1;} 50%{transform:scale(1.1);opacity:1;} 100%{transform:scale(.2);opacity:0;} } 
 /*弹窗式--旋转放大淡出*/
-.rs-fd{animation:rs-fd .7s forwards;}
+.rs-fd{animation:rs-fd .5s forwards;}
 @keyframes rs-fd { 0%{transform:rotate(20deg) scale(.5);opacity:0;} 100%{transform:rotate(0deg) scale(1);opacity:1;} }
-.rs-fd-close{animation:rs-fd-close .7s;}
+.rs-fd-close{animation:rs-fd-close .5s;}
 @keyframes rs-fd-close { 0%{transform:rotate(0) scale(1);opacity:1;} 50%{transform:rotate(20deg) scale(1.1);opacity:1;} 100%{transform:rotate(20deg) scale(.2);opacity:0;} }
 /*弹窗式--从下往上淡出*/
-.bt-fd{animation:bt-fd .7s forwards;}
+.bt-fd{animation:bt-fd .5s forwards;}
 @keyframes bt-fd { 0%{transform:translateY(30%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
-.bt-fd-close{animation:bt-fd-close .7s;}
+.bt-fd-close{animation:bt-fd-close .5s;}
 @keyframes bt-fd-close { 0%{transform:translateY(0);opacity:1;} 100%{transform:translateY(30%);opacity:0;} }
 /*弹窗式--从上往下淡出*/
-.tb-fd{animation:tb-fd .7s forwards;}
+.tb-fd{animation:tb-fd .5s forwards;}
 @keyframes tb-fd { 0%{transform:translateY(-30%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
-.tb-fd-close{animation:tb-fd-close .7s forwards;}
+.tb-fd-close{animation:tb-fd-close .5s forwards;}
 @keyframes tb-fd-close { 0%{transform:translateY(0);opacity:1;} 100%{transform:translateY(-30%);opacity:0;} }
 /*弹窗式--从左往右向淡出*/
-.lr-fd{animation:lr-fd .7s;}
+.lr-fd{animation:lr-fd .5s;}
 @keyframes lr-fd { 0%{transform:translateX(-40%);opacity:0;} 100%{transform:translateX(0);opacity:1;} }
-.lr-fd-close{animation:lr-fd-close .7s;}
+.lr-fd-close{animation:lr-fd-close .5s;}
 @keyframes lr-fd-close { 0%{transform:translateX(0);opacity:1;} 100%{transform:translateX(-40%);opacity:0;} }
 /*弹窗式--从右往左淡出*/
-.rl-fd{animation:rl-fd .7s;}
+.rl-fd{animation:rl-fd .5s;}
 @keyframes rl-fd { 0%{transform:translateX(40%);opacity:0;} 100%{transform:translateY(0);opacity:1;} }
-.rl-fd-close{animation:rl-fd-close .7s;}
+.rl-fd-close{animation:rl-fd-close .5s;}
 @keyframes rl-fd-close { 0%{transform:translateX(0);opacity:1;} 100%{transform:translateX(40%);opacity:0;} }
 /*从下往上弹出*/
 .bottom-top{animation:bottom-top .3s forwards;}
@@ -85,5 +85,5 @@ body img{max-width: 100%;}
 .wobble{animation:wobble 2s infinite alternate;}
 @keyframes wobble { 0%{transform:translateY(-.1rem) rotateY(5deg);} 100%{transform:translateY(.1rem) rotateY(-5deg);} }
 /*效果式--放大波浪*/
-.scale-wave{animation:scale-wave .7s infinite;}
+.scale-wave{animation:scale-wave .5s infinite;}
 @keyframes scale-wave { 0%{transform:scale(1);opacity: 1;} 100%{transform:scale(3);opacity: 0;} }
