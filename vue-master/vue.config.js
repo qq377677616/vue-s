@@ -38,7 +38,7 @@ module.exports = {
     }
   },
   // 输出文件目录
-  outputDir: 'webdist',
+  outputDir: 'dist',
   // css相关配置
   css: {
     sourceMap: true, // 开启 CSS source maps
