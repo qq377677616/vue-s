@@ -55,7 +55,7 @@ function _getPageConfig(config) {
       SHARECONFIG.Desc = _data.shareContent
       SHARECONFIG.ShareUrl = AUTH_URL || _data.project_url
       SHARECONFIG.ShareImage = _data.shareImg 
-      _openDebugging(_data['online-date'], _data['offline-date'])
+      _openDebugging(_data['online-date'], _data['offline-date']) 
       _wxConfig(config)
       if (PROJECT_CONFIG.mta.is_open) _mtaInit(_data.res_appid)
     }).catch(err => {
@@ -74,6 +74,7 @@ function _openDebugging(onlineDate, offlinedate) {
     //development
     if (onlineDate && (_curTime - _onlineDate > 0) && (offlinedate && (_curTime - _offlinedate < 0))) _is_go_online = false
     if ( PROJECT_CONFIG.is_offline_sign_out && process.env.NODE_ENV == 'development' && _curTime - _offlinedate > 0) {
+      document.querySelector(".vc-switch").innerHTML = '已下线'
       alert("项目已下线")
       window.close()
     }

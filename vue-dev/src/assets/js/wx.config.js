@@ -12,7 +12,7 @@ let re_request_num = 0, NUM_RETRIES = 0;
 (function _configStart() {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime()
   if (PROJECT_CONFIG.wx_jssdk_type) {
-    getWxConfig({ url: encodeURIComponent(window.location.href) }).then(res => {
+    getWxConfig().then(res => {
       console.log("【微信注册信息4个参数获取成功】", res)
       _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 2 ? res.data.result : res.data)
     }).catch(err => {
@@ -78,7 +78,7 @@ function _openDebugging(onlineDate, offlinedate) {
       window.close()
     }
   }
-  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && (process.env.NODE_ENV == 'production' || window.location.href.indexOf("192.") != -1)) || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
+  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && (process.env.NODE_ENV == 'production' || window.location.href.indexOf(".com") != -1)) || (PROJECT_CONFIG.vConsole.is_open == 3 && process.env.NODE_ENV == 'production' && _is_go_online)) {
     let vConsole = new VConsole()
     document.querySelector(".vc-switch").innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     document.querySelector(".vc-switch").style.background = PROJECT_CONFIG.vConsole.green_label_color

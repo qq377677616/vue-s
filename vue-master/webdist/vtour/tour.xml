@@ -24,28 +24,22 @@
 	-->
 	<autorotate enabled="false" waittime="1.5" accel="1.0" speed="10.0" horizon="0.0" tofov="off" />
 
-<!-- 陀螺仪 -->
-<!--插入重力插件-->
-<plugin name="gyroscope"
-        url="%SWFPATH%/plugins/gyro.js"
-        keep="true"
-        devices="tablet|mobile"
-        onavailable="delayedcall(1, checkGyroAvailability(););"
-        enabled="true"
-        />
- 
-<!--重力状态控制-->
-<action name="changeGyroscopeState">
+	<!-- 陀螺仪 -->
+	<!--插入重力插件-->
+	<plugin name="gyroscope" url="%SWFPATH%/plugins/gyro.js" keep="true" devices="tablet|mobile" onavailable="delayedcall(1, checkGyroAvailability(););" enabled="true" />
+
+	<!--重力状态控制-->
+	<action name="changeGyroscopeState">
   ifnot (plugin[gyroscope].available === undefined,
     if (plugin[gyroscope].available,
       switch(plugin[gyroscope].enabled);
       if (plugin[gyroscope].enabled, events.dispatch(ongyroscopeon);, events.dispatch(ongyroscopeoff););
     );
   );
-</action>
- 
-<!--检测设备是否支持重力感应-->
-<action name="checkGyroAvailability">
+	</action>
+
+	<!--检测设备是否支持重力感应-->
+	<action name="checkGyroAvailability">
 	ifnot (plugin[gyroscope].available === undefined, 
 		if (plugin[gyroscope].available,
 			set(tour_gyroscopedevices, true);
@@ -59,10 +53,10 @@
 		set(tour_gyroscopedevices, false);
 		set(plugin[gyroscope].enabled, false);
 	);
-</action>
-	
-<!--重力控制按钮--> 
-<!-- <layer name="skin_gyro" url="%SWFPATH%/skin/vtourskin.png" crop="0|384|64|64"  align="leftbottom" x="245"  y="20" scale="3" zorder="2" alpha="0.3" onover="tween(alpha,1);" onhover="showtext(重力控制)" onout="tween(alpha,0.3);" ondown="onover();" onup="onout();" οnclick="changeGyroscopeState();" visible="true" devices="html5" keep="true" /> -->
+	</action>
+
+	<!--重力控制按钮-->
+	<!-- <layer name="skin_gyro" url="%SWFPATH%/skin/vtourskin.png" crop="0|384|64|64" align="leftbottom" x="245" y="20" scale="3" zorder="2" alpha="0.3" onover="tween(alpha,1);" onhover="showtext(重力控制)" onout="tween(alpha,0.3);" ondown="onover();" onup="onout();" οnclick="changeGyroscopeState();" visible="true" devices="html5" keep="true" /> -->
 
 
 
@@ -103,7 +97,7 @@
         set(plugin[get(tooltipname)].vcenter,true);
         set(plugin[get(tooltipname)].background,true);
         set(plugin[get(tooltipname)].backgroundcolor,0xD9A77B);
-        		<!-- set(plugin[get(tooltipname)].backgroundcolor,transparent); -->
+        				<!-- set(plugin[get(tooltipname)].backgroundcolor,transparent); -->
         set(plugin[get(tooltipname)].roundedge,20);
         set(plugin[get(tooltipname)].backgroundalpha,1);
         set(plugin[get(tooltipname)].padding,5);

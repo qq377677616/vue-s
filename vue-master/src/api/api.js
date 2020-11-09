@@ -25,5 +25,12 @@ export default {
   getCompanyName: (data, url = 'https://sp0.tianyancha.com/search/suggestV2.json', type = 'get') => { return api(url, data, type, true, 0) },
   //PC端获取用户信息
   getAccessToken: (data, url = 'https://api.weixin.qq.com/sns/oauth2/access_token', type = 'get') => { return api(url, data, type, true, 0) },
-  getUserInfo: (data, url = 'https://api.weixin.qq.com/sns/userinfo', type = 'get') => { return api(url, data, type, true, 0) }
+  getUserInfo: (data, url = 'https://api.weixin.qq.com/sns/userinfo', type = 'get') => { return api(url, data, type, true, 0) },
+  //德美接口
+  getLiveList: (data, url = 'https://game.vrupup.com/sanguo/suyuanen/h5/demei/public/api/Live/live_list', type = 'get') => { return api(url, data, type, true, 0) },
+
+
+  //测试接口
+  getPostTest: (data, url = 'http://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js', type = 'get') => { return api(url, data, type, true, 0) },
+  getPosition: (data, url = 'https://apis.map.qq.com/ws/geocoder/v1?&poi_options=address_format=short&get_poi=1', type = 'jsonp') => { return api(url, data, type, true, 0) }
 }

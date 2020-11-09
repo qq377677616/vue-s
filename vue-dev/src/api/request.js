@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 import jsonp from 'api/jsonp'
@@ -11,7 +11,10 @@ const service = axios.create({
   timeout: 5000, // request timeout
   headers: {
     "Content-Type": 'application/x-www-form-urlencoded'//'application/json'
-  }
+  },
+  // paramsSerializer: function(params) {
+  //   return qs.stringify(params, { arrayFormat: 'repeat' })
+  // }
 })
 // axios.defaults.headers.post['Content-Type'] = 'application/json';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -29,6 +32,7 @@ if (process.env.NODE_ENV == 'development') {//本地开发模式
 /*********************请求拦截器*********************/
 service.interceptors.request.use(
   config => {
+    if (config.method === 'get') config.params = config._params
     // console.log("【请求拦截器】", config)
     // config.headers.token = 'my-token'
     // config.headers["x-access-token"] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJl'
@@ -59,14 +63,16 @@ export const api = (url, data, type = 'post', isQs = true, isUrl = 0, config) =>
     url = `${REQUEST_PROXY_URL}${url}`
   }
   if (type === 'jsonp') {
-    return Vue.prototype.$jsonp(url, data).then(res => {
+    // return Vue.prototype.$jsonp(url, data).then(res => {
+    return jsonp(url, data).then(res => {
       return Promise.resolve(res)
     }).catch(err => {
       return Promise.reject(err)
     }) 
   } else {
     if (type !== 'post' && type !== 'get') return Promise.reject({ status: 1001, message: '请求方法不符合规范' }) 
-    return service[type](url, isQs ? qs.stringify(data) : data, config).then(res => {
+    // return service[type](url, isQs ? qs.stringify(data) : data, config).then(res => {
+    return service[type](url, type == 'post' ? (isQs ? qs.stringify(data) : data) : { _params: data }, config).then(res => {
       return Promise.resolve(res)
     }).catch(err => {
       return Promise.reject(err)

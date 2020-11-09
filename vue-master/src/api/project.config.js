@@ -2,7 +2,7 @@
  ************************** 常规配置项 **************************
  */
 //接口请求成功status状态值
-const ERR_Ok = 200
+const ERR_Ok = 200 
 //接口请求失败status状态值 
 const ERR_NO = 0
 //微信config注册配置信息请求接口地址
@@ -75,7 +75,6 @@ const PROJECT_CONFIG = {
     is_open: true,
     appid: 500707448
   },
-  // is_tx_mtah5: true,//是否配置腾讯统计
   /*背景音乐配置*/  
   is_background_music: {
     is_open: false,//是否开启背景音乐
@@ -85,7 +84,7 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 1,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 2,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
     green_label_position: '100',//绿标初始位置boottom，单位px、rem
     green_label_title: "V 1.0.1"//浮标文字，一般用于版本号标明

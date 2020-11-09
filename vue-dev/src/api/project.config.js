@@ -2,22 +2,22 @@
  ************************** 常规配置项 **************************
  */
 //接口请求成功status状态值
-const ERR_Ok = 200
+const ERR_Ok = 200 
 //接口请求失败status状态值 
 const ERR_NO = 0
 //微信config注册配置信息请求接口地址
 const WXCONFIG_URL = ['http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[game.flyh5.cn]
-                      'http://vrupup.com/shuihu/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[vrupup.com]
+                      'https://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js',//[vrupup.com]
                       'https://auth.vrupup.com/sanguo/auth/share.php?url=www.baidu.com&appid=wx7c3ed56f7f792d84',//[game.vrupup.com]
                       'http://dev.flyh5.cn/why-online-member/wxAuth/getJsSdk',//[dev.flyh5]
                       'http://auth.vrupup.com/sanguo/auth/share.php?appid=wxa5e08871399cd731&type=js',//[云美]
-                     ]
+                     ] 
 //微信config注册配置信息script地址
 const WXCONFIG_SCRIPT_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&type=js&isonlyopenid=true'
 //项目接口请求地址 
 const REQUEST_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_snowflower/public/index.php'
 //后端授权链接（分享链接）
-const AUTH_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_tests/index.php'
+const AUTH_URL = 'http://game.vrupup.com/resources/web/szq/vue-s-dev/index.html#/'
 //获取用户信息请求地址
 const GET_USER_INFO_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_tests/api.php?a=get_session'
 //本地请求代理请求地址
@@ -39,7 +39,7 @@ const ASSETS_URL = 'https://img.vrupup.com/web/szq/ylzhennong/'
  */
 import MySharePage from 'views/index.vue'
 const SHARECONFIG = {
-  type: 1,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
+  type: 0,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
   hideMenuList: { pengyou: false, pengyouquan: false, qq: false, qqkongjian: false, fuzhi: false, shoucang: false, qqliulanqi: false, safariliulanqi: false },//批量隐藏功能按钮
   ShareUrl: window.location.href,
   Title: '[模板默认]专注vue',
@@ -72,7 +72,7 @@ const PROJECT_CONFIG = {
   is_wx_share: true,//是否配置分享
   /*腾讯统计配置*/
   mta: {
-    is_open: true,
+    is_open: true, 
     appid: 500707448
   },
   // is_tx_mtah5: true,//是否配置腾讯统计
@@ -85,7 +85,7 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 0,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
+    is_open: 2,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
     green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
     green_label_position: '100',//绿标初始位置boottom，单位px、rem
     green_label_title: "V 1.0.1"//浮标文字，一般用于版本号标明

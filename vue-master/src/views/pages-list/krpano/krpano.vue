@@ -33,7 +33,8 @@ export default {
       krpanoPage: null,//krpano页面
       hotspotList1: [//热点组1
         { hotName: "hot1", x: '0', y: '2', w: '112', h: '100', imgSrc:'images/img_01.png', text: '西安市第一', isShow: true, animation: '', click: "switchScene(0)" },
-        { hotName: "hot2", x: '300', y: '0', w: '80', h: '80', imgSrc:'images/points_01.png', text: '去餐厅', isShow: true, animation: '64,64,50', click: "switchScene(1)" }
+        { hotName: "hot2", x: '300', y: '0', w: '80', h: '80', imgSrc:'images/points_01.png', text: '去餐厅2', isShow: true, animation: '64,64,50', click: "switchScene(1)" },
+        { hotName: "hot5", x: '100', y: '0', w: '80', h: '80', imgSrc:'images/points_05.png', text: '这些文字2', isShow: true, animation: '200,200,10', click: "switchScene(1)" }
       ],
       hotspotList2: [//热点组2
         { hotName: "hot3", x: '0', y: '30', w: '50', h: '50', imgSrc:'images/btn4.png', text: '去阳台', isShow: false, animation: '', click: "switchScene(2)" },

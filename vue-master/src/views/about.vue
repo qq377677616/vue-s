@@ -1,10 +1,13 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <button @click="getTest()">get请求</button>
+    <button @click="getPosition()">jsonp请求</button>
     <button @click="modifyShare">修改分享路径</button>
-    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" style="opacity:0;" />
+    <img src="http://game.flyh5.cn/resources/game/wechat/szq/images/my-code_01.jpg" style="width:200px;" />
     <button @click="showHidePopup()">显示弹窗</button>
     <button @click="showHidePopup(true)">隐藏弹窗</button>
+    <!-- <vshare :vshareConfig="vshareConfig"></vshare> -->
     <!-- <button @click="getUser">获取</button> -->
     <!-- <input type="text" @input="input" v-model="inputs">
     <input type="file" id="file" @change="inputChange"> -->
@@ -21,7 +24,7 @@
     <div class="popup lr-fd" :class="{ 'lr-fd-close': showPopup4 == 2 }" v-show="showPopup4 != 0"></div>
     <div class="popup rl-fd" :class="{ 'rl-fd-close': showPopup5 == 2 }" v-show="showPopup5 != 0"></div>
 
-
+   
     <!-- <div class="scroll-box">
       <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
         <div>
@@ -64,9 +67,10 @@ import MyHeader from "components/header.vue"
 // } from "api/api"
 import api from 'api/api'
 import { shareConfigure, getUserInfo } from "assets/js/wx.config"
-// import { AUTH_URL } from "api/config";
+import { AUTH_URL } from "api/project.config";
 import pdf from "vue-pdf"
 import Pdfh5 from "pdfh5"
+// import Vshare from 'vshare'
 // import { isMobile } from 'mobile-device-detect'
 // import { MobileDetect } from 'mobile-detect'
 var myChart_one, myChart_two, myChart_three
@@ -88,7 +92,39 @@ export default {
       showPopup5: 0,
       showPopup6: 0,
       appid: 'wx2fbd0f121ad7f27b',
-      secret: '788eee27241b4653a2ae2b71fdd21505'
+      secret: '788eee27241b4653a2ae2b71fdd21505',
+      vshareConfig: {
+          shareList: [
+            'qzone',
+            'tsina',
+            'renren',
+            'tsohu',
+            'weixin'
+          ],
+          common : {
+            //此处放置通用设置
+          },
+          share : [{
+            //此处放置分享按钮设置
+            bdSize: 32
+            }
+          ],
+          slide : [
+            //此处放置浮窗分享设置
+          ],
+          image: [
+            {
+              tag: '',
+              viewType: 'collection',
+              viewPos: '',
+              viewColor: '',
+              viewSize: 32
+            }
+          ],
+          selectShare : [
+            //此处放置划词分享设置
+          ]
+        }
     }
   },
   created() {
@@ -101,6 +137,7 @@ export default {
     
   },
   mounted() {
+    // with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src ='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
     // getTeam().then(res => {
     //   console.log("res", res)
     // })
@@ -109,11 +146,33 @@ export default {
     //   console.log(res)
     //   })
     // }, 5000)
+    this.getLiveList()
   },
   watch: {
     
   },
+  // beforeRouteEnter (to,from,next) {
+  //   console.log(to,from,next)
+  // },
   methods: {
+    getTest() {
+      // api.getPostTest({ _params: { aaa: 555, bbb: 666 } }).then(res => {
+      api.getPostTest({ aaa: 555, bbb: 666, url: encodeURIComponent(window.location.href) }).then(res => {
+        console.log("res", res)
+      })
+    },
+    getPosition(lat = '28.177728', lon = '112.982669') {
+      // api.getPosition({ _params: { location: `${lat},${lon}`} }).then(res => {
+      api.getPosition({ location: `${lat},${lon}`, callbackName: 'QQmap', output:'jsonp', key: 'GW3BZ-NMN6J-JSEFT-FTC6R-F7DA3-Z3FVJ'}).then(res => {
+        console.log("【详细地理位置】", res)
+        this.add = res.result.address
+      })
+    },
+    getLiveList() {
+      api.getLiveList().then(res => {
+        console.log("直播列表", res.data.data.list)
+      })
+    },
     getUser() {
       console.log("getQueryString('code')", getQueryString('code'))
       this.getAccessToken(getQueryString('code'))
@@ -220,6 +279,7 @@ export default {
 </script>
 
 <style scoped>
+.body{text-align: center;}
 /* .body{background: red;} */
 /* .video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
 video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;} */
@@ -236,7 +296,7 @@ embed {
 #video4{z-index: 70;}
 #video5{z-index: 60;}
 #video6{z-index: 50;} */
-.body{padding:0 .5rem;}
+/* .body{padding:0 .5rem;} */
 video.on {
   z-index: 200 !important;
 }

@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -20,6 +21,9 @@ import VueJsonp from 'vue-jsonp'
 import echarts from 'echarts'
 import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
+import vshare from 'vshare'
+
+Vue.use(vshare)
 FastClick.attach(document.body)
 Vue.prototype.$echarts = echarts 
 Vue.use(VueJsonp)
@@ -50,8 +54,7 @@ Vue.use(clipper)
 //   console.log("to", to)
 //   console.log("next", next)
 // })
-
-new Vue({
+export default new Vue({
   router,
   store,
   i18n,

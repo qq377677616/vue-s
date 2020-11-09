@@ -70,6 +70,9 @@ function AddHotspot(spotname = "addhotspot", hlookat = 0.000, vlookat = 0.000, _
 
   krpano.call("set(hotspot[" + spotname + "].ath," + hlookat + ");");
   krpano.call("set(hotspot[" + spotname + "].atv," + vlookat + ");");
+  krpano.call("set(hotspot[" + spotname + "].css," + "font-weight:bold;" + ");");
+  // krpano.call("set(hotspot[" + spotname + "].rotateY," + 50 + ");");
+  // set(plugin[get(tooltipname)].css,'text-align:center; color:#ffffff; font-family:Arial; font-weight:bold; font-size:20px;');
 
   // krpano.call("set(hotspot[" + spotname + "].rx," + hlookat + ");");
   // krpano.call("set(hotspot[" + spotname + "].ry," + vlookat + ");");
