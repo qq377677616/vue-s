@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style>
-  @import 'assets/fonts/font-icon.css';
+  @import 'assets/css/font-icon.css';
   .body{min-height:100vh;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}
   .item-list dd{border:1px solid #333;padding:.2rem .3rem;margin:.5rem 0;text-align: center;}

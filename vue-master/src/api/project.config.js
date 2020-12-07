@@ -3,14 +3,15 @@
  */
 //接口请求成功status状态值
 const ERR_Ok = 200 
-//接口请求失败status状态值 
+//接口请求失败status状态值  
 const ERR_NO = 0
 //微信config注册配置信息请求接口地址
-const WXCONFIG_URL = ['http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[game.flyh5.cn]
-                      'http://vrupup.com/shuihu/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[vrupup.com]
-                      'http://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js',//[game.vrupup.com]
-                      'http://dev.flyh5.cn/why-online-member/wxAuth/getJsSdk',//[dev.flyh5]
-                      'http://auth.vrupup.com/sanguo/auth/share.php?appid=wxa5e08871399cd731&type=js',//[云美]
+const WXCONFIG_URL = ['https://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js',//[0：云聚客]
+                      'https://auth.vrupup.com/sanguo/auth/share.php?appid=wx31dd8e9bcce66497&type=js',//[1：嘻游记]
+                      'https://auth.vrupup.com/sanguo/auth/share.php?appid=wxa5e08871399cd731&type=js',//[2：云美]
+                      'https://auth.vrupup.com/sanguo/auth/share.php?appid=wx38da89ddf8b76665&type=js',//[3：深圳网晨]
+                      'https://iclubh5.gtmc.com.cn/homeservice/gqft/backend/share.php?type=js',//[5：客户]
+                      'https://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&isonlyopenid=true',//[6：旧云聚客]
                      ]
 //微信config注册配置信息script地址
 const WXCONFIG_SCRIPT_URL = 'http://game.flyh5.cn/game/twolevel_autho/share.php?auth_appid=wx7c3ed56f7f792d84&type=js&isonlyopenid=true'
@@ -34,31 +35,24 @@ const ASSETS_URL = 'https://img.vrupup.com/web/szq/ylzhennong/'
 //默认分享配置信息
 /**
  * 关于监听分享回调(当type为0时生效)
- * import MySharePage from 'views/index.vue'
- * 在[MySharePage]组件methodsK中声明一个[shareOk]方法来执行回调
  */
-import MySharePage from 'views/index.vue'
-const SHARECONFIG = {
+const SHARECONFIG = {//此处的分享配置信息优先级低于核弹（除监听分享回调）
   type: 0,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
   hideMenuList: { pengyou: false, pengyouquan: false, qq: false, qqkongjian: false, fuzhi: false, shoucang: false, qqliulanqi: false, safariliulanqi: false },//批量隐藏功能按钮
-  ShareUrl: window.location.href,
+  ShareUrl: AUTH_URL,
   Title: '[模板默认]专注vue',
   Desc: '[模板默认]vue是一套用于构建用户界面的渐进式JavaScript框架。',
-  ShareImage: 'http://game.flyh5.cn/resources/game/wechat/szq/images/avatar_01.jpg',
-  success: res => {//监听分享回调：res.type = 1时为分享给好友、为2时为分享到朋友圈、为3时为分享到QQ、为4时为分享到QQ空间
-    console.log("【点击了分享按钮】", res)
-    MySharePage && MySharePage.methods.shareOk(res, MySharePage)
-  }
+  ShareImage: 'http://game.flyh5.cn/resources/game/wechat/szq/images/avatar_01.jpg'
 }  
 //项目开关配置信息
 const PROJECT_CONFIG = {
   is_loading_page: false,//是否配置loading预加载页
+  wx_jssdk_field: 0,//获取不同公众号的微信jssdk注册参数
   wx_jssdk_type: 1,//获取微信jssdk注册参数类型：0为加载script标签获取，1为请求接口形式获取
-  wx_jssdk_field: 2,//获取不同域名的微信jssdk注册参数：0为[game.flyh5.cn]域名下，1为[vrupup.com]域名下，2为[dev.flyh5]域名下, 3为云美
-  is_data_statistics: true,//是否统计抵达页、点击分享、时长数据
+  is_data_statistics: true,//是否统计抵达页、点击分享、时长数据 
   /*从后端链接授权后获取后台带过来的用户数据配置*/
   getUserInfo: {
-    is_open: true,//是否加载页面后自动获取用户信息后存储到本地两种缓存中
+    is_open: false,//是否加载页面后自动获取用户信息后存储到本地两种缓存中
     type: 1,//获取方式：1为从本地缓存或者url中获取，2为请求后端接口获取
     get_data_list: ['openid', 'token', 'nickname', 'avatar'],//从本地缓存或者url中获取的字段名列表(当type为1时生效)
     response: "res.data.data"//从后端接口请求返回的数据字段格式(当type为2时生效)
@@ -68,12 +62,12 @@ const PROJECT_CONFIG = {
     is_open: false,//是否回到首页，hash模式路由默认刷新后停留在当前页
     home_url: '/'//首页的路由地址,也可以配置其它想跳转的路由地址
   },
-  is_page_locking: true,//是否锁定页面上拉下拉滑动
+  is_page_locking: false,//是否锁定页面上拉下拉滑动
   is_wx_share: true,//是否配置分享
-  /*腾讯统计配置*/
+  /*腾讯统计配置(当核弹短码为空时生效)*/
   mta: {
-    is_open: true,
-    appid: 500707448
+    is_open: true,//是否开启腾讯统计
+    appid: 500707448//腾讯统计appid,当核弹短码为空时生效
   },
   /*背景音乐配置*/  
   is_background_music: {
@@ -84,9 +78,8 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 2,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启
-    green_label_color: "linear-gradient(-90deg, #F28F29 0, #027C60 100%)",//浮标颜色
-    green_label_position: '100',//绿标初始位置boottom，单位px、rem
+    is_open: 1,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启, 4为openid白名单开启
+    openWhiteList: ['oBXw5w_e0LLLRb4AW0KWVFyyq3bg', 'oBXw5wwfc8yUn6NG1HMdyaxpgh5g'],//绿标白名单（当is_open为4时生效）
     green_label_title: "V 1.0.1"//浮标文字，一般用于版本号标明
   }, 
   is_offline_sign_out: false,//项目下线后是否关闭退出项目

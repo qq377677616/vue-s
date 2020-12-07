@@ -229,6 +229,17 @@ const loadScript = (src, callback) => {
 
   })
 }
+//加载字体文件
+const loadFonts = (fontName, fontUrl) => {
+  return new Promise(async(resolve) => {
+    let font = new FontFace(fontName, `url(${fontUrl})`)
+    await font.load()
+    setTimeout(() => {
+      document.fonts.add(font)
+      resolve(font)
+    }, 2000)
+  })
+}
 //判断当前浏览器环境
 const getBrowserEnvironment = () => {
   return new Promise(resolve => {
@@ -255,7 +266,9 @@ const getIsWxClient = () => {
   return new Promise(resolve => {
     let ua = navigator.userAgent.toLowerCase()
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
-      return true
+      resolve(true)
+    } else {
+      resolve(false)
     }
   })
 }
@@ -263,6 +276,7 @@ const getIsWxClient = () => {
 const isSystem = callback => {
   return new Promise(resolve => {
     let u = navigator.userAgent
+    let isWx = (u.toLowerCase().match(/MicroMessenger/i) == "micromessenger")
     let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
     let isIphone = /iphone/gi.test(window.navigator.userAgent)
     let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
@@ -272,9 +286,8 @@ const isSystem = callback => {
     let isX = isIphone && pixelRatio && pixelRatio === 3 && windowW === 375 && windowH === 812
     let isXsMax = isIphone && pixelRatio && pixelRatio === 3 && windowW === 414 && windowH === 896
     let isXR = isIphone && pixelRatio && pixelRatio === 2 && windowW === 414 && windowH === 896
-    resolve({ isAndroid: isAndroid, isiOS: isiOS, system: u, isX: { isX: isX || isXsMax || isXR, X: isX,XsMax: isXsMax, XR: isXR } })
+    resolve({ isAndroid: isAndroid, isiOS: isiOS, system: u, isWx, isX: { isX: isX || isXsMax || isXR, X: isX,XsMax: isXsMax, XR: isXR } })
   })
-
 }
 //audioContext播放音乐
 const audioContextMusic = (mp3Url, clickEle, callback) => {
@@ -413,6 +426,16 @@ const accDiv = (num1, num2) => {
   r2 = Number(num2.toString().replace(".", ""))
   return (r1 / r2) * Math.pow(10, t2 - t1)
 }
+//获取图片信息
+const getImageInfo = imgUrl => {
+  return new Promise(resolve => {
+    let _curImg = new Image()
+    _curImg.src = imgUrl
+    _curImg.onload = () => {
+      resolve({ width: _curImg.width, height: _curImg.height })
+    }
+  })
+}
 /*h5生成图片*/
 const canvasImg = (options) => {
   return new Promise(resolve => {
@@ -444,13 +467,20 @@ const canvasImg = (options) => {
       vars["newImg" + m].src = options.imgList[m].url
     }
     var progress = 0
-    for (var z in options.imgList) {
-      vars["newImg" + z].onload = function() {
-        progress += 2520 / options.imgList.length
-        if (progress === 2520) {
+    let _allNum = options.imgList.length || 0, _curNum = 0
+    _getImageInfo()
+    function _getImageInfo() {
+      let _curimg = options.imgList[_curNum]
+      getImageInfo(_curimg.url).then(res => {
+        options.imgList[_curNum].width = res.width
+        options.imgList[_curNum].height = res.height
+        if (_curNum >= _allNum - 1) {
           startDraw()
+        } else { 
+          _curNum++
+          _getImageInfo()
         }
-      }
+      })
     }
     function addRoundRectFunc() {
       CanvasRenderingContext2D.prototype.roundRect = function(
@@ -499,14 +529,8 @@ const canvasImg = (options) => {
           drawImg()
         } else if (options.imgList[n].radius == "50%") {
           ctx.save()
-          var r = options.imgList[n].imgW * 0.5
-          ctx.arc(
-            options.imgList[n].imgX + r,
-            options.imgList[n].imgY + r,
-            r,
-            0,
-            2 * Math.PI
-          )
+          let r = options.imgList[n].imgW * 0.5
+          ctx.arc(options.imgList[n].imgX + r, options.imgList[n].imgY + r, r, 0, 2 * Math.PI)
           ctx.clip()
           ctx.fill()
           drawImg(true)
@@ -528,16 +552,33 @@ const canvasImg = (options) => {
           ctx.restore()
         }
         function drawImg(arc) {
+          ctx.beginPath()
+          let _scale = 1, _curimg = options.imgList[n], _curimgs = vars["newImg" + n]
+          let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0
+          if (_curimg.imgW) {
+            // _scale = Math.min(_curimg.imgW / _curimgs.width, _curimg.imgH / _curimgs.height)
+            _scale = Math.min(_curimgs.width / _curimg.imgW, _curimgs.height / _curimg.imgH)
+            if (_curimgs.width / _curimg.imgW > _curimgs.height / _curimg.imgH) {
+              scaleType = 1
+            } else if (_curimgs.width / _curimg.imgW < _curimgs.height / _curimg.imgH) {
+              scaleType = 2
+            }
+            _drawW = _curimg.width * _scale
+            _drawH = _curimg.height * _scale
+          }
           ctx.drawImage(
             vars["newImg" + n],
-            0,
-            0,
-            vars["newImg" + n].width,
-            vars["newImg" + n].height,
+            scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
+            scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
+            // scaleType == 1 ? _curimg.imgW * _scale : _curimg.imgW,
+            // scaleType == 1 ? _curimg.width : _drawH,
+            scaleType == 1 ? _curimg.imgW * _scale : _curimg.width,
+            scaleType == 1 ? _curimg.height : _curimg.imgH * _scale,
             options.imgList[n].imgX,
             options.imgList[n].imgY,
-            options.imgList[n].imgW,
-            arc ? options.imgList[n].imgW : options.imgList[n].imgH
+            _curimg.imgW || _drawW,
+            // arc ? options.imgList[n].imgW : _curimg.imgH || _drawH
+            _curimg.imgH || _drawH
           )
         }
       }
@@ -642,6 +683,7 @@ export {
   loadScript,
   getScreenOrientation,
   randomString,
+  loadFonts,
   getBrowserEnvironment,
   isSystem,
   audioContextMusic,

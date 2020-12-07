@@ -35,7 +35,13 @@ export default {
         // bgImg: 'http://cbg2020.oss-cn-beijing.aliyuncs.com/cbg_cfpa/userhead/image/20200611152446919352.png',
         bgImg: this.imgs,
         imgList: [
-          { url: "https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132", imgW: 120, imgH: 120, imgX: 50, imgY: 50, radius: "50%" }
+          // { url: "https://img.vrupup.com/web/szq/images/img_07.png", imgW: 380, imgH: 380, imgX: 180, imgY: 50, radius: "50%" },
+          // { url: "https://img.vrupup.com/web/szq/images/img_08.png", imgW: 380, imgH: 380, imgX: 180, imgY: 500, radius: "50%" },
+          { url: "https://wx.qlogo.cn/mmopen/vi_32/44xsic9D7JxgQzrOYfle1o9W7vwWU2PT2naTdTxofiahSt5WEhTk1icKqLWp2ZN7zKjWGQJdbWcH8FUdrv0kiaHmAg/132", imgW: 120, imgH: 120, imgX: 50, imgY: 50, radius: "50%" },
+          // { url: "https://img.vrupup.com/web/szq/images/img_04.jpg", imgW: 400, imgH: 742, imgX: 180, imgY: 120},
+          // { url: "https://img.vrupup.com/web/szq/images/img_06.jpg", imgW: 400, imgH: 400, imgX: 180, imgY: 1020}
+          // { url: "https://img.vrupup.com/web/szq/images/img_04s.png", imgW: 400, imgH: 400, imgX: 180, imgY: 320},
+          // { url: "https://img.vrupup.com/web/szq/images/img_06s.png", imgW: 400, imgH: 400, imgX: 180, imgY: 820}
         ],
         textList: [ { string: "证书编号TPBJ202000001", color: "#A37582", style: "bold 26px Arial", textX: 352, textY: 64, textAlign: "left" },
                     { string: "张三丰", color: "#ffffff", style: "bold 28px Arial", textX: 375, textY: 524, textAlign: "center" },
@@ -69,5 +75,5 @@ export default {
   .poster-box .right{flex:1;text-align: center;}
   .poster-box .right p{font-size: .36rem;padding-bottom: .1rem;}
   .poster-box .right img{width:70%;border-radius: 50%;}
-  #poster-img{position: fixed;width:70%;top:50%;left:50%;transform: translate(-50%, -50%);z-index: 100;}
+  #poster-img{position: fixed;width:70%;top:50%;left:50%;transform: translate(-50%, calc(.46rem - 50%));z-index: 100;}
 </style>

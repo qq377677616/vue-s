@@ -43,9 +43,12 @@ export default {
         { name: "krpano全景", url: "/krpano" },
         { name: "360全景", url: "/panorama360" },
         { name: "视频插件", url: "/live" },
-        { name: "three.js", url: "/three" }
+        { name: "three.js", url: "/three" },
+        { name: "VR", url: "/vr" }
       ]
     }
+  },
+  mounted() {
   },
   methods: {
     //跳转

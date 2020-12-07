@@ -16,7 +16,6 @@ import { loadingPage } from 'assets/js/imgPreloader'
 import { loadScript } from "assets/js/util"
 import { setDataArrive } from "api/api.config"
 import { getTest } from "api/api"
-
 export default {
   name: 'app',
   mixins: [loadingPage], 
@@ -96,7 +95,7 @@ export default {
 </script>
 
 <style>
-  @import 'assets/fonts/font-icon.css';
+  @import 'assets/css/font-icon.css';
   *{touch-action: pan-y;}
   .body{min-height:100vh;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}

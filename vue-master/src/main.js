@@ -17,7 +17,6 @@ import clipper from 'assets/js/clipper'
 import LangEn from 'assets/lang/en'
 import LangZhCHS from 'assets/lang/zhCHS'
 import LangZhCHT from 'assets/lang/zhCHT'
-import VueJsonp from 'vue-jsonp'
 import echarts from 'echarts'
 import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
@@ -26,7 +25,6 @@ import vshare from 'vshare'
 Vue.use(vshare)
 FastClick.attach(document.body)
 Vue.prototype.$echarts = echarts 
-Vue.use(VueJsonp)
 Vue.component('vue-drag-resize', VueDragResize)
 Vue.config.productionTip = false
 Vue.use(VueI18n)

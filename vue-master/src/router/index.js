@@ -195,6 +195,16 @@ const routes = [
     component: resolve => require(['../views/pages-list/book.vue'], resolve)    
   },
   {
+    path:'/echarts/map-china',
+    name: 'mapChina',
+    component: resolve => require(['../views/pages-list/echarts/map-china.vue'], resolve)    
+  },
+  {
+    path:'/vr',
+    name: 'vr',
+    component: resolve => require(['../views/pages-list/vr.vue'], resolve)    
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)    

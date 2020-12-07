@@ -1,6 +1,7 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <button @click="startSearchBeacons()">搜索设备</button>
     <button @click="getTest()">get请求</button>
     <button @click="getPosition()">jsonp请求</button>
     <button @click="modifyShare">修改分享路径</button>
@@ -66,7 +67,7 @@ import MyHeader from "components/header.vue"
 //   getGrab
 // } from "api/api"
 import api from 'api/api'
-import { shareConfigure, getUserInfo } from "assets/js/wx.config"
+import { shareConfigure, setVueThis } from "assets/js/wx.config"
 import { AUTH_URL } from "api/project.config";
 import pdf from "vue-pdf"
 import Pdfh5 from "pdfh5"
@@ -137,6 +138,7 @@ export default {
     
   },
   mounted() {
+    setVueThis(this)
     // with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src ='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
     // getTeam().then(res => {
     //   console.log("res", res)
@@ -155,6 +157,36 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
+    clickShareButton(e) {
+      console.log("【在‘我的’组件中点击分享回调】", e)
+    },
+    startSearchBeacons() {
+      console.log("wx", wx)
+      console.log("wx.startSearchBeacons", wx.startSearchBeacons)
+      // 蓝牙扫描接口     
+        wx.startSearchBeacons({  
+        ticket:"",  //摇周边的业务ticket, 系统自动添加在摇出来的页面链接后面  
+        success: function(res){  
+            wx.onSearchBeacons({  
+            complete:function(data){  
+              console.log("【周边蓝牙设备】", data)  
+            }  
+          });  
+        },  
+        fail:function(res){
+           var errmsg = JSON.stringify(res.errMsg);  
+               var arr = errmsg.split(':');  
+           var errmsgBody = arr[1];  
+           if(errmsgBody.substr(0, 9) == "bluetooth"){  
+                alert("蓝牙未打开，请打开后重试！");  
+           } else if(errmsgBody.substr(0, 8) == "location"){  
+                alert("手机位置未打开，请打开后重试！");  
+           }else{  
+                alert(JSON.stringify(res));  
+           }  
+         }  
+     });  
+    },
     getTest() {
       // api.getPostTest({ _params: { aaa: 555, bbb: 666 } }).then(res => {
       api.getPostTest({ aaa: 555, bbb: 666, url: encodeURIComponent(window.location.href) }).then(res => {

@@ -1,10 +1,18 @@
 <template>
-  <div>
-    <video-player  class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true" :options="playerOptions"></video-player>
-    <VTcPlayer ref="tcPlayer" :options="options" @load="onLoad" @play="onPlay" elmId="globalTcPlayer" />
+  <div class="body">
+    <My-Header :title="pageTitle"></My-Header>
+    <!-- video-player播放形式 -->
+    <div class="video-player" v-if="playType == 1">
+      <video-player  class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true" :options="playerOptions"></video-player>
+    </div>
+    <!-- VTcPlayer播放形式 -->
+    <div class="tc-player" v-if="playType == 2">
+      <VTcPlayer ref="tcPlayer" :options="options" @load="onLoad" @play="onPlay" elmId="globalTcPlayer" />
+    </div>
   </div>
 </template>
 <script>
+import MyHeader from 'components/header.vue'
 import { videoPlayer } from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
@@ -14,10 +22,12 @@ export default {
   name: "视频插件",
   data() {
     return {
-      // video-player视频播放
+      pageTitle: '直播流播放',//页面标题
+      playType: 1,//1为video-player、2为VTcPlayer
+      // video-player 配置项
       playerOptions: {
         playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-        autoplay: false, //如果true,浏览器准备好时开始回放。
+        autoplay: true, //如果true,浏览器准备好时开始回放。(存在兼容性)
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 导致视频一结束就重新开始。
         preload: "auto", // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
@@ -47,10 +57,10 @@ export default {
       },
       //VTcPlayer 配置项
       options: {
-        m3u8: "http://img.vrupup.com/web/szq/images/video_01.mp4", //动态渲染数据时候<VTcPlayer v-if="isshow" ref="tcPlayer" :options="options" @load="onLoad" @play="onPlay" />
+        m3u8: "http://live.flyh5.cn/live/song.m3u8", //动态渲染数据时候<VTcPlayer v-if="isshow" ref="tcPlayer" :options="options" @load="onLoad" @play="onPlay" />
         hlsUrl: "https://lib.baomitu.com/hls.js/0.8.9/hls.min.js", // 0.0.5增加
-        width: "100vw",
-        height: "400px",
+        width: "100%",
+        height: "100%",
         autoplay: false, //iOS下safari浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的  自动播放
         continuePlay: true, //是否连续播放
         coverpic: {
@@ -64,33 +74,33 @@ export default {
         }
       },
       isshow: false, //加载完成数据后，再绑定为true
-    };
+    }
   },
   created() {},
   methods: {
     //监听加载完成
     onLoad() {
-      console.log("加载完成");
+      console.log("加载完成")
     },
     //监听开始播放
     onPlay() {
-      console.log("监听播放了");
+      console.log("监听播放了")
     },
     //播放
     play() {
-      this.player.play();
+      this.player.play()
     },
     //暂停
     pause() {
-      this.player.pause();
+      this.player.pause()
     },
     //获取当前播放时间
     getCurrentTime() {
-      this.player.currentTime();
+      this.player.currentTime()
     },
     //播放新的地址
     loadNewVideo(url) {
-      this.player.load(url);
+      this.player.load(url)
     }
   },
   computed: {
@@ -100,6 +110,7 @@ export default {
     },
   },
   components: {
+    MyHeader,
     VTcPlayer,
     videoPlayer,
     hls
@@ -107,5 +118,5 @@ export default {
 }
 </script>
 <style scoped>
-
+  #globalTcPlayer{width: 100vw;height: 100vh;}
 </style>

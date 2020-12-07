@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <!-- <my-header :title="pageTitle"></my-header> -->
+    <my-header :title="pageTitle"></my-header>
     <div class="con full-screen flex-cen-col">
       <div class="top flex-cen">
         <img :src="item" alt="" v-for="(item, index) in imgList" :key="'key' + index">

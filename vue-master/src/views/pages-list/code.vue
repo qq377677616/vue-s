@@ -21,7 +21,7 @@ export default {
         margin: 10,//二维码外边距
         colorDark: "#000",//主色
         colorLight: "#fff",//线条色
-        //icon: "http://game.flyh5.cn/resources/game/wechat/szq/images/img_13.jpg",//中间logo图片
+        icon: "https://img.vrupup.com/web/szq/images/logo.png",//中间logo图片
         logoScale: 0.2//中间logo图片缩放大小，建议不要太大，不然二维码识别不出来
       }
     }

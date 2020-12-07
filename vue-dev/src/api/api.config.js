@@ -9,14 +9,14 @@ const getProjectConfig = (data, url = `https://game.flyh5.cn/game/wx7c3ed56f7f79
 const getUserInfos = (data, url = GET_USER_INFO_URL, type = 'post') => { return api(url, data, type, true, 0) }
 /**
  * h5抵达、分享、时长数据统计三兄弟
- */
+ */ 
 const setDataArrive = (data, url = "https://dev.flyh5.cn/looktable/api/data/arrive", type = 'post') => { return api(url, { ...data, ...{ code: PROJECT_CONFIG_CODE }}, type, true, 0) }//status ==> 0:没有抵达,1:抵达主KV,2:抵达结果页
 const setDataShare = (data, url = "https://dev.flyh5.cn/looktable/api/data/share", type = 'post') => { return api(url, data = { code: PROJECT_CONFIG_CODE }, type, true, 0) }
-const setDataDuration = (data, url = "https://dev.flyh5.cn/looktable/api/data/duration", type = 'post') => { return api(url, { ...data, ...{ code: PROJECT_CONFIG_CODE } }, type, false, 0) }//second ==> 停留秒数
+const setDataDuration = (data, url = "https://dev.flyh5.cn/looktable/api/data/duration", type = 'post') => { return api(url, { ...data, ...{ code: PROJECT_CONFIG_CODE } }, type, true, 0) }//second ==> 停留秒数
 
 export {
   getWxConfig,
-  getProjectConfig,
+  getProjectConfig, 
   getUserInfos,
   setDataArrive,
   setDataShare,
