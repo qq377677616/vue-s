@@ -37,7 +37,7 @@ const ASSETS_URL = 'https://img.vrupup.com/web/szq/ylzhennong/'
  * 关于监听分享回调(当type为0时生效)
  */
 const SHARECONFIG = {//此处的分享配置信息优先级低于核弹（除监听分享回调）
-  type: 0,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
+  type: 1,//配置分享类型：0为即将废弃的老版本（可以监听分享动作），1为新版本（可以监听配置是否成功）
   hideMenuList: { pengyou: false, pengyouquan: false, qq: false, qqkongjian: false, fuzhi: false, shoucang: false, qqliulanqi: false, safariliulanqi: false },//批量隐藏功能按钮
   ShareUrl: AUTH_URL,
   Title: '[模板默认]专注vue',
