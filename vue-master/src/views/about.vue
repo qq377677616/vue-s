@@ -157,7 +157,8 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
-    clickShareButton(e) {
+    //用户点击分享按钮回调
+    clickShareButtonCallback(e) {
       console.log("【在‘我的’组件中点击分享回调】", e)
     },
     startSearchBeacons() {

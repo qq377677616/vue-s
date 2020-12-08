@@ -240,7 +240,7 @@ const shareConfigure = (shareConfig) => {
         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
         success:() => {
           console.log("【点击了分享给好友的按钮】")
-          if (vueThis) vueThis.clickShareButton({ type: 1, title: "点击了分享给好友的按钮" })
+          if (vueThis) vueThis.clickShareButtonCallback({ type: 1, title: "点击了分享给好友的按钮" })
           if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
          },
         trigger:() => { console.log("分享给好友") }
@@ -252,7 +252,7 @@ const shareConfigure = (shareConfig) => {
         imgUrl: SHARECONFIG.ShareImage,
         success:() => {
           console.log("【点击了分享到朋友圈的按钮】")
-          if (vueThis) vueThis.clickShareButton({ type: 2, title: "点击了分享到朋友圈的按钮" })
+          if (vueThis) vueThis.clickShareButtonCallback({ type: 2, title: "点击了分享到朋友圈的按钮" })
           if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
         },
         trigger:() => { console.log("分享到朋友圈") }
@@ -265,7 +265,7 @@ const shareConfigure = (shareConfig) => {
         imgUrl: SHARECONFIG.ShareImage,
         success:() => {
           console.log("【点击了分享到QQ的按钮】")
-          if (vueThis) vueThis.clickShareButton({ type: 3, title: "点击了分享到QQ的按钮" })
+          if (vueThis) vueThis.clickShareButtonCallback({ type: 3, title: "点击了分享到QQ的按钮" })
           if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
         },
         trigger:() => { console.log("分享到QQ") }
@@ -278,7 +278,7 @@ const shareConfigure = (shareConfig) => {
         imgUrl: SHARECONFIG.ShareImage,
         success:() => { 
           console.log("【您点击了分享到QQ的按钮】")
-          if (vueThis) vueThis.clickShareButton({ type: 4, title: "点击了分享到QQ的按钮" })
+          if (vueThis) vueThis.clickShareButtonCallback({ type: 4, title: "点击了分享到QQ的按钮" })
           if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setDataShare().then(res => { console.log("【数据统计--点击分享】") })
         },
         trigger:() => { console.log("分享到QQ空间") }
