@@ -140,7 +140,7 @@ function _wxConfig(config) {
     return
   }
   wx.config({
-    // debug: window.openJssdkDebug,
+    debug: false,
     appId: config.appId,
     timestamp: config.timestamp,
     nonceStr: config.nonceStr,

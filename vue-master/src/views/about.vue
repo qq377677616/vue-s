@@ -1,6 +1,7 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <button @click="jiaxinTogglerDiv()">智能客服</button>
     <button @click="startSearchBeacons()">搜索设备</button>
     <button @click="getTest()">get请求</button>
     <button @click="getPosition()">jsonp请求</button>
@@ -139,15 +140,6 @@ export default {
   },
   mounted() {
     setVueThis(this)
-    // with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src ='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
-    // getTeam().then(res => {
-    //   console.log("res", res)
-    // })
-    // setTimeout(() => {
-    //   getBrowserEnvironment().then(res => {
-    //   console.log(res)
-    //   })
-    // }, 5000)
     this.getLiveList()
   },
   watch: {
@@ -157,6 +149,11 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
+    //智能客服
+    jiaxinTogglerDiv() {
+      console.log("jiaxinTogglerDiv", jiaxinTogglerDiv)
+      jiaxinTogglerDiv()
+    },
     //用户点击分享按钮回调
     clickShareButtonCallback(e) {
       console.log("【在‘我的’组件中点击分享回调】", e)

@@ -25,8 +25,8 @@ export default {
         range: 0.5,//刮奖阀值
         thickness: 10,//触摸粗细度
         coverColor: "#ddd",//刮刮卡遮罩颜色
-        coverImg: !(window.location.href.includes("192") || window.location.href.includes("127") || window.location.href.includes("localhost")) ? "http://game.flyh5.cn/resources/game/wechat/szq/images/img_12.png" : '',//刮刮卡遮罩图片
-        resultImg: "http://game.flyh5.cn/resources/game/wechat/szq/images/img_12.jpg",//奖品图片
+        coverImg: "https://img.vrupup.com/web/szq/images/img_23.jpg",//刮刮卡遮罩图片
+        resultImg: "https://img.vrupup.com/web/szq/images/img_22.jpg",//奖品图片
       }
     }
   },
