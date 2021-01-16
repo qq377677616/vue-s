@@ -19,23 +19,25 @@ export default {
       name: "首页",
       percentNum: 0,
       jumpList: [
+        { name: "滚动组件", url: "/scroll" },
+        { name: "动态设置分享", url: "/set_share" },
         { name: "自由拖拽", url: "/drag" },
-        { name: "拖拽排序", url: "/list-sort" },
+        { name: "拖拽排序", url: "/list_sort" },
         { name: "文件上传", url: "/upload" },
         { name: "图片裁剪", url: "/cropper" },
-        { name: "触摸事件", url: "/vue-event" },
+        { name: "触摸事件", url: "/vue_event" },
         { name: "生成海报", url: "/poster" },
-        { name: "滑动淡出", url: "/scroll-show" },
+        { name: "滑动淡出", url: "/scroll_show" },
         { name: "生成二维码", url: "/code" },
         { name: "省市区日期选择", url: "/picker" },
-        { name: "图片验证码", url: "/img-code" },
-        { name: "合成gif动图", url: "/create-gif" },
+        { name: "图片验证码", url: "/img_code" },
+        { name: "合成gif动图", url: "/create_gif" },
         { name: "序列帧", url: "/sequence" },
         // { name: "charts图表", url: "" },
         // { name: "数字滚动", url: "" },
         { name: "抽奖系列", url: "/prize" },
         { name: "地图", url: "/map" },
-        { name: "索引列表", url: "/mail-list" },
+        { name: "索引列表", url: "/mail_list" },
         { name: "vuex", url: "/vuex" },
         { name: "多语言", url: "/lang" },
         { name: "直播流", url: "/live" },
@@ -44,11 +46,14 @@ export default {
         { name: "360全景", url: "/panorama360" },
         { name: "视频插件", url: "/live" },
         { name: "three.js", url: "/three" },
-        { name: "VR", url: "/vr" }
+        { name: "VR", url: "/vr" },
+        { name: "颜色智能识别", url: "/color_picker" }
       ]
     }
   },
   mounted() {
+    // localStorage.setItem("openid", "oBXw5w_e0LLLRb4AW0KWVFyyq3bg")
+    // sessionStorage.setItem("openid", "oBXw5w_e0LLLRb4AW0KWVFyyq3bg")
   },
   methods: {
     //跳转

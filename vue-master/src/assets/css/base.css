@@ -25,7 +25,7 @@
 .ell4{display: -webkit-box;-webkit-box-orient: vertical;text-overflow: ellipsis;overflow: hidden;-webkit-line-clamp: 4;}
 .wrap{width:92.53%;margin:0 auto;}
 /*页面初始样式*/
-html,body{width: 100%;height: 100%;overflow-x: hidden;user-select: none; -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
+html,body{width: 100%;min-height: 100vh;overflow-x: hidden;user-select: none; -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;}
 /* #app{width: 100%;height:100%;overflow-x: hidden;}  */
 #app{max-width: 750px;position: relative;margin:0 auto;}
 body{background: #bbb !important;}
@@ -48,7 +48,7 @@ body img{max-width: 100%;}
 .swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
 .swiper-pagination-bullet-active{background: #3DA6FF !important;}
 /*修改绿标默认样式*/
-#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;background-image: linear-gradient(90deg, #F28F29 0, #027C60 100%);}
+#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: none !important;align-items: center !important;justify-content: center !important;background-image: linear-gradient(90deg, #F28F29 0, #027C60 100%);}
 #__vconsole .vc-switch.special{background-image: linear-gradient(90deg, #F28F29 0, #DD5145 100%);}
 /*特殊字体*/
 /* @font-face

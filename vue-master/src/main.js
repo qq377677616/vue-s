@@ -21,7 +21,7 @@ import echarts from 'echarts'
 import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
 import vshare from 'vshare'
-
+import { VueJsonp } from 'vue-jsonp'
 Vue.use(vshare)
 FastClick.attach(document.body)
 Vue.prototype.$echarts = echarts 
@@ -31,6 +31,7 @@ Vue.use(VueI18n)
 Vue.use(VueTouch, { name: 'v-touch' })
 Vue.use(Vant)
 Vue.use(VueBus)
+Vue.use(VueJsonp)
 //懒加载
 Vue.use(VueLazyload, {
   // loading: require('assets/images/default.png')

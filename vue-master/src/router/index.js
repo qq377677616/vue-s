@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -65,8 +64,8 @@ const routes = [
     component: resolve => require(['../views/pages-list/drag.vue'], resolve)    
   },
   {
-    path:'/list-sort',
-    name: 'list-sort',
+    path:'/list_sort',
+    name: 'listSort',
     component: resolve => require(['../views/pages-list/list-sort.vue'], resolve)    
   },
   {
@@ -90,8 +89,8 @@ const routes = [
     component: resolve => require(['../views/pages-list/poster/poster3.vue'], resolve)    
   },
   {
-    path:'/mail-list',
-    name: 'mail-list',
+    path:'/mail_list',
+    name: 'mailList',
     component: resolve => require(['../views/pages-list/mail-list.vue'], resolve)    
   },
   {
@@ -125,8 +124,8 @@ const routes = [
     component: resolve => require(['../views/pages-list/prize/prize4.vue'], resolve)    
   },
   {
-    path:'/vue-event',
-    name: 'vue-event',
+    path:'/vue_event',
+    name: 'vueEvent',
     component: resolve => require(['../views/pages-list/vue-event.vue'], resolve)    
   },
   {
@@ -135,8 +134,8 @@ const routes = [
     component: resolve => require(['../views/pages-list/code.vue'], resolve)    
   },
   {
-    path:'/create-gif',
-    name: 'create-gif',
+    path:'/create_gif',
+    name: 'createGif',
     component: resolve => require(['../views/pages-list/create-gif.vue'], resolve)    
   },
   {
@@ -155,13 +154,13 @@ const routes = [
     component: resolve => require(['../views/pages-list/lang.vue'], resolve)    
   },
   {
-    path:'/img-code',
-    name: 'img-code',
+    path:'/img_code',
+    name: 'imgCode',
     component: resolve => require(['../views/pages-list/img-code.vue'], resolve)    
   },
   {
-    path:'/scroll-show',
-    name: 'scroll-show',
+    path:'/scroll_show',
+    name: 'scrollShow',
     component: resolve => require(['../views/pages-list/scroll-show.vue'], resolve)    
   },
   {
@@ -202,13 +201,28 @@ const routes = [
   {
     path:'/vr',
     name: 'vr',
-    component: resolve => require(['../views/pages-list/vr.vue'], resolve)    
+    component: resolve => require(['../views/pages-list/vr.vue'], resolve)
+  },
+  {
+    path:'/color_picker',
+    name: 'colorPicker',
+    component: resolve => require(['../views/pages-list/ColorPicker.vue'], resolve)
+  },
+  {
+    path:'/scroll',
+    name: 'BetterScroll',
+    component: resolve => require(['../views/pages-list/BetterScroll.vue'], resolve)
+  },
+  {
+    path:'/set_share',
+    name: 'SetShare',
+    component: resolve => require(['../views/pages-list/SetShare.vue'], resolve)
   },
   {
     path:'/test',
     name: 'test',
-    component: resolve => require(['../views/pages-list/test.vue'], resolve)    
-  },
+    component: resolve => require(['../views/pages-list/test.vue'], resolve)
+  }
 ]
 
 const router = new VueRouter({

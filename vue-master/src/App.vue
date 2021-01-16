@@ -1,7 +1,10 @@
 <template>
   <div id="app">
+    <!-- 路由视图 -->
     <transition :name="transitionName"><router-view class="router-view" :class="{'on': !transitionName}" @playPause="playPause" /></transition>
+    <!-- 背景音乐 -->
     <my-audio ref="audio" v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
+    <!-- 加载页 -->
     <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro">
       <!-- <div class="full-screen my-pro flex-cen" style="font-size:50px;background:#972F24;color:#fff;"><span>{{pro}}%</span></div> -->
     </loading-page>
@@ -9,6 +12,7 @@
 </template>
  
 <script>
+import VConsole from 'vconsole'
 import myAudio from 'base/audio'
 import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/project.config'
@@ -16,6 +20,7 @@ import { loadingPage } from 'assets/js/imgPreloader'
 import { loadScript } from "assets/js/util"
 import { setDataArrive } from "api/api.config"
 import { getTest } from "api/api"
+if (PROJECT_CONFIG.vConsole.is_open) { const vConsole = new VConsole() }
 export default {
   name: 'app',
   mixins: [loadingPage], 
@@ -23,9 +28,13 @@ export default {
     return {
       pro: 0,
       pageLoadingOk: false,
-      transitionName: ''
+      transitionName: 'right-left'
     }
   },
+  computed: { key() { 
+    console.log("this.$route", )
+    return this.$route.fullPath;
+   } },
   created() {
     this.PROJECT_CONFIG = PROJECT_CONFIG//页面配置信息
   },
@@ -76,7 +85,7 @@ export default {
       let _secondLevel = ['/cropper', '/upload', '/prize', '/poster']//二级页面
       let _setData = ['/', '/poster']//数据统计页：首页、结果页
       //路由动画
-      if (_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
+      if (from.path != to.path &&_tabbar.includes(from.path) && _tabbar.includes(to.path)) {
         this.transitionName = ''
       } else if (_tabbar.includes(from.path) || (_secondLevel.includes(from.path) && !_tabbar.includes(to.path))) {
         this.transitionName = 'right-left' 
@@ -100,7 +109,7 @@ export default {
   .body{min-height:100vh;padding-top: .92rem;box-sizing: border-box;}
   .con-box{min-height:calc(100vh - .92rem);display: flex;flex-direction: column;justify-content: center;align-items: center;}
   .item-list dd{border:1px solid #333;padding:.2rem .3rem;margin:.5rem 0;text-align: center;}
-  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100%;min-height:100vh;}
+  .router-view{transition: all .5s cubic-bezier(.55,0,.1,1);position: absolute;left:0;top:0;width: 100%;min-height:100vh;max-width: 750px;}
   .router-view.on{transition: none;}
   /* .router-view{position: absolute;left:0;top:0;width: 100vw;min-height:100vh;} */
   .right-left-enter,.left-right-leave-to{transform: translateX(100%);opacity: 0;}
@@ -110,4 +119,7 @@ export default {
   .scale-big-enter,.scale-small-leave-to{transform: scale(.5);opacity: 0;}
   .scale-big-leave-to,.scale-small-enter{transform: scale(1);opacity: 0;}
   .full-screen{width:100%;height:calc(100vh - .92rem);}
+  @media screen and (min-width: 640px) {
+    .router-view{left:50%;transform: translateX(-50%);}
+  }
 </style>

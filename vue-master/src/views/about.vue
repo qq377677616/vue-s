@@ -1,6 +1,13 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <div class="scroll-box">
+      <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
+        <div v-for="item in 30" :key="item">这是内容这是内容这是内容这是内容这是内容这是内容这是内容{{item}}</div>
+      </scroll>
+    </div>
+    <!-- <video ref="video" src="http://game.vrupup.com/resources/web/szq/images/video_03.mp4" autoplay controls></video> -->
+    <!-- <button ref="videoBtn" class="video-play" @click="playVideo()">播放视频</button> -->
     <button @click="jiaxinTogglerDiv()">智能客服</button>
     <button @click="startSearchBeacons()">搜索设备</button>
     <button @click="getTest()">get请求</button>
@@ -25,15 +32,6 @@
     <div class="popup tb-fd" :class="{ 'tb-fd-close': showPopup3 == 2 }" v-show="showPopup3 != 0"></div>
     <div class="popup lr-fd" :class="{ 'lr-fd-close': showPopup4 == 2 }" v-show="showPopup4 != 0"></div>
     <div class="popup rl-fd" :class="{ 'rl-fd-close': showPopup5 == 2 }" v-show="showPopup5 != 0"></div>
-
-   
-    <!-- <div class="scroll-box">
-      <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
-        <div>
-          <div v-for="item in 30" :key="item">这是内容这是内容这是内容这是内容这是内容这是内容这是内容{{item}}</div>
-        </div>
-      </scroll>
-    </div> -->
     <tab></tab>
   </div>
 </template>
@@ -69,7 +67,8 @@ import MyHeader from "components/header.vue"
 // } from "api/api"
 import api from 'api/api'
 import { shareConfigure, setVueThis } from "assets/js/wx.config"
-import { AUTH_URL } from "api/project.config";
+import { colorHex, colorRgb, rgbaToHsv, triggerEvent } from 'assets/js/util'
+import { AUTH_URL } from "api/project.config"
 import pdf from "vue-pdf"
 import Pdfh5 from "pdfh5"
 // import Vshare from 'vshare'
@@ -131,6 +130,9 @@ export default {
   },
   created() {
     console.log("getQueryString('code')", getQueryString('code'))
+    getLocation_qq().then(res => {
+      console.log("【用户当前位置信息】", res)
+    })
   },
   computed: {
     
@@ -141,6 +143,42 @@ export default {
   mounted() {
     setVueThis(this)
     this.getLiveList()
+    let _data = {
+      img: [
+      "sanyuan/74f6d71f-8812-4a37-8dbf-df939ef3b3ab.png", "sanyuan/b9b77b63-36a5-49ac-bc80-2e0021d82c6c.png",
+      "sanyuan/184639a4-32d3-417d-be39-455c0722db5d.png", "sanyuan/30fdf9bf-bf2a-4249-812f-9eb450db7dfc.jpeg",
+      "sanyuan/be81997d-20c2-4b7c-9250-50f5388505a5.jpeg", "sanyuan/d2e34860-4b26-4f87-97f5-cae05ccbf7ac.png",
+      "sanyuan/8911fc3e-a60f-4f7c-9025-b666e5805845.jpeg","sanyuan/6f12a61f-4860-470a-a295-c6630b7276a7.png",
+      "sanyuan/34b6e91a-9845-458f-8592-2f839f381e27.png","sanyuan/2cccb849-e1ea-47cc-afd5-4b71e7073b0a.jpeg",
+      "sanyuan/7e2f1ec9-8f62-4c5b-9273-16016104b31f.jpeg","sanyuan/62f0f7e0-b0db-44f3-8525-2b6fe1509dae.jpeg",
+      "sanyuan/238c9f49-69ec-4b54-a2b0-d827e0b7bac8.jpeg","sanyuan/77d7dc43-cdd1-4d8c-b220-ab81cedc0a78.jpeg",
+      "sanyuan/68695b4e-012e-46b9-8b54-f4ef0beb2a87.jpeg"],
+      txt: ["欢迎来到dd的展览馆", "策展人 | 扬帆", "男宝 | dd | 2岁", "dd的展"]
+    }
+    let _data2 = {
+      img: [
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg", "https://img.vrupup.com/web/szq/images/img_01.jpg",
+      "https://img.vrupup.com/web/szq/images/img_01.jpg"
+      ],
+      txt: ["欢迎来到dd的展览馆", "策展人 | 扬帆", "男宝 | dd | 2岁", "dd的展"]
+    }
+    // api.getVideo(_data2).then(res => {
+    //   console.log("【返回的视频】", res)
+    // })
+    // let _video = this.$refs.video
+    // console.log("_video", _video)
+    // _video.play()
+    // setTimeout(() => {
+    //   let _videoBtn = this.$refs.videoBtn
+    //   console.log("_videoBtn", _videoBtn)
+    //   triggerEvent(_videoBtn)
+    // }, 6000)
   },
   watch: {
     
@@ -149,6 +187,12 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
+    //播放视频
+    // playVideo() {
+    //   let _video = this.$refs.video
+    //   console.log("_video22", _video)
+    //   _video.play()
+    // },
     //智能客服
     jiaxinTogglerDiv() {
       console.log("jiaxinTogglerDiv", jiaxinTogglerDiv)
@@ -310,6 +354,7 @@ export default {
 
 <style scoped>
 .body{text-align: center;}
+.video-play{position: fixed;left:38%;bottom:20vh;z-index: 555;}
 /* .body{background: red;} */
 /* .video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
 video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;} */
@@ -352,7 +397,7 @@ video.on {
   font-size: 20px;
 }
 .box {
-  height: 5rem;
+  height: 200px;
 }
 .input {
   margin: 0.4rem 0;
@@ -400,10 +445,11 @@ audio {
 .my-echarts div{width:33.33%;background: #23AAF2;width:100%;height: 300px;}
 .my-echarts div:nth-child(2){background: #DC4C40;}
 .my-echarts div:nth-child(3){background: #EB9842;}
+video{width: 100vw;height: 100vh;object-fit: cover;background: #000;}
 .video-box{position: fixed;width:100%;height: 100%;background: rgba(0,0,0,.7);z-index: 100;left:0;top:100vh;transition: all .5s;}
 .video-box.on{top:0;}
 .video-box video{width:100%;}
-.box{height: 500px;overflow: hidden;}
+.box{height: 300px;overflow: hidden;margin-top: 50px;}
 .box div{line-height: 1.5;font-size: 20px;text-align: center;}
 input{padding-left: .2rem;}
 .popup{width:60vw;height: 300px;background: green;border-radius: 10px;position: absolute;left:20vw;top:100px;}

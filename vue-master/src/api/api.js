@@ -1,5 +1,5 @@
 import { api } from 'api/request.js' 
-/**
+/** 
  下面为项目接口请求  
  * return api(url, data, type, true, 1 )四个参数说明：
  * 请求地址、传参、post/get/jsonp、是否qs、0为全地址/1为半地址/2为本地代理地址 
@@ -28,9 +28,10 @@ export default {
   getUserInfo: (data, url = 'https://api.weixin.qq.com/sns/userinfo', type = 'get') => { return api(url, data, type, true, 0) },
   //德美接口
   getLiveList: (data, url = 'https://game.vrupup.com/sanguo/suyuanen/h5/demei/public/api/Live/live_list', type = 'get') => { return api(url, data, type, true, 0) },
-
-
+  //获取其它接口
+  getProjectConfig: (data, url = `https://game.flyh5.cn/game/wx7c3ed56f7f792d84/data_system/api.php?a=web`, type = 'get') => { return api(url, data, type, true, 0) },
   //测试接口
   getPostTest: (data, url = 'http://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js', type = 'get') => { return api(url, data, type, true, 0) },
+  getVideo: (data, url = 'https://api.elloworld.cn/sanyuan/api/index/rendervideo', type = 'post') => { return api(url, data, type, false, 0) },
   getPosition: (data, url = 'https://apis.map.qq.com/ws/geocoder/v1?&poi_options=address_format=short&get_poi=1', type = 'jsonp') => { return api(url, data, type, true, 0) }
 }

@@ -11,15 +11,15 @@
 </template>
 
 <script>
-import { PROJECT_CONFIG } from 'api/project.config'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/project.config'
 import { isSystem, audioContextMusic } from 'assets/js/util'
-import { getProjectConfig } from 'api/api'
+import { getProjectConfig } from 'api/api.config'
 export default {
   data() {
     return {
       // musicSrc: 'https://game.flyh5.cn/resources/game/wechat/szq/gaoxiao/music.mp3',
       isAudioType: 0,//当前播放模式:0为原生audio标签播放，1为AudioContext播放
-      musicSrc: '',//背景音乐地址
+      musicSrc: localStorage.getItem("music"),//背景音乐地址
       isPlay: 0//播放状态：1为播放，2为暂停
     }
   },
@@ -28,18 +28,32 @@ export default {
   },
   mounted() {
     this.musicInit()
+    let _body = document.getElementsByTagName("body")[0]
+    _body.addEventListener("click", () => {
+      if (this.isPlay != 2) this.playPause(true)
+    })
   },
   methods: {
    //背景音乐初始化
     musicInit() {
-      getProjectConfig().then(res => {
-        let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
-        this.musicSrc = _data.res_music
+      if (PROJECT_CONFIG_CODE) {
+        if (this.musicSrc) {
+          this.autoPlayAudio("audio")
+        } else {
+          getProjectConfig().then(res => {
+            let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
+            this.musicSrc = _data.res_music
+            this.playAudio(this.musicSrc, "audio", "audio-btn")
+          }).catch(err => {
+            console.log(err)
+            this.autoPlayAudio("audio")
+          })
+        }
+      } else {
+        this.musicSrc = this.PROJECT_CONFIG.is_background_music.music_src[0] || this.PROJECT_CONFIG.is_background_music.music_src[1]
+        console.log("this.musicSrc", this.musicSrc)
         this.playAudio(this.musicSrc, "audio", "audio-btn")
-      }).catch(err => {
-        console.log(err)
-        this.autoPlayAudio("audio")
-      })
+      }
     },
     //音乐播放
     playAudio(mp3Url, audioId, controls) {
@@ -65,7 +79,7 @@ export default {
         console.log("【背景音乐自动播放OK1】")
       }
       document.addEventListener("WeixinJSBridgeReady", () => {
-        _audio.play();
+        _audio.play()
         this.isPlay = 1
         console.log("【背景音乐自动播放OK2】")
       }, false)
@@ -87,7 +101,7 @@ export default {
 </script>
 
 <style scoped>
-  .btns{position: fixed;right:0;top:0;padding: .3rem;z-index:999;transition: all .8s;}
+  .btns{position: absolute;right:0;top:0;padding: .3rem;z-index:999;transition: all .8s;}
   .btns img.btn-play{animation: rotate 2s linear infinite;}
   .btns img{box-shadow: 0 0 20px -2px #FFB8C4;border-radius: 50%;}
   .btns, .btns img{width:.5rem;height:.5rem;}
@@ -96,6 +110,9 @@ export default {
   @keyframes rotate{
     from {transform: rotate(0)}
     to {transform: rotate(360deg)}
+  }
+  @media screen and (min-width: 640px) {
+    .btns{right:50%;transform: translateX(375px);}
   }
 </style>
 

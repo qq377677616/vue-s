@@ -1,13 +1,12 @@
 import wx from 'weixin-js-sdk'
 import { getQueryString, getIsWxClient, loadScript } from 'assets/js/util'
-import VConsole from 'vconsole'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/project.config'
 import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
 let vueThis = null, NUM_RE_REQUEST = 0, NUM_RETRIES = 0
 
 //获取微信配置参数信息
 if (!PROJECT_CONFIG_CODE) {
-  _openDebugging() 
+  setTimeout(() => { _openDebugging() }, 500) 
   _mtaInit(PROJECT_CONFIG.mta.appid)
 }
 (function _configStart() {
@@ -17,7 +16,7 @@ if (!PROJECT_CONFIG_CODE) {
       _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 4 ? res.data.result : res.data)
     }).catch(err => {
       console.log("【微信注册信息4个参数获取失败】", err)
-      if ( NUM_RE_REQUEST < 10) {
+      if (NUM_RE_REQUEST < 10) {
         NUM_RE_REQUEST++
         _configStart()
       }
@@ -41,21 +40,22 @@ function setLookPageTime() {
     localStorage.setItem("total_times", total_times)
   }
 }
-//获取页面配置信息
+//获取核弹项目配置信息
 function _getPageConfig(config) {
   if (!PROJECT_CONFIG_CODE) {
     _wxConfig(config)
   } else {
     getProjectConfig().then(res => {
       let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
+      let _whiteLists = _data.custom.w ? _data.custom.w.val.split("、") : ['111', '222']
       console.log("【获取核弹配置信息成功】", _data)
-      sessionStorage.setItem("music", _data.res_music)
+      localStorage.setItem("music", _data.res_music)
       document.title = _data.docTitle
       SHARECONFIG.Title = _data.shareTitle
       SHARECONFIG.Desc = _data.shareContent
       SHARECONFIG.ShareUrl = AUTH_URL || _data.project_url
-      SHARECONFIG.ShareImage = _data.shareImg 
-      _openDebugging(_data['online-date'], _data['offline-date'])
+      SHARECONFIG.ShareImage = _data.shareImg
+      _openDebugging(_data['online-date'], _data['offline-date'], _whiteLists)
       _wxConfig(config)
       _mtaInit(_data.res_appid)
     }).catch(err => {
@@ -65,22 +65,26 @@ function _getPageConfig(config) {
   }
 }
 //开启绿标配置
-async function _openDebugging(onlineDate, offlinedate) {
+async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
+  let _is_go_online = true
   if (onlineDate && offlinedate) {
-    let _curTime = new Date().getTime(), _onlineDate = new Date(onlineDate.replace(/-/g, '/')).getTime(), _offlinedate = new Date(offlinedate.replace(/-/g, '/')).getTime(), _is_go_online = true
+    console.log("onlineDate, offlinedate", onlineDate, offlinedate)
+    let _curTime = new Date().getTime(), _onlineDate = new Date(onlineDate.replace(/-/g, '/')).getTime(), _offlinedate = new Date(offlinedate.replace(/-/g, '/')).getTime()
     if (onlineDate && (_curTime - _onlineDate > 0) && (offlinedate && (_curTime - _offlinedate < 0))) _is_go_online = false
-    if ( PROJECT_CONFIG.is_offline_sign_out && process.env.NODE_ENV == 'development' && _curTime - _offlinedate > 0) {
-      alert("项目已下线")
-      window.close()
+    if ( PROJECT_CONFIG.is_offline_sign_out && process.env.NODE_ENV == 'production' && _curTime - _offlinedate > 0) {
+      alert("项目已下线，请点击下方确定按钮退出")
+      wx.closeWindow()
     }
   }
-  let isWx =  await getIsWxClient()
-  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && PROJECT_CONFIG.vConsole.openWhiteList.includes(sessionStorage.getItem('openid')))) {
-    const vConsole = new VConsole()
-    let _vconsole = document.querySelector(".vc-switch")
+  let isWx =  await getIsWxClient(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
+  console.log("_whiteListsAll_whiteListsAll_whiteListsAll", _whiteListsAll)
+  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
     _vconsole.style.bottom = '100'
     if (PROJECT_CONFIG) _vconsole.innerHTML = PROJECT_CONFIG.vConsole.green_label_title
-    if (PROJECT_CONFIG.vConsole.is_open == 4 && PROJECT_CONFIG.vConsole.openWhiteList.includes(sessionStorage.getItem('openid'))) _vconsole.classList.add('special')
+    if (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid)) _vconsole.classList.add('special')
+    _vconsole.setAttribute("style", "display: flex !important")
+  } else {
+    // _vconsole.setAttribute("style", "display: none !important")
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfo()
 }
@@ -298,7 +302,6 @@ function checkJsApi(jsApiList) {
 }
 //设置保存组件实例
 const setVueThis = _this => {
-  console.log("组件实例", _this)
   vueThis = _this
 }
 export {

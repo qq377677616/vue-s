@@ -1,19 +1,24 @@
 <template>
   <div class="body">
     <my-header :title="pageTitle"></my-header>
-    <div class="full-screen">
-
-    </div>
+    <p @click="jump()">这是文章详情</p>
+     
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+
 import MyHeader from "components/header.vue"
 export default {
   name: "",
   data() {
     return {
-      pageTitle: "这是页面标题"//页面标题
+      pageTitle: "列表页"
+    }
+  },
+  methods: {
+    jump() {
+      this.$router.go(-1);
     }
   },
   components: {

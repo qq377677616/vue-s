@@ -4,7 +4,7 @@ import { api } from 'api/request.js'
 
 /****************************************获取当前位置信息****************************************/
 //获取当前位置信息----腾讯(可传type:0、1)
-const getLocation_qq = (type = 0) => {
+const getLocation_qq = (type = 0) => { 
   const getLocationQq = (data, url = `https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${SECRETKEY.secretkey_qq_map}`, type = 'jsonp') => { return api(url, data, type, true, 0) }
   const geocoderQq = (data, url = `https://apis.map.qq.com/ws/geocoder/v1/?output=jsonp&key=${SECRETKEY.secretkey_qq_map}`, type = 'jsonp') => { return api(url, data, type, true, 0) }
   return new Promise((resolve, reject) => {
@@ -14,7 +14,7 @@ const getLocation_qq = (type = 0) => {
       } else {
         getLocationCity(`${res.result.location.lat},${res.result.location.lng}`)
       }
-    }).catch(err => { reject(err) })
+    }).catch(err => { reject(err) }) 
     function getLocationCity(location) {
       geocoderQq({ location: location }).then(res => {
         resolve(res)

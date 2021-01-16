@@ -114,6 +114,10 @@ const randomString = len => {
 　}
 　return pwd
 }
+//生成随机数
+const getRandomNum = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
 //获取图片旋转信息 返回值& 0°：1、顺时针90°：6、逆时针90°：8、180°：3
 const getOrientation = file => {
   return new Promise(resolve => {
@@ -430,26 +434,22 @@ const accDiv = (num1, num2) => {
 const getImageInfo = imgUrl => {
   return new Promise(resolve => {
     let _curImg = new Image()
+    _curImg.setAttribute("crossOrigin", "anonymous")
     _curImg.src = imgUrl
     _curImg.onload = () => {
-      resolve({ width: _curImg.width, height: _curImg.height })
+      resolve({ newImg: _curImg, width: _curImg.width, height: _curImg.height })
     }
   })
 }
 /*h5生成图片*/
 const canvasImg = (options) => {
   return new Promise(resolve => {
-    var P_W = window.innerWidth
-    var P_H = window.innerHeight
-    var PSD_W = options.psd_w
-    var PSD_H = options.psd_h
-    var canvas = document.getElementById(options.canvasId)
-    var ctx = canvas.getContext("2d")
-    var devicePixelRatio = window.devicePixelRatio || 1
-    var backingStoreRatio = ctx.webkitBackingStorePixelRatio || 1
-    var ratio = devicePixelRatio / backingStoreRatio
-    canvas.width = (options.psd_w * ratio) / 2
-    canvas.height = (options.psd_h * ratio) / 2
+    let PSD_W = options.posterSize[0], PSD_H = options.posterSize[1], canvas = document.createElement('canvas'), devicePixelRatio = window.devicePixelRatio || 1
+    let ctx = canvas.getContext("2d")
+    let backingStoreRatio = ctx.webkitBackingStorePixelRatio || 1
+    let ratio = devicePixelRatio / backingStoreRatio
+    canvas.width = (PSD_W * ratio) / 2
+    canvas.height = (PSD_H * ratio) / 2
     ctx.scale(ratio / 2, ratio / 2)
     if (options.bgImg) {
       options.imgList.unshift({
@@ -460,28 +460,21 @@ const canvasImg = (options) => {
         imgY: 0
       })
     }
-    var vars = {}
-    for (var m in options.imgList) {
-      vars["newImg" + m] = new Image()
-      vars["newImg" + m].setAttribute("crossOrigin", "anonymous")
-      vars["newImg" + m].src = options.imgList[m].url
-    }
-    var progress = 0
-    let _allNum = options.imgList.length || 0, _curNum = 0
-    _getImageInfo()
-    function _getImageInfo() {
+    let _allNum = options.imgList.length || 0, _curNum = 0;
+    (function _getImageInfo() {
       let _curimg = options.imgList[_curNum]
       getImageInfo(_curimg.url).then(res => {
+        options.imgList[_curNum].newImg = res.newImg
         options.imgList[_curNum].width = res.width
         options.imgList[_curNum].height = res.height
         if (_curNum >= _allNum - 1) {
           startDraw()
-        } else { 
+        } else {
           _curNum++
           _getImageInfo()
         }
       })
-    }
+    })()
     function addRoundRectFunc() {
       CanvasRenderingContext2D.prototype.roundRect = function(
         x,
@@ -553,21 +546,23 @@ const canvasImg = (options) => {
         }
         function drawImg(arc) {
           ctx.beginPath()
-          let _scale = 1, _curimg = options.imgList[n], _curimgs = vars["newImg" + n]
+          let _scale = 1, _curimg = options.imgList[n]
           let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0
+          console.log("【当前图片】", _curimg)
           if (_curimg.imgW) {
             // _scale = Math.min(_curimg.imgW / _curimgs.width, _curimg.imgH / _curimgs.height)
-            _scale = Math.min(_curimgs.width / _curimg.imgW, _curimgs.height / _curimg.imgH)
-            if (_curimgs.width / _curimg.imgW > _curimgs.height / _curimg.imgH) {
+            _scale = Math.min(_curimg.width / _curimg.imgW, _curimg.height / _curimg.imgH)
+            if (_curimg.width / _curimg.imgW > _curimg.height / _curimg.imgH) {
               scaleType = 1
-            } else if (_curimgs.width / _curimg.imgW < _curimgs.height / _curimg.imgH) {
+            } else if (_curimg.width / _curimg.imgW < _curimg.height / _curimg.imgH) {
               scaleType = 2
             }
             _drawW = _curimg.width * _scale
             _drawH = _curimg.height * _scale
           }
           ctx.drawImage(
-            vars["newImg" + n],
+            _curimg.newImg,
+            // vars["newImg" + n],
             scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
             scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
             // scaleType == 1 ? _curimg.imgW * _scale : _curimg.imgW,
@@ -585,6 +580,7 @@ const canvasImg = (options) => {
       //绘制文字
       function drawFont() {
         let fonts = options.textList
+        if (!fonts) return
         for (let i = 0; i < fonts.length; i++) {
           let _wrap = fonts[i].wrap
           let _h = fonts[i].textY
@@ -661,9 +657,92 @@ const canvasImg = (options) => {
         callback({ isAndroid: isAndroid, isiOS: isiOS })
       }
       drawFont()
-      resolve(canvas.toDataURL("image/png"))
+      setTimeout(() => { resolve(canvas.toDataURL("image/png")) }, 1000)
     }
   })
+}
+//事件触发
+const triggerEvent = (dom, eventName = 'click', canbubble = false, cancelable = true) => {
+  return new Promise((resolve, reject) => {
+    let _event = document.createEvent("MouseEvents")
+    _event.initMouseEvent(eventName, canbubble, cancelable)
+    if (typeof dom == 'string') dom = document.getElementById(dom)
+    if (typeof dom != 'object') {
+      reject({ status: 1, message: 'dom传入有误，请传正确dom或正确dom的id值。' })
+    } else {
+      dom.dispatchEvent(_event)
+      resolve({ status: 0, message: `${eventName}事件触发成功。` }) 
+    }
+  })
+}
+//rgb转16进制
+const colorHex = rgb => {
+  if (rgb.charAt(0) == '#') return rgb;
+  var ds = rgb.split(/\D+/), decimal = Number(ds[1]) * 65536 + Number(ds[2]) * 256 + Number(ds[3])
+  return "#" + zero_fill_hex(decimal, 6)
+  function zero_fill_hex (num, digits) {
+    var s = num.toString(16);
+    while (s.length < digits)
+      s = "0" + s;
+    return s;
+  }
+}
+//16进制转rgb
+const colorRgb = (color) => {
+  // 16进制颜色值的正则
+  var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
+  // 把颜色值变成小写
+  color = color.toLowerCase()
+  if (reg.test(color)) {
+    // 如果只有三位的值，需变成六位，如：#fff => #ffffff
+    if (color.length === 4) {
+      var colorNew = "#"
+      for (var i = 1; i < 4; i += 1) {
+        colorNew += color.slice(i, i + 1).concat(color.slice(i, i + 1))
+      }
+      color = colorNew
+    }
+    // 处理六位的颜色值，转为RGB
+    var colorChange = []
+    for (var i = 1; i < 7; i += 2) {
+      colorChange.push(parseInt("0x" + color.slice(i, i + 2)))
+    }
+    return "rgb(" + colorChange.join(",") + ")"
+  } else {
+    return color
+  }
+}
+//rgb转hsv
+const rgbaToHsv = (color) => {
+  var arr = color.replace(/(?:\(|\)|rgb|RGB)*/g, "").split(",")
+  var h = 0, s = 0, v = 0;
+  var r = parseInt(arr[0]), g = parseInt(arr[1]), b = parseInt(arr[2]);
+  arr.sort(function (a, b) {
+      return a - b;
+  })
+  var max = parseInt(arr[2])
+  var min = parseInt(arr[0]);
+  v = max / 255;
+  if (max === 0) {
+      s = 0;
+  } else {
+      s = 1 - (min / max);
+  }
+  if (max === min) {
+      h = 0;//事实上，max===min的时候，h无论为多少都无所谓
+  } else if (max === r && g >= b) {
+      h = 60 * ((g - b) / (max - min)) + 0;
+  } else if (max === r && g < b) {
+      h = 60 * ((g - b) / (max - min)) + 360
+  } else if (max === g) {
+      h = 60 * ((b - r) / (max - min)) + 120
+  } else if (max === b) {
+      h = 60 * ((r - g) / (max - min)) + 240
+  }
+  h = parseInt(h);
+  s = parseFloat(s.toFixed(4))
+  v = parseFloat(v.toFixed(4))
+  return [h, s, v]
 }
 export {
   getQueryString,
@@ -683,6 +762,7 @@ export {
   loadScript,
   getScreenOrientation,
   randomString,
+  getRandomNum,
   loadFonts,
   getBrowserEnvironment,
   isSystem,
@@ -694,5 +774,9 @@ export {
   accSub,
   accMul,
   accDiv,
-  canvasImg
+  canvasImg,
+  triggerEvent,
+  colorHex,
+  colorRgb,
+  rgbaToHsv
 }
