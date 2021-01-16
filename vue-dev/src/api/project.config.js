@@ -71,9 +71,9 @@ const PROJECT_CONFIG = {
   },
   /*背景音乐配置*/  
   is_background_music: {
-    is_open: true,//是否开启背景音乐
+    is_open: false,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
-    music_src: ["https://game.flyh5.cn/resources/game/wechat/szq/gaoxiao/music.mp3", require('assets/images/music.mp3')],//默认背景音乐mp3文件地址，当核弹短码为空时生效
+    music_src: ["https://game.flyh5.cn/resources/game/wechat/szq/gaoxiao/music.mp3", /*require('assets/images/music.mp3')*/],//默认背景音乐mp3文件地址，当核弹短码为空时生效
     constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径，前者为播放状态后者为暂停状态 
   },
   /*绿标配置*/

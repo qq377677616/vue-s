@@ -7,9 +7,11 @@ import 'assets/css/reset.css'
 import 'assets/css/base.css'
 import Vant from 'vant'
 import 'vant/lib/index.css'
+import { VueJsonp } from 'vue-jsonp'
 import FastClick from 'fastclick'
 FastClick.attach(document.body)
 Vue.use(Vant)
+Vue.use(VueJsonp)
 
 export default new Vue({
   router,

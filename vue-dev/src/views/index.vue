@@ -1,6 +1,6 @@
 <template>
   <div class="body index">
-    <div class="con flex-cen">vue</div>
+    <div class="con flex-cen"><p>vue</p> <span>0116</span></div>
     <tab></tab> 
   </div>
 </template>
@@ -34,4 +34,5 @@ export default {
 <style scoped>
   .index{background:linear-gradient(135deg,#027C60 0%, #A8271E 100%);padding-bottom: 1rem;box-sizing: border-box;}
   .body, .con{height:100%;font-size:.8rem;font-style:italic;color:#fff;}
+  span{font-size: 12px;}
 </style>
