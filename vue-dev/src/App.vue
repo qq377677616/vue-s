@@ -1,18 +1,22 @@
 <template>
   <div id="app">
+    <!-- 路由视图 -->
     <transition :name="transitionName"><router-view class="router-view" /></transition>
+    <!-- 背景音乐 -->
     <my-audio ref="audio" v-if="PROJECT_CONFIG.is_background_music.is_open"></my-audio>
+    <!-- 加载页 -->
     <loading-page v-if="PROJECT_CONFIG.is_loading_page" :pageLoadingOk="pageLoadingOk" @loadingOk="loadingOk" @curPro="curPro"></loading-page>
   </div>
 </template>
  
 <script>
 import myAudio from 'base/audio'
+import VConsole from 'vconsole'
 import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG } from 'api/project.config'
 import { loadingPage } from 'assets/js/imgPreloader'
 import { setDataArrive } from "api/api.config"
-
+if (PROJECT_CONFIG.vConsole.is_open) { const vConsole = new VConsole() }
 export default {
   name: 'app',
   mixins: [loadingPage],

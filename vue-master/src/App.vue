@@ -12,8 +12,8 @@
 </template>
  
 <script>
-import VConsole from 'vconsole'
 import myAudio from 'base/audio'
+import VConsole from 'vconsole'
 import LoadingPage from 'base/loading-page.vue'
 import { PROJECT_CONFIG, PROJECT_CONFIG_CODE } from 'api/project.config'
 import { loadingPage } from 'assets/js/imgPreloader'
@@ -25,7 +25,7 @@ export default {
   name: 'app',
   mixins: [loadingPage], 
   data() {
-    return {
+    return { 
       pro: 0,
       pageLoadingOk: false,
       transitionName: 'right-left'

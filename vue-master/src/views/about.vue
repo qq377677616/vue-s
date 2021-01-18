@@ -1,6 +1,7 @@
 <template>
   <div class="body about">
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
+    <input type="file" id="file" ref="file" accept="image/*" @change="inputChange2($event)" />
     <div class="scroll-box">
       <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
         <div v-for="item in 30" :key="item">这是内容这是内容这是内容这是内容这是内容这是内容这是内容{{item}}</div>
@@ -43,7 +44,7 @@ import Scroll from 'base/scroll/scroll.vue'
 // import Shake from "assets/js/shake.js"
 import Tab from "components/tab.vue"
 import EXIF from "exif-js"
-import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation, showHidePopup } from "assets/js/util"
+import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation, showHidePopup, getFileBlobBase64 } from "assets/js/util"
 import {
   getLocation_qq,
   getLocation_baidu,
@@ -187,6 +188,12 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
+    //input事件
+    inputChange2(e) {
+      getFileBlobBase64(e.target.files[0]).then(res => {
+          console.log("【转换的图片】", res)
+      })    
+    },
     //播放视频
     // playVideo() {
     //   let _video = this.$refs.video

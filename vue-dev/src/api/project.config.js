@@ -78,9 +78,9 @@ const PROJECT_CONFIG = {
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 0,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启，4为openid白名单开启
+    is_open: 4,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启，4为openid白名单开启
     openWhiteConfig: {
-      whiteList: ['oBXw5w_e0LLLRb4AW0KWVFyyq3bg', 'oBXw5wwfc8yUn6NG1HMdyaxpgh5g'],//绿标白名单，供项目上线后打开绿标使用（当is_open为4时生效,表面为红标）
+      whiteList: ['bd42e36787c801012fd8e43f0355d0d5', 'oBXw5wwfc8yUn6NG1HMdyaxpgh5g'],//绿标白名单，供项目上线后打开绿标使用（当is_open为4时生效,表面为红标）
       response: "openid",//本地缓存唯一标识的数据字段格式
       responsePosition: 0//唯一标识存储位置：0为sessionStorage，1为localStorage
     },

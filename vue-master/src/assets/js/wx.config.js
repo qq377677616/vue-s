@@ -77,7 +77,6 @@ async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
     }
   }
   let isWx =  await getIsWxClient(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
-  console.log("_whiteListsAll_whiteListsAll_whiteListsAll", _whiteListsAll)
   if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
     _vconsole.style.bottom = '100'
     if (PROJECT_CONFIG) _vconsole.innerHTML = PROJECT_CONFIG.vConsole.green_label_title

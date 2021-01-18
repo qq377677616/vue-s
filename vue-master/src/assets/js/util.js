@@ -189,21 +189,6 @@ const getDomPageDistance = dom => {
     resolve({ left: dom.offsetLeft, top: dom.offsetTop })
   })
 }
-//base64转文件流
-const base64toFile = (dataurl, filename = 'file') => {
-  let arr = dataurl.split(',')
-  let mime = arr[0].match(/:(.*?);/)[1]
-  let suffix = mime.split('/')[1]
-  let bstr = atob(arr[1])
-  let n = bstr.length
-  let u8arr = new Uint8Array(n)
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n)
-  }
-  return new File([u8arr], `${filename}.${suffix}`, {
-    type: mime
-  })
-}
 //创建script标签并加载
 const loadScript = (src, callback) => {
   return new Promise((resolve, reject) => {
@@ -430,6 +415,36 @@ const accDiv = (num1, num2) => {
   r2 = Number(num2.toString().replace(".", ""))
   return (r1 / r2) * Math.pow(10, t2 - t1)
 }
+//获取本地预览图片
+const getFileBlobBase64 = file => {
+  return new Promise(resolve => {
+    var reader = new FileReader(), _blobUrl = null 
+    if (window.createObjectURL != undefined) {
+      // basic
+      _blobUrl = window.createObjectURL(file)
+    } else if (window.URL != undefined) {
+      // mozilla(firefox)
+      _blobUrl = window.URL.createObjectURL(file)
+    } else if (window.webkitURL != undefined) {
+      // webkit or chrome
+      _blobUrl = window.webkitURL.createObjectURL(file)
+    }
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+      resolve({ blob: _blobUrl, base64: reader.result })
+    }
+  })
+}
+//files对象转base64
+// filesToBase64(file) {
+// return new Promise(resolve => {
+//     var reader = new FileReader()
+//     reader.readAsDataURL(file)
+//     reader.onloadend = () => {
+//       resolve(reader.result)
+//     }
+//   })  
+// },
 //获取图片信息
 const getImageInfo = imgUrl => {
   return new Promise(resolve => {
@@ -744,6 +759,54 @@ const rgbaToHsv = (color) => {
   v = parseFloat(v.toFixed(4))
   return [h, s, v]
 }
+//base64转文件流
+const base64toFile = (dataurl, filename = 'file') => {
+  let arr = dataurl.split(',')
+  let mime = arr[0].match(/:(.*?);/)[1]
+  let suffix = mime.split('/')[1]
+  let bstr = atob(arr[1])
+  let n = bstr.length
+  let u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new File([u8arr], `${filename}.${suffix}`, {
+    type: mime
+  })
+}
+//压缩图片
+const compressImg = (file, scale = 1, quality) => {
+  let fileSize = parseFloat(parseInt(file['size'])/1024/1024).toFixed(2)
+  let read = new FileReader()
+  read.readAsDataURL(file)
+  return new Promise(function(resolve, reject){
+   read.onload = function (e) {
+     let img = new Image()
+     img.src = e.target.result
+     img.onload = function(){
+       let w = this.width, h = this.height
+       let canvas = document.createElement('canvas')
+       let ctx = canvas.getContext('2d')
+       let base64
+       canvas.setAttribute("width", w * scale)
+       canvas.setAttribute("height", h * scale)
+       ctx.drawImage(this, 0, 0, w, h, 0, 0, w * scale, h * scale)
+       if (quality) {
+        base64 = canvas.toDataURL(file['type'], quality)
+       } else {
+         if (fileSize < 1) {
+           base64 = canvas.toDataURL(file['type'], 1)
+         } else if (fileSize > 1 && fileSize < 2) {
+           base64 = canvas.toDataURL(file['type'], 0.5)
+         } else {
+           base64 = canvas.toDataURL(file['type'], 0.2)
+         }
+       }
+       resolve({ base64: base64, files: base64toFile(base64) })
+     }
+   }
+  })
+}
 export {
   getQueryString,
   showHidePopup,
@@ -759,6 +822,7 @@ export {
   getScreenWidthHeight,
   getDomPageDistance,
   base64toFile,
+  compressImg,
   loadScript,
   getScreenOrientation,
   randomString,
@@ -774,6 +838,8 @@ export {
   accSub,
   accMul,
   accDiv,
+  getFileBlobBase64,
+  getImageInfo,
   canvasImg,
   triggerEvent,
   colorHex,
