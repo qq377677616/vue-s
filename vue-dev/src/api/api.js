@@ -6,6 +6,6 @@ import { api } from 'api/request.js'
  */ 
 export default {
   //测试接口
-  getPostTest: (data, url = 'http://auth.vrupup.com/sanguo/auth/share.php?appid=wx7c3ed56f7f792d84&type=js', type = 'get') => { return api(url, data, type, true, 0) },
+  getPostTest: (data, url = 'https://read.yangtse.com/home/hbtest/couplets2a', type = 'get') => { return api(url, data, type, true, 0) },
   getPosition: (data, url = 'https://apis.map.qq.com/ws/geocoder/v1?&poi_options=address_format=short&get_poi=1', type = 'jsonp') => { return api(url, data, type, true, 0) }
 }

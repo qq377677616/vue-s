@@ -85,10 +85,10 @@ export default {
       }, false)
     },
     //播放暂停
-    playPause() {
+    playPause(clickType) {
       if (this.isAudioType) return
       let _audio = document.getElementById('audio')
-      if (_audio.paused) {
+      if (_audio.paused || clickType) {
         _audio.play()
         this.isPlay = 1
       } else { 

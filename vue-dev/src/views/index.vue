@@ -1,6 +1,6 @@
 <template>
   <div class="body index">
-    <div class="con flex-cen"><p>vue</p><span>0116</span></div>
+    <div class="con flex-cen"><p>vue</p><span>0206</span></div>
     <tab></tab> 
   </div>
 </template>
@@ -19,7 +19,6 @@ export default {
   methods: {
     jump(index) {
       if (!this.jumpList[index].url) return
-      // sessionStorage.setItem('prevPage', this.jumpList[index].url)
       this.$router.replace(this.jumpList[index].url)
     }
   },

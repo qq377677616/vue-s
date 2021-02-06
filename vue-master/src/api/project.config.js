@@ -71,14 +71,14 @@ const PROJECT_CONFIG = {
   },
   /*背景音乐配置*/  
   is_background_music: {
-    is_open: true,//是否开启背景音乐
+    is_open: false,//是否开启背景音乐
     type: 0,//播放形式：0为audio标签播放，1为当页面中有video标签时安卓机采用js方法播放，2为采用js方法播放
     music_src: ["https://game.flyh5.cn/resources/game/wechat/szq/gaoxiao/music.mp3", require('assets/images/music.mp3')],//默认背景音乐mp3文件地址，当核弹短码为空时生效
     constrols_btn_url: [require('assets/images/music_01.png'), require('assets/images/music_02.png')]//播放暂停按钮icon图片路径，前者为播放状态后者为暂停状态 
   },
   /*绿标配置*/
   vConsole: {
-    is_open: 0,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启，4为openid白名单开启
+    is_open: 1,//是否开启绿标:0为永久不开启，1为永久开启，2为本地开发不开启线上永久开启，3为本地开发不开启线上在项目上线日期前开启，4为openid白名单开启
     openWhiteConfig: {
       whiteList: ['oBXw5w_e0LLLRb4AW0KWVFyyq3bg', 'oBXw5wwfc8yUn6NG1HMdyaxpgh5g'],//绿标白名单，供项目上线后打开绿标使用（当is_open为4时生效,表面为红标）
       response: "openid",//本地缓存唯一标识的数据字段格式
@@ -89,7 +89,7 @@ const PROJECT_CONFIG = {
   is_offline_sign_out: false,//项目下线后是否在提示后关闭退出网页
 }
 //第三方密钥配置信息
-const SECRETKEY = {
+const SECRETKEY = { 
   secretkey_qq_map: 'GW3BZ-NMN6J-JSEFT-FTC6R-F7DA3-Z3FVJ',//腾讯地图位置密钥
   secretkey_baidu_map: 'AqHbeO1DTPXX06zcMKTqhhOAHkyqnqxY',//百度地图位置密钥
   secretkey_amap_map: '36b7d67054e5dcd7d391ab517478ccfe',//高德地图位置密钥

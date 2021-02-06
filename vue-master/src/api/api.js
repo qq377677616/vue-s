@@ -5,10 +5,10 @@ import { api } from 'api/request.js'
  * 请求地址、传参、post/get/jsonp、是否qs、0为全地址/1为半地址/2为本地代理地址 
  */ 
 export default {
+  //对联测试
+  getDuilian: (data, url = 'https://read.yangtse.com/home/hbtest/couplets2a', type = 'get') => { return api(url, data, type, true, 0) },
   //上传多段录制音频 
   uploadAudio: (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/ljy_wzyh_3/public/index/demo/message', type = 'post') => { return api(url, data, type, true, 0) },
-  //测试接口
-  getPostTest: (data, url = '/index/index/bis_detail', type = 'post') => { return api(url, data, type, true, 1) },
   //抓取接口
   getGrab: (data, url = 'https://www.taptap.com/app/194610', type = 'jsonp') => { return api(url, data, type, true, 0) },
   //上传图片

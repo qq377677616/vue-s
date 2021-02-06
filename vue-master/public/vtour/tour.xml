@@ -97,7 +97,7 @@
         set(plugin[get(tooltipname)].vcenter,true);
         set(plugin[get(tooltipname)].background,true);
         set(plugin[get(tooltipname)].backgroundcolor,0xD9A77B);
-        				<!-- set(plugin[get(tooltipname)].backgroundcolor,transparent); -->
+        						<!-- set(plugin[get(tooltipname)].backgroundcolor,transparent); -->
         set(plugin[get(tooltipname)].roundedge,20);
         set(plugin[get(tooltipname)].backgroundalpha,1);
         set(plugin[get(tooltipname)].padding,5);
@@ -141,6 +141,18 @@
 		所有场景
 
 	 -->
+	<scene name="videopano" isvideopano="true" thumburl="panos/video/video.jpg" title="全景视频">
+		<!-- include the videoplayer plugin -->
+		<!-- <plugin name="video" url.html5="%SWFPATH%/plugins/videoplayer.js" pausedonstart="false" loop="false" volume="1.0" videourl.ios="panos/video/video_02.mp4" videourl.no-ios="panos/video/video_02.mp4" onvideoready="skin_showloading(false);js(onvideoready())" onvideoplay="jscall(onvideoplay())" onvideopaused="js(alert(666))" onvideocomplete="" onerror="" /> -->
+		<layer name="video" url.flash="%SWFPATH%/plugins/videoplayer.swf" url.html5="%SWFPATH%/plugins/videoplayer.js" html5controls="true" videourl="panos/video/video_02.mp4" posterurl="videoposter.jpg" align="center" x="0" y="0" pausedonstart="false" loop="false" volume="1.0" onvideoready="skin_showloading(false);js(onvideoready())" onvideoplay="js(onvideoplay())" onvideopaused="js(onvideopaused())" onvideocomplete="js(onvideocomplete())" onerror="js(onerror())" />
+		<!-- use the videoplayer plugin as panoramic image source -->
+		<image>
+			<sphere url="plugin:video" />
+		</image>
+		<!-- set the default view -->
+		<view hlookat="0" vlookat="0" fovtype="DFOV" fov="130" fovmin="75" fovmax="150" distortion="0.0" />
+		<hotspot name="spot2" ath="0" atv="-20" url="images/btn3.png" onclick="js(openGyro())" visible="true" devices="html5" scale="1" edge="bottom" onloaded="add_all_the_time_tooltip()" text="张三" linkedscene="scene_b-1-1" />
+	</scene>
 	<scene name="scene_4a1" title="4a1" onstart="" thumburl="panos/4a1.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
@@ -152,7 +164,6 @@
 		</image>
 		<!-- <hotspot name="spot2" ath="30.008" atv="39.874" url="images/btn4.png" onclick="openurl('https://www.baidu.com')" scale="0.4" edge="bottom" onloaded="add_all_the_time_tooltip()" text="张三" linkedscene="scene_b-1-1" /> -->
 	</scene>
-
 	<scene name="scene_4a2" title="4a2" onstart="" thumburl="panos/4a2.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />

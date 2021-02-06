@@ -9,7 +9,7 @@
 
 <script type="text/ecmascript-6">
 import MyHeader from "components/header.vue"
-import { shareConfigure, setVueThis } from "assets/js/wx.config"
+import { shareConfigure } from "assets/js/wx.config"
 import { AUTH_URL, SHARECONFIG } from "api/project.config"
 import { getRandomNum } from 'assets/js/util'
 import api from "api/api"
@@ -44,21 +44,21 @@ export default {
           Desc: _data.shareContent,//分享描述
           ShareImage: _data.shareImg//分享图标
         }
-        setVueThis(this)//如果要监听用户点击分享按钮请调用
         this.setShareConfigure(_shareData)
       })
     },
-    //动态分享配置（当project.config配置文件SHARECONFIG.type设置为1时才会进入回调）
+    //动态分享配置（当project.config配置文件SHARECONFIG.type设置为1时才会进入回调,如果要监听用户点击分享按钮请传入this）
     setShareConfigure(shareData) {
-      shareConfigure(shareData).then(res => {//分享配置成功回调
-        console.log("【分享成功】", res)
+      shareConfigure(shareData, this).then(res => {//分享配置成功回调
+        console.log("【重置分享成功】", res)
       }).catch(err => {//分享配置失败回调
         this.$toast("动态设置分享失败")
-        console.log("【分享失败】", err)
+        console.log("【重置分享失败】", err)
       })
-      if (!SHARECONFIG.type) this.$toast("动态设置分享成功")
+      this.$toast.clear()
+      if (!SHARECONFIG.type) this.$toast("重置设置分享成功")
     },
-    //用户点击分享按钮回调(需要调用事先 setVueThis(this) 方法才能生效)
+    //用户点击分享按钮回调(需shareConfigure方法中传入this,才能生效)
     clickShareButtonCallback(e) {
       console.log("【在当前组件中点击分享回调】", e)
     }

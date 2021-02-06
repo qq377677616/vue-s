@@ -16,6 +16,7 @@ if (!PROJECT_CONFIG_CODE) {
       _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 4 ? res.data.result : res.data)
     }).catch(err => {
       console.log("【微信注册信息4个参数获取失败】", err)
+      if (NUM_RE_REQUEST == 0) _openDebugging()
       if (NUM_RE_REQUEST < 10) {
         NUM_RE_REQUEST++
         _configStart()
@@ -78,7 +79,7 @@ async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
   }
   let isWx =  await getIsWxClient(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
   if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
-    _vconsole.style.bottom = '100'
+    // _vconsole.style.bottom = '100'
     if (PROJECT_CONFIG) _vconsole.innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     if (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid)) _vconsole.classList.add('special')
     _vconsole.setAttribute("style", "display: flex !important")
@@ -200,7 +201,8 @@ function hideMenuItems() {
   })
 }
 //微信、QQ分享配置
-const shareConfigure = (shareConfig) => {
+const shareConfigure = (shareConfig, _this) => {
+  vueThis = _this
   return new Promise((resolve, reject) => {
     let isShareConfigure = 0, shareMessage = []
     if (shareConfig && typeof shareConfig == 'object') Object.assign(SHARECONFIG, shareConfig)

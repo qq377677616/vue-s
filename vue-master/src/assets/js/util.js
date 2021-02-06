@@ -72,7 +72,7 @@ const minutesAndSeconds = (time, symbols) => {
     tiems: { d: _d, h: _h, m: _m, s: _s }
   }
 }
-/*某个时间距离当前时间转换*/
+//某个时间距离当前时间转换
 const distanceTime = (time) => {
   time = time.replace(/-/g, '/')
   let _str
@@ -102,6 +102,24 @@ const getScreenOrientation = () => {
   if (window.orientation==90 || window.orientation==-90) {
     return("横屏状态")
   }
+}
+//陀螺仪
+const openGyroscope = () => {
+  return new Promise(resolve => {
+    if (window.DeviceOrientationEvent && window.DeviceOrientationEvent.requestPermission) {
+      window.DeviceOrientationEvent.requestPermission().then(state => {
+        if (state === "granted") {
+          resolve({ code: 0, msg: '允许了陀螺仪权限' })
+        } else if (state === "denied") {
+          resolve({ code: 1, msg: '拒绝了陀螺仪权限' })
+        } else if (state === "prompt") {
+          resolve({ code: 2, msg: '用户进行其他操作' })
+        }
+      })
+    } else {
+      resolve({ code: -1, msg: '您设备不支持陀螺仪功能' })
+    }
+  })
 }
 //生成随机字符串
 const randomString = len => {
@@ -223,10 +241,10 @@ const loadFonts = (fontName, fontUrl) => {
   return new Promise(async(resolve) => {
     let font = new FontFace(fontName, `url(${fontUrl})`)
     await font.load()
-    setTimeout(() => {
+    // setTimeout(() => {
       document.fonts.add(font)
       resolve(font)
-    }, 2000)
+    // }, 500)
   })
 }
 //判断当前浏览器环境
@@ -415,44 +433,17 @@ const accDiv = (num1, num2) => {
   r2 = Number(num2.toString().replace(".", ""))
   return (r1 / r2) * Math.pow(10, t2 - t1)
 }
-//获取本地预览图片
-const getFileBlobBase64 = file => {
-  return new Promise(resolve => {
-    var reader = new FileReader(), _blobUrl = null 
-    if (window.createObjectURL != undefined) {
-      // basic
-      _blobUrl = window.createObjectURL(file)
-    } else if (window.URL != undefined) {
-      // mozilla(firefox)
-      _blobUrl = window.URL.createObjectURL(file)
-    } else if (window.webkitURL != undefined) {
-      // webkit or chrome
-      _blobUrl = window.webkitURL.createObjectURL(file)
-    }
-    reader.readAsDataURL(file)
-    reader.onloadend = () => {
-      resolve({ blob: _blobUrl, base64: reader.result })
-    }
-  })
-}
-//files对象转base64
-// filesToBase64(file) {
-// return new Promise(resolve => {
-//     var reader = new FileReader()
-//     reader.readAsDataURL(file)
-//     reader.onloadend = () => {
-//       resolve(reader.result)
-//     }
-//   })  
-// },
-//获取图片信息
-const getImageInfo = imgUrl => {
-  return new Promise(resolve => {
-    let _curImg = new Image()
-    _curImg.setAttribute("crossOrigin", "anonymous")
-    _curImg.src = imgUrl
-    _curImg.onload = () => {
-      resolve({ newImg: _curImg, width: _curImg.width, height: _curImg.height })
+//事件触发
+const triggerEvent = (dom, eventName = 'click', canbubble = false, cancelable = true) => {
+  return new Promise((resolve, reject) => {
+    let _event = document.createEvent("MouseEvents")
+    _event.initMouseEvent(eventName, canbubble, cancelable)
+    if (typeof dom == 'string') dom = document.getElementById(dom)
+    if (typeof dom != 'object') {
+      reject({ status: 1, message: 'dom传入有误，请传正确dom或正确dom的id值。' })
+    } else {
+      dom.dispatchEvent(_event)
+      resolve({ status: 0, message: `${eventName}事件触发成功。` }) 
     }
   })
 }
@@ -490,178 +481,161 @@ const canvasImg = (options) => {
         }
       })
     })()
-    function addRoundRectFunc() {
-      CanvasRenderingContext2D.prototype.roundRect = function(
-        x,
-        y,
-        width,
-        height,
-        radius,
-        fill,
-        stroke
-      ) {
-        if (typeof stroke == "undefined") {
-          stroke = false
-        }
-        if (typeof radius === "undefined") {
-          radius = 5
-        }
-        this.beginPath()
-        this.moveTo(x + radius, y)
-        this.lineTo(x + width - radius, y)
-        this.quadraticCurveTo(x + width, y, x + width, y + radius)
-        this.lineTo(x + width, y + height - radius)
-        this.quadraticCurveTo(
-          x + width,
-          y + height,
-          x + width - radius,
-          y + height
-        )
-        this.lineTo(x + radius, y + height)
-        this.quadraticCurveTo(x, y + height, x, y + height - radius)
-        this.lineTo(x, y + radius)
-        this.quadraticCurveTo(x, y, x + radius, y)
-        this.closePath()
-        if (stroke) {
-          this.stroke()
-        }
-        if (fill) {
-          this.fill()
-        }
-      }
+    function handleBorderRect(ctx, x, y, w, h, r, color) {
+        ctx.beginPath();
+        // 左上角
+        ctx.arc(x + r, y + r, r, Math.PI, 1.5 * Math.PI);
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.lineTo(x + w, y + r);
+        // 右上角
+        ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.lineTo(x + w - r, y + h);
+        // 右下角
+        ctx.arc(x + w - r, y + h - r, r, 0, 0.5 * Math.PI);
+        ctx.lineTo(x + r, y + h);
+        ctx.lineTo(x, y + h - r);
+        // 左下角
+        ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, Math.PI);
+        ctx.lineTo(x, y + r);
+        ctx.lineTo(x + r, y);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.closePath();
     }
-    function startDraw() {
-      //绘制图片
-      for (var n in options.imgList) {
-        if (!options.imgList[n].radius) {
-          drawImg()
-        } else if (options.imgList[n].radius == "50%") {
-          ctx.save()
-          let r = options.imgList[n].imgW * 0.5
-          ctx.arc(options.imgList[n].imgX + r, options.imgList[n].imgY + r, r, 0, 2 * Math.PI)
-          ctx.clip()
-          ctx.fill()
-          drawImg(true)
-          ctx.restore()
-        } else {
-          ctx.save()
-          addRoundRectFunc()
-          ctx.roundRect(
-            options.imgList[n].imgX,
-            options.imgList[n].imgY,
-            options.imgList[n].imgW,
-            options.imgList[n].imgH,
-            options.imgList[n].radius,
-            true
-          )
-          ctx.globalCompositeOperation = "source-in"
-          ctx.clip()
-          drawImg()
-          ctx.restore()
-        }
-        function drawImg(arc) {
-          ctx.beginPath()
-          let _scale = 1, _curimg = options.imgList[n]
-          let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0
-          console.log("【当前图片】", _curimg)
-          if (_curimg.imgW) {
-            // _scale = Math.min(_curimg.imgW / _curimgs.width, _curimg.imgH / _curimgs.height)
-            _scale = Math.min(_curimg.width / _curimg.imgW, _curimg.height / _curimg.imgH)
-            if (_curimg.width / _curimg.imgW > _curimg.height / _curimg.imgH) {
-              scaleType = 1
-            } else if (_curimg.width / _curimg.imgW < _curimg.height / _curimg.imgH) {
-              scaleType = 2
-            }
-            _drawW = _curimg.width * _scale
-            _drawH = _curimg.height * _scale
+      function startDraw() {
+        //绘制图片
+        for (var n in options.imgList) {
+          let _rotate = options.imgList[n].rotate
+          if (!options.imgList[n].radius) {
+            drawImg()
+          } else if (options.imgList[n].radius == "50%") {
+            ctx.save()
+            let r = options.imgList[n].imgW * 0.5
+            ctx.arc(options.imgList[n].imgX + r, options.imgList[n].imgY + r, r, 0, 2 * Math.PI)
+            ctx.clip()
+            ctx.fill()
+            drawImg(true)
+            ctx.restore()
+          } else {
+            ctx.save()
+            handleBorderRect(ctx, options.imgList[n].imgX, options.imgList[n].imgY, options.imgList[n].imgW, options.imgList[n].imgH, options.imgList[n].radius, '#ccc');
+            ctx.clip();
+            drawImg()
+            ctx.restore()
           }
-          ctx.drawImage(
-            _curimg.newImg,
-            // vars["newImg" + n],
-            scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
-            scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
-            // scaleType == 1 ? _curimg.imgW * _scale : _curimg.imgW,
-            // scaleType == 1 ? _curimg.width : _drawH,
-            scaleType == 1 ? _curimg.imgW * _scale : _curimg.width,
-            scaleType == 1 ? _curimg.height : _curimg.imgH * _scale,
-            options.imgList[n].imgX,
-            options.imgList[n].imgY,
-            _curimg.imgW || _drawW,
-            // arc ? options.imgList[n].imgW : _curimg.imgH || _drawH
-            _curimg.imgH || _drawH
-          )
+          function drawImg(arc) {
+            ctx.beginPath()
+            let _scale = 1, _curimg = options.imgList[n]
+            let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0, rx = options.imgList[n].imgW * 0.5, ry = options.imgList[n].imgH * 0.5
+            if (_curimg.imgW) {
+              _scale = Math.min(_curimg.width / _curimg.imgW, _curimg.height / _curimg.imgH)
+              if (_curimg.width / _curimg.imgW > _curimg.height / _curimg.imgH) {
+                scaleType = 1
+              } else if (_curimg.width / _curimg.imgW < _curimg.height / _curimg.imgH) {
+                scaleType = 2
+              }
+              _drawW = _curimg.width * _scale
+              _drawH = _curimg.height * _scale
+            }
+            if (_rotate) {
+              ctx.translate(options.imgList[n].imgX + rx, options.imgList[n].imgY + ry)
+              ctx.rotate(_rotate * Math.PI / 180)
+            }
+            ctx.drawImage(
+              _curimg.newImg,
+              // vars["newImg" + n],
+              scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
+              scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
+              scaleType == 1 ? _curimg.imgW * _scale : _curimg.width,
+              scaleType == 1 ? _curimg.height : _curimg.imgH * _scale,
+              _rotate ? 0 - rx : options.imgList[n].imgX,
+              _rotate ? 0 - ry : options.imgList[n].imgY,
+              _curimg.imgW || _drawW,
+              _curimg.imgH || _drawH
+            )
+            if (_rotate) {
+              ctx.rotate(_rotate * Math.PI * -1 / 180)
+              ctx.translate((options.imgList[n].imgX + rx) * -1, (options.imgList[n].imgY + ry) * -1)
+            }
+          }
         }
-      }
-      //绘制文字
-      function drawFont() {
-        let fonts = options.textList
-        if (!fonts) return
-        for (let i = 0; i < fonts.length; i++) {
-          let _wrap = fonts[i].wrap
-          let _h = fonts[i].textY
-          let _string = fonts[i].string
-          if ((_string.length > _wrap) && !fonts[i].isWrap) {
-            let _arrText = []
-            _arrText = [(_string).replace(/\s+/g,"")]
-            let _x = 0
-            let _this = this
-            calcImgText(_x)
-            function calcImgText(x) {
-              var res = []
-              var str = ''
-              var nums = 0
-              for (var k = 0; k <= _arrText[x].length; k++) {
-                if (nums < _wrap && !(k == _arrText[x].length)) {
-                  (/[0-9a-ln-z.]/.test(_arrText[x][k])) ? nums += 0.5 : nums++
-                  str += _arrText[x][k] 
-                } else {
-                  res.push(str)
-                  let _item = cloneObj(fonts[i])
-                  _item.string = str
-                  _item.textY = _h
-                  if (_item.string.length > _wrap) _item.isWrap = true
-                  fonts.push(_item)
-                  _h += _item.lineHeight
-                  str = _arrText[x][k]
-                  nums = 1
+        //绘制文字
+        function drawFont() {
+          let fonts = options.textList
+          if (!fonts) return
+          for (let i = 0; i < fonts.length; i++) {
+            let _wrap = fonts[i].wrap
+            let _h = fonts[i].textY
+            let _string = fonts[i].string
+            if ((_string.length > _wrap) && !fonts[i].isWrap) {
+              let _arrText = []
+              _arrText = [(_string).replace(/\s+/g,"")]
+              let _x = 0
+              let _this = this
+              calcImgText(_x)
+              function calcImgText(x) {
+                let res = [], str = '', nums = 0
+                for (var k = 0; k <= _arrText[x].length; k++) {
+                  if (nums < _wrap && !(k == _arrText[x].length)) {
+                    (/[0-9a-ln-z.]/.test(_arrText[x][k])) ? nums += 0.5 : nums++
+                    str += _arrText[x][k] 
+                  } else {
+                    res.push(str)
+                    let _item = cloneObj(fonts[i])
+                    _item.string = str
+                    _item.textY = _h
+                    if (_item.string.length > _wrap) _item.isWrap = true
+                    fonts.push(_item)
+                    _h += _item.lineHeight
+                    str = _arrText[x][k]
+                    nums = 1
+                  }
                 }
               }
-            }
-            function cloneObj(obj) {
-              var newObj = {};
-              if (obj instanceof Array) {
-                newObj = [];
+              function cloneObj(obj) {
+                let newObj = {};
+                if (obj instanceof Array) {
+                  newObj = [];
+                }
+                for (let key in obj) {
+                  let val = obj[key];
+                  newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
+                }
+                return newObj;
               }
-              for (var key in obj) {
-                var val = obj[key];
-                newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
-              }
-              return newObj;
+              fonts.splice(i, 1)
             }
-            fonts.splice(i, 1)
           }
-        }
-        for (var k in fonts) {
+        for (let k in fonts) {
+          let _rotate = fonts[k].rotate
+          if (_rotate) {
+            ctx.translate(fonts[k].textX, fonts[k].textY)
+            ctx.rotate(_rotate * Math.PI / 180)
+          }
           ctx.fillStyle = fonts[k].color
           ctx.font = fonts[k].style
           ctx.textBaseline = "hanging"
           ctx.textAlign = fonts[k].textAlign ? fonts[k].textAlign : "start"
-          isSystem(function(res) {
-            if (res.isiOS) {
-              fonts[k].textY -= 10
-            }
+          isSystem(res => {
+            res.isiOS ? fonts[k].textY -= 10 : fonts[k].textY -= 6
           })
           if (fonts[k].vel) {
-            for (var z in fonts[k].string) {
+            for (let z in fonts[k].string) {
               ctx.fillText(
                 fonts[k].string[z],
                 fonts[k].textX,
                 fonts[k].textY +
-                  z * (parseInt(fonts[k].fontSize) + fonts[k].vel)
+                z * (parseInt(fonts[k].fontSize) + fonts[k].vel)
               )
             }
           } else {
-            ctx.fillText(fonts[k].string, fonts[k].textX, fonts[k].textY)
+            ctx.fillText(fonts[k].string, _rotate ? 0 : fonts[k].textX, _rotate ? 0 : fonts[k].textY)
+          }
+          if (_rotate) {
+            ctx.rotate(_rotate * -1 * Math.PI / 180)
+            ctx.translate(fonts[k].textX * -1, fonts[k].textY * -1)
           }
         }
       }
@@ -676,89 +650,68 @@ const canvasImg = (options) => {
     }
   })
 }
-//事件触发
-const triggerEvent = (dom, eventName = 'click', canbubble = false, cancelable = true) => {
-  return new Promise((resolve, reject) => {
-    let _event = document.createEvent("MouseEvents")
-    _event.initMouseEvent(eventName, canbubble, cancelable)
-    if (typeof dom == 'string') dom = document.getElementById(dom)
-    if (typeof dom != 'object') {
-      reject({ status: 1, message: 'dom传入有误，请传正确dom或正确dom的id值。' })
-    } else {
-      dom.dispatchEvent(_event)
-      resolve({ status: 0, message: `${eventName}事件触发成功。` }) 
+//获取图片信息
+const getImageInfo = imgUrl => {
+  return new Promise(resolve => {
+    let _curImg = new Image()
+    _curImg.setAttribute("crossOrigin", "anonymous")
+    _curImg.src = imgUrl
+    _curImg.onload = () => {
+      resolve({ newImg: _curImg, width: _curImg.width, height: _curImg.height })
     }
   })
 }
-//rgb转16进制
-const colorHex = rgb => {
-  if (rgb.charAt(0) == '#') return rgb;
-  var ds = rgb.split(/\D+/), decimal = Number(ds[1]) * 65536 + Number(ds[2]) * 256 + Number(ds[3])
-  return "#" + zero_fill_hex(decimal, 6)
-  function zero_fill_hex (num, digits) {
-    var s = num.toString(16);
-    while (s.length < digits)
-      s = "0" + s;
-    return s;
-  }
-}
-//16进制转rgb
-const colorRgb = (color) => {
-  // 16进制颜色值的正则
-  var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/
-  // 把颜色值变成小写
-  color = color.toLowerCase()
-  if (reg.test(color)) {
-    // 如果只有三位的值，需变成六位，如：#fff => #ffffff
-    if (color.length === 4) {
-      var colorNew = "#"
-      for (var i = 1; i < 4; i += 1) {
-        colorNew += color.slice(i, i + 1).concat(color.slice(i, i + 1))
+//获取input[file]详细信息
+const getFileData = file => {
+  return new Promise(resolve => {
+    var reader = new FileReader(), _blobUrl = null 
+    if (window.createObjectURL != undefined) {
+      _blobUrl = window.createObjectURL(file)
+    } else if (window.URL != undefined) {
+      _blobUrl = window.URL.createObjectURL(file)
+    } else if (window.webkitURL != undefined) {
+      _blobUrl = window.webkitURL.createObjectURL(file)
+    }
+    reader.readAsDataURL(file)
+    reader.onload = e => {
+      let img = new Image()
+      img.src = e.target.result
+      img.onload = () => {
+        resolve({
+          name: file.name,
+          size: { bit: file.size, Kilobyte: Number((file.size/1024).toFixed(2)), MByte: Number((file.size/1024/1024).toFixed(2)), width: img.width, height: img.height },
+          file: file,
+          blob: _blobUrl, 
+          base64: reader.result 
+        })
       }
-      color = colorNew
     }
-    // 处理六位的颜色值，转为RGB
-    var colorChange = []
-    for (var i = 1; i < 7; i += 2) {
-      colorChange.push(parseInt("0x" + color.slice(i, i + 2)))
-    }
-    return "rgb(" + colorChange.join(",") + ")"
-  } else {
-    return color
-  }
-}
-//rgb转hsv
-const rgbaToHsv = (color) => {
-  var arr = color.replace(/(?:\(|\)|rgb|RGB)*/g, "").split(",")
-  var h = 0, s = 0, v = 0;
-  var r = parseInt(arr[0]), g = parseInt(arr[1]), b = parseInt(arr[2]);
-  arr.sort(function (a, b) {
-      return a - b;
   })
-  var max = parseInt(arr[2])
-  var min = parseInt(arr[0]);
-  v = max / 255;
-  if (max === 0) {
-      s = 0;
-  } else {
-      s = 1 - (min / max);
-  }
-  if (max === min) {
-      h = 0;//事实上，max===min的时候，h无论为多少都无所谓
-  } else if (max === r && g >= b) {
-      h = 60 * ((g - b) / (max - min)) + 0;
-  } else if (max === r && g < b) {
-      h = 60 * ((g - b) / (max - min)) + 360
-  } else if (max === g) {
-      h = 60 * ((b - r) / (max - min)) + 120
-  } else if (max === b) {
-      h = 60 * ((r - g) / (max - min)) + 240
-  }
-  h = parseInt(h);
-  s = parseFloat(s.toFixed(4))
-  v = parseFloat(v.toFixed(4))
-  return [h, s, v]
 }
+//获取base64图片大小
+const getBase64Size = base64Url => {
+  let equalIndex = base64Url.indexOf('='), base64Size = 0
+  if (equalIndex > 0) {
+    let str = base64Url.substring(0, equalIndex)
+    let strLength = str.length;
+    let fileLength = strLength - (strLength / 8) * 2
+    base64Size = Math.floor(fileLength)
+  } else {
+    let strLength = base64Url.length;
+    let fileLength = strLength - (strLength / 8) * 2
+    base64Size = Math.floor(fileLength)
+  }
+  return { bit: base64Size, Kilobyte: Number((base64Size/1024).toFixed(2)), MByte: Number((base64Size/1024/1024).toFixed(2)) }
+}
+//获取网络图片信息
+const getNetWorkImg = img => {
+  let imgElems = document.getElementById(img)
+  let url = imgElems.src
+  let varperformance = window.performance || window.msPerformance || window.webkitPerformance
+  let iTime = varperformance.getEntriesByName(url)[0]
+  let imgSize = iTime.decodedBodySize || iTime.encodedBodySize
+  return { bit: imgSize, Kilobyte: Number((imgSize/1024).toFixed(2)), MByte: Number((imgSize/1024/1024).toFixed(2)) }
+} 
 //base64转文件流
 const base64toFile = (dataurl, filename = 'file') => {
   let arr = dataurl.split(',')
@@ -776,37 +729,51 @@ const base64toFile = (dataurl, filename = 'file') => {
 }
 //压缩图片
 const compressImg = (file, scale = 1, quality) => {
-  let fileSize = parseFloat(parseInt(file['size'])/1024/1024).toFixed(2)
-  let read = new FileReader()
-  read.readAsDataURL(file)
-  return new Promise(function(resolve, reject){
-   read.onload = function (e) {
-     let img = new Image()
-     img.src = e.target.result
-     img.onload = function(){
-       let w = this.width, h = this.height
-       let canvas = document.createElement('canvas')
-       let ctx = canvas.getContext('2d')
-       let base64
-       canvas.setAttribute("width", w * scale)
-       canvas.setAttribute("height", h * scale)
-       ctx.drawImage(this, 0, 0, w, h, 0, 0, w * scale, h * scale)
-       if (quality) {
-        base64 = canvas.toDataURL(file['type'], quality)
-       } else {
-         if (fileSize < 1) {
-           base64 = canvas.toDataURL(file['type'], 1)
-         } else if (fileSize > 1 && fileSize < 2) {
-           base64 = canvas.toDataURL(file['type'], 0.5)
-         } else {
-           base64 = canvas.toDataURL(file['type'], 0.2)
-         }
-       }
-       resolve({ base64: base64, files: base64toFile(base64) })
-     }
-   }
+  return new Promise(resolve => {
+    if (file.size && typeof file == 'object') {
+      let fileSize = parseFloat(parseInt(file['size'])/1024/1024).toFixed(2)
+      let read = new FileReader()
+      read.readAsDataURL(file)
+      read.onload = () => {
+        exportImg(read.result, fileSize, file.name)
+      }
+    } else if (file.includes('base64')) {
+      exportImg(file, getBase64Size(file).MByte)
+    } else if (file.includes('http') || file.includes('.')) {
+      exportImg(file)
+    } else {
+      resolve({ code: 1, msg: '请传正确格式的图片' })
+    }
+    function exportImg(imgUrl, fileSize, fileNmae) {
+      let img = new Image()
+      img.setAttribute("crossOrigin", "anonymous")
+      img.src = imgUrl
+      img.onload = () => {
+        let w = img.width, h = img.height, base64
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d')
+        canvas.setAttribute("width", w * scale)
+        canvas.setAttribute("height", h * scale)
+        ctx.drawImage(img, 0, 0, w, h, 0, 0, w * scale, h * scale)
+        if (quality) {
+          base64 = canvas.toDataURL(file['type'], quality)
+        } else {
+          if (fileSize < 1) {
+            base64 = canvas.toDataURL(file['type'], 1)
+          } else if (fileSize > 1 && fileSize < 2) {
+            base64 = canvas.toDataURL(file['type'], 0.5)
+          } else {
+            base64 = canvas.toDataURL(file['type'], 0.2)
+          }
+        }
+        getFileData(base64toFile(base64, fileNmae)).then(res => {
+          resolve(res)
+        })
+      }
+    }
   })
 }
+
 export {
   getQueryString,
   showHidePopup,
@@ -821,10 +788,13 @@ export {
   setPageScrollTop,
   getScreenWidthHeight,
   getDomPageDistance,
+  getBase64Size,
+  getNetWorkImg,
   base64toFile,
   compressImg,
   loadScript,
   getScreenOrientation,
+  openGyroscope,
   randomString,
   getRandomNum,
   loadFonts,
@@ -838,11 +808,8 @@ export {
   accSub,
   accMul,
   accDiv,
-  getFileBlobBase64,
+  getFileData,
   getImageInfo,
   canvasImg,
-  triggerEvent,
-  colorHex,
-  colorRgb,
-  rgbaToHsv
+  triggerEvent
 }

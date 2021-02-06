@@ -8,9 +8,10 @@ import { REQUEST_URL, REQUEST_PROXY_URL, ERR_Ok } from 'api/project.config'
 const service = axios.create({
   //baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 10000, // request timeout
   headers: {
-    "Content-Type": 'application/x-www-form-urlencoded'//'application/json'
+    // "Content-Type": 'application/x-www-form-urlencoded'//'application/json'
+    // "Content-Type": 'application/json'
   },
   // paramsSerializer: function(params) {
   //   return qs.stringify(params, { arrayFormat: 'repeat' })

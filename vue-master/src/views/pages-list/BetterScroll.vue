@@ -98,7 +98,8 @@ export default {
 </script>
 
 <style scoped>
-  .box{height: 300px;width: 80vw;margin:0 auto;background: #eee;padding:10px;overflow:hidden;position: relative;}
+  .scroll-box{width: 100%;}
+  .box{height: 300px;width: 80%;margin:0 auto;background: #eee;padding:10px;overflow:hidden;position: relative;}
   .p{font-size: .3rem;line-height: 1.5;text-indent: 2em;padding: .2rem;}
   .controls{padding-top: .5rem;}
   .controls button{margin:.1rem;background: #ccc;border-radius: .1rem;width: 2rem;height: .64rem;}

@@ -7,6 +7,14 @@ const krpanoApi =  {
     krpanoLoadscene(hotNameNum, blend) {
       this.krpanoPage.loadscene(hotNameNum, blend)
     },
+    //获取全景视频当前播放时间和总时间
+    getKrpanoVideoTime(type = 0) {
+      return this.krpanoPage.getKrpanoVideoTime(type)
+    },
+    //暂停播放全景视频
+    playPauseVideo(type) {
+      this.krpanoPage.playPauseVideo(type)
+    },
     //开启陀螺仪
     openGyro(type) {
       this.krpanoPage.openGyro(type)

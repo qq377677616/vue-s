@@ -9,9 +9,10 @@
         <button @click="krpanoLoadscene(1)">切换场景</button>
         <button @click="showHideHot(1)">第一批热点</button>
         <button @click="showHideHot(2)">第二批热点</button>
-        <button @click="getOpenGyroAuth">ios获取陀螺仪权限</button>
-        <button @click="openGyro">开启陀螺仪</button>
-        <button @click="openGyro(true)">关闭陀螺仪</button>
+        <button @click="getOpenGyroAuth(1)">开启陀螺仪</button>
+        <button @click="getOpenGyroAuth(0)">关闭陀螺仪</button>
+        <button @click="playPauseVideos(1)">播放视频</button>
+        <button @click="playPauseVideos(0)">暂停视频</button>
       </div>
       <div class="angle flex-cen">
         <div><span class="iconfont icon-ziyuanldpi" :style="{transform: 'rotate('+currentAngle+'deg)'}"></span></div>
@@ -23,7 +24,7 @@
 <script type="text/ecmascript-6">
 import MyHeader from "components/header.vue"
 import { krpanoApi } from 'assets/js/krpano'
-import { getScreenOrientation } from 'assets/js/util'
+import { getScreenOrientation, openGyroscope } from 'assets/js/util'
 export default {
   name: "",
   mixins: [krpanoApi],
@@ -47,20 +48,34 @@ export default {
     this.hotspotInit()
   },
   methods: {
-    getOpenGyroAuth() {
-      // ios 提示授权， 返回的是一个 promise
-      window.DeviceOrientationEvent.requestPermission().then(state => {
-        console.log("state", state)
-        if (state === "granted") {//允许
-            console.log("【允许使用陀螺仪】", state)
-            this.openGyro()
-        } else if (state === "denied") {//拒绝
-            console.log("【拒绝使用陀螺仪】", state)
-        } else if (state === "prompt") {
-            console.log("【用户进行其他操作】", state)
-        }
-      })    
+    //全景视频播放了
+    onvideoready() {
+      console.log('【全景视频可以播放了】')
+      alert()
+      setInterval(() => {
+        console.log("【当前全景视频的完整时间和当前播放时间】", this.getKrpanoVideoTime(), this.getKrpanoVideoTime(1))
+      }, 1000)
     },
+    //全景视频播放完成
+    onvideocomplete() {
+      console.log('【全景视频播放完成】')
+    },
+    //打开陀螺仪
+    getOpenGyroAuth(type) {
+      if (type) {
+        openGyroscope().then(res => {
+          console.log("【陀螺仪返回】", res)
+          this.openGyro()
+        })  
+      } else {
+        this.openGyro(0)
+      }
+    },
+    //暂停、播放视频
+    playPauseVideos(type) {
+      this.playPauseVideo(type)
+    },
+    //切换场景
     switchScene(e) {
       this.krpanoLoadscene(e.data, 'elliptic + zoom')
     },
@@ -71,10 +86,6 @@ export default {
     onloadcomplete() {
       console.log("【全景初始化完成】")
       this.batchAddHot()
-      // setTimeout(() => {
-      //   console.log("改变视角")
-      //   this.rotationAngle(50, 10, 1)
-      // }, 2000)
     },
     //监听全景加载
     // onxmlcomplete() {
@@ -82,9 +93,9 @@ export default {
     // },
     //初始化全景
     hotspotInit() {
+      //回调事件
       window.addEventListener('message', e => {
-        // console.log("【e.data】", e.data)
-        if (e.data.eventName) this[e.data.eventName](e.data)
+        if (e.data.eventName && this[e.data.eventName]) this[e.data.eventName](e.data)
       })
       this.krpanoPage = document.getElementById("krpano").contentWindow
     },
@@ -93,7 +104,7 @@ export default {
       // console.log("全景旋转", e)
       this.currentAngle = e.data
     },
-    //批量添加热点
+    //批量添加热点 
     batchAddHot() {
       this.krpanoAddHotspot(this.hotspotList1)
       this.krpanoAddHotspot(this.hotspotList2)

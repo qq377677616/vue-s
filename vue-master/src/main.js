@@ -47,7 +47,6 @@ const i18n = new VueI18n({
   silentTranslationWarn: true
 })
 Vue.use(clipper)
-
 // router.beforeEach((form, to, next) => {
 //   console.log("form", form)
 //   console.log("to", to)

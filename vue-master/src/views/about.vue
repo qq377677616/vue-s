@@ -1,7 +1,36 @@
 <template>
   <div class="body about">
+    <!-- 跳转小程序[gh_ad14cc81048f, gh_3547ec19af8c] -->
+    <wx-open-launch-weapp id="launch-btn" username="gh_3547ec19af8c" path="pages/index/index?id=123456">     
+      <script type="text/wxtag-template">
+        <style>.btn{ width:200px;height:50px; }</style>
+        <button class="btn">跳转小程序</button>
+      </script>
+    </wx-open-launch-weapp>
+    <p>隔开</p>
+    <wx-open-launch-weapp id="launch-btn" username="gh_3547ec19af8c" path="pages/index/index?id=123456">     
+      <script type="text/wxtag-template">
+        <style>.btn{ width:200px;height:50px; }</style>
+        <button class="btn">跳转小程序2</button>
+      </script>
+    </wx-open-launch-weapp>
+    <div class="destination flex-cen">
+      <div class="destination-box" ref="boxOk"></div>
+    </div>
+    <div class="destination-list">
+      <div class="destination-scroll">
+        <!-- <scroll class="destination-scroll" @scroll="scroll" @pulldown="pulldown" @pullup="pullup"> -->
+        <div class="scroll-box flex" :class="{'on': isSelect}">
+          <div class="item" v-for="item in 10" :key="item" :ref="'box'+item" @click="selectBox($event, item)">{{item}}</div>
+        </div>
+        <!-- </scroll> -->
+      </div>
+    </div>
+    <a href="weixin://dl/business/?t=n3COLtyOGZj" target="_blank">跳转小程序</a>
     <My-Header :title="pageTitle" :isBack="false"></My-Header>
     <input type="file" id="file" ref="file" accept="image/*" @change="inputChange2($event)" />
+    <img :src="inputImg" alt="">
+    <p class="p-box">顺德职业技术学院始于1984年5年成立的广东广播电视大学顺德分校;1998年6月，顺德永强成人学院、顺德李伟强医护学校、顺德成人中专学校和顺德教师进修学校四校合并筹建顺德职业技术学院;1999年3月，教育部正式同意建立顺德职业技术学院;2002年，学校迁入位于德胜东路的新校园。截至2016年12月，顺德职业技术学院校园面积1749亩，建筑面积超过57万平方米；固定资产总额超过12.36亿元人民币， 教学、科研仪器设备总值3.12亿元；设9个二级学院、1个部，开办46个专科专业；全校教职工总数929人，其中高级职称253人。现有专任教师721人，学校全日制在校生15832人，成人教育在读学员3091人。</p>
     <div class="scroll-box">
       <scroll class="box" @scroll="scroll" @pulldown="pulldown" @pullup="pullup">
         <div v-for="item in 30" :key="item">这是内容这是内容这是内容这是内容这是内容这是内容这是内容{{item}}</div>
@@ -38,43 +67,21 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Shake from 'shake.js'  // es6的方式导入
+import Shake from 'shake.js'
 import wx from "weixin-js-sdk"
 import Scroll from 'base/scroll/scroll.vue'
 // import Shake from "assets/js/shake.js"
 import Tab from "components/tab.vue"
 import EXIF from "exif-js"
-import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation, showHidePopup, getFileBlobBase64 } from "assets/js/util"
-import {
-  getLocation_qq,
-  getLocation_baidu,
-  getLocation_amap,
-  getIpLocation_juhe,
-  getIpLocation_jisu,
-  getIpLocation_baidu,
-  getIpLocation_k780
-} from "assets/js/get-third-party.js"
+import { isSystem, getQueryString, setPageScrollTop, getBrowserEnvironment, loadScript, getDate, getOrientation, showHidePopup, getFileData } from "assets/js/util"
+import { getLocation_qq, getLocation_baidu, getLocation_amap, getIpLocation_juhe, getIpLocation_jisu, getIpLocation_baidu, getIpLocation_k780 } from "assets/js/get-third-party.js"
 import MyHeader from "components/header.vue"
-// import {
-//   uploadAudio,
-//   getIpLocation,
-//   getWxConfig, 
-//   getProjectConfig,
-//   getPostTest,
-//   getTest,
-//   getCompanyName,
-//   getTeam,
-//   getGrab
-// } from "api/api"
 import api from 'api/api'
 import { shareConfigure, setVueThis } from "assets/js/wx.config"
-import { colorHex, colorRgb, rgbaToHsv, triggerEvent } from 'assets/js/util'
+import { colorHex, colorRgb, rgbaToHsv, triggerEvent, compressImg } from 'assets/js/util'
 import { AUTH_URL } from "api/project.config"
 import pdf from "vue-pdf"
 import Pdfh5 from "pdfh5"
-// import Vshare from 'vshare'
-// import { isMobile } from 'mobile-device-detect'
-// import { MobileDetect } from 'mobile-detect'
 var myChart_one, myChart_two, myChart_three
 export default {
   name: "",
@@ -82,6 +89,7 @@ export default {
     return {
       pageTitle: "关于我们",
       inputs: '',
+      inputImg: '',
       obj: { song: 377 },
       imgs: require("../assets/images/poster_02.png"),
       isVideo: false,
@@ -95,38 +103,7 @@ export default {
       showPopup6: 0,
       appid: 'wx2fbd0f121ad7f27b',
       secret: '788eee27241b4653a2ae2b71fdd21505',
-      vshareConfig: {
-          shareList: [
-            'qzone',
-            'tsina',
-            'renren',
-            'tsohu',
-            'weixin'
-          ],
-          common : {
-            //此处放置通用设置
-          },
-          share : [{
-            //此处放置分享按钮设置
-            bdSize: 32
-            }
-          ],
-          slide : [
-            //此处放置浮窗分享设置
-          ],
-          image: [
-            {
-              tag: '',
-              viewType: 'collection',
-              viewPos: '',
-              viewColor: '',
-              viewSize: 32
-            }
-          ],
-          selectShare : [
-            //此处放置划词分享设置
-          ]
-        }
+      isSelect: false
     }
   },
   created() {
@@ -180,6 +157,15 @@ export default {
     //   console.log("_videoBtn", _videoBtn)
     //   triggerEvent(_videoBtn)
     // }, 6000)
+
+    // compressImg("https://img.vrupup.com/web/szq/images/img_29.jpg", .2, .2).then(res => {
+    //   console.log("压缩后的图片", res)
+    //   this.inputImg = res.base64
+    // })
+    // compressImg(require('assets/images/img_29.jpg'), .2, .2).then(res => {
+    //   console.log("本地压缩后的图片", res)
+    //   this.inputImg = res.base64
+    // })
   },
   watch: {
     
@@ -188,11 +174,36 @@ export default {
   //   console.log(to,from,next)
   // },
   methods: {
+    //点击方块
+    selectBox(e, item) {
+      console.log("e, item", e, item)
+      let _dom = this.$refs['box' + item][0], _boxOk = this.$refs.boxOk
+      let _domPosition = _dom.getBoundingClientRect(), _boxOkPosition = _boxOk.getBoundingClientRect()
+      this.isSelect = true
+      _dom.style.opacity = '1'
+      _dom.style.left = _domPosition.x + 'px'
+      _dom.style.top = _domPosition.y + 'px'
+      _dom.style.margin = '0px'
+      _dom.style.position = 'fixed'
+      _dom.style.zIndex = '10'
+      setTimeout(() => {
+        _dom.style.left = _boxOkPosition.x  + 2 + 'px'
+        _dom.style.top = _boxOkPosition.y + 2 + 'px'
+      }, 500)
+    },
     //input事件
     inputChange2(e) {
-      getFileBlobBase64(e.target.files[0]).then(res => {
-          console.log("【转换的图片】", res)
+      getFileData(e.target.files[0]).then(res => {
+        console.log("【转换的图片】", res)
+        compressImg(res.base64, .2, .2).then(res => {
+          console.log("压缩后的图片", res)
+          this.inputImg = res.base64
+        })
       })    
+      // compressImg(e.target.files[0], .2, .2).then(res => {
+      //   console.log("压缩后的图片", res)
+      //   this.inputImg = res.base64
+      // })
     },
     //播放视频
     // playVideo() {
@@ -360,8 +371,16 @@ export default {
 </script>
 
 <style scoped>
+#launch-btn{width: 300px;height: 100px;background: green;}
 .body{text-align: center;}
+.p-box{padding:0 5%;font-size: .3rem;line-height: 1.2;text-align: justify;}
 .video-play{position: fixed;left:38%;bottom:20vh;z-index: 555;}
+.destination{height: 300px;}
+.destination .destination-box{width:100px;height: 100px;border:2px solid #aaa;}
+.destination-scroll{border:2px solid #ddd;overflow-x: auto;margin:0 auto 100px;border-left:none;border-right:none;}
+.destination-scroll .scroll-box{width:max-content;}
+.destination-scroll .scroll-box.on .item{opacity: 0;}
+.destination-scroll .item{width:100px;height: 100px;background: #aaa;margin:10px;flex-shrink: 0;line-height: 100px;font-size: 20px;color:#fff;transition:left 1s, top 1s, opacity .5s;}
 /* .body{background: red;} */
 /* .video-con{position: fixed;width: 100vw;height: 100vh;z-index: 200;background: green;opacity: .5;left:0;top:0;}
 video{width:100vw;height: 100vh;position: fixed;left:0;top:0;z-index: 999;background: #000;object-fit: fill;z-index: 100;} */

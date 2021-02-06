@@ -1,5 +1,25 @@
 var krpano
 function creatKrpano(fun) { krpano = fun }//初始化
+/**
+ * 全景视频相关
+ * 
+ */
+//获取全景视频总视频长和当前时长
+function getKrpanoVideoTime(type = 0) {
+  if (type == 1) {
+    return krpano.get("plugin[video].totaltime")
+  } else {
+    return krpano.get("plugin[video].time")
+  }
+}
+//暂停播放全景视频
+function playPauseVideo(type) {
+  if (type) {
+    krpano.call("plugin[video].play();")
+  } else {
+    krpano.call("plugin[video].pause();")
+  }
+}
 //xml加载生命周期
 function xmlcomplete(isLittleplanetintro) {
   krpano.set("skin_settings.littleplanetintro", true)
@@ -42,11 +62,12 @@ function rotationAngle(deg, speed, direction) {
   }, speed)
 }
 //开启陀螺仪
-function openGyro(type) {
-  console.log("type ? false : true", type ? false : true)
-  krpano.call( `set(plugin[skin_gyro].enabled,${type ? false : true});`)
-  //关闭陀螺仪
-  //krpano.call("set(plugin[skin_gyro].enabled,false);");
+function openGyro(type = 1) {
+  if (type) {
+    krpano.call("set(plugin[skin_gyro].enabled, true);")
+  } else {
+    krpano.call("set(plugin[skin_gyro].enabled, false);")
+  }
 }
 //切换场景
 function loadscene(sceneName, blend) {

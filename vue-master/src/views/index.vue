@@ -47,7 +47,8 @@ export default {
         { name: "视频插件", url: "/live" },
         { name: "three.js", url: "/three" },
         { name: "VR", url: "/vr" },
-        { name: "颜色智能识别", url: "/color_picker" }
+        { name: "颜色智能识别", url: "/color_picker" },
+        { name: "图片压缩", url: "/compress_img" }
       ]
     }
   },

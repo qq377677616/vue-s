@@ -48,7 +48,7 @@ body img{max-width: 100%;}
 .swiper-pagination-bullet{opacity: 1 !important;background: #fff !important;}
 .swiper-pagination-bullet-active{background: #3DA6FF !important;}
 /*修改绿标默认样式*/
-#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: none !important;align-items: center !important;justify-content: center !important;background-image: linear-gradient(90deg, #F28F29 0, #027C60 100%);}
+#__vconsole .vc-switch{width:56px !important;height: 56px !important;border-radius: 50% !important;padding:0 !important;display: flex !important;align-items: center !important;justify-content: center !important;background-image: linear-gradient(90deg, #F28F29 0, #027C60 100%);}
 #__vconsole .vc-switch.special{background-image: linear-gradient(90deg, #F28F29 0, #DD5145 100%);}
 /*特殊字体*/
 /* @font-face

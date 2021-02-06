@@ -11,7 +11,7 @@ const getLocation_qq = (type = 0) => {
     getLocationQq().then(res => {
       if (type == '1') {
         resolve(res)
-      } else {
+      } else { 
         getLocationCity(`${res.result.location.lat},${res.result.location.lng}`)
       }
     }).catch(err => { reject(err) }) 

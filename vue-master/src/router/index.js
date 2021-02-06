@@ -219,6 +219,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/SetShare.vue'], resolve)
   },
   {
+    path:'/compress_img',
+    name: 'CompressImg',
+    component: resolve => require(['../views/pages-list/compress/CompressImg.vue'], resolve)
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)
