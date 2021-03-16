@@ -1,4 +1,10 @@
-//从地址栏获取传参
+import wx from 'weixin-js-sdk'
+
+/**
+ * 从地址栏获取传参
+ * @param { String } name 参数名
+ * @returns url中的指定参数
+ */
 const getQueryString = name => {
   let after = window.location.href.split("?")[1]
   if (after) {
@@ -11,7 +17,12 @@ const getQueryString = name => {
     }
   }
 }
-//弹出、关闭弹窗
+/**
+ * 弹出、关闭弹窗
+ * @parame { Object } page 当前调用页面实例this
+ * @parame { String } popupType 弹窗字段
+ * @parame { Boolean } type 关闭（true）、打开(false)
+ */
 const showHidePopup = (page, popupType, type) => {
   if (!type) {
     page[popupType] = 1
@@ -20,7 +31,10 @@ const showHidePopup = (page, popupType, type) => {
     setTimeout(() => { page[popupType] = 0 }, 500)
   }
 }
-//获取当前时间
+/**
+ * 获取当前时间
+ * @returns { Object } 当前时间详细数据
+ */
 const getDate = () => {
   let dates = new Date()
   let years = dates.getYear() //获取当前年份(2位)
@@ -36,27 +50,30 @@ const getDate = () => {
   let dateDate = dates.toLocaleDateString() //获取当前日期
   let dateTime = dates.toLocaleTimeString() //获取当前时间
   let dateDateTime = dates.toLocaleString() //获取日期与时间
-  return { year, month, date, hours, minute, second, day, timeStamp, dateDateTime, dates: dateDateTime.split(' ')[0].replace(/\//g, '-') }
+  return { year, month, date, hours, minute, second, day, timeStamp, dateDateTime, dates: dateDateTime.split(' ')[0].replace(/-/g, '/') }
 }
-//获取距离某个日期固定天数的日期
-const getDistance = (days = 7, ori_data) => {
-  if (ori_data) ori_data = ori_data.replace(/-/g, "/")
-  let date = ori_data ? new Date(ori_data) : new Date()
-  date.setDate(date.getDate() + days)
-  return { year: date.getFullYear(), month: date.getMonth() + 1, date: date.getDate(), dates: date.getFullYear() +"-"+ (date.getMonth()+1) +"-"+ date.getDate()}
-}
-//时间戳转换时间
+/**
+ * 时间戳转换时间
+ * @param { Number } timestamp 时间戳
+ * @param { Boolean、String、Number } type 时间戳类型，默认为秒
+ * @returns 转换后的时间
+ */
 const timestampToTime = (timestamp, type = 0) => {
   var date = new Date(type ? timestamp : timestamp * 1000)//时间戳为10位需*1000，时间戳为13位的话不需乘1000
   var Y = date.getFullYear() + '-'
-  var M = (date.getMonth()+1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
   var D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
   var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
   var m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
   var s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
   return Y + M + D + h + m + s
 }
-//倒计时(传秒数)
+/**
+ * 倒计时
+ * @param { Number } time 当前时间（秒）
+ * @param { String } symbols 指定隔开字符，默认为天、时、分、秒
+ * @returns 当前的详细时间数据
+ */
 const minutesAndSeconds = (time, symbols) => {
   let _d, _h, _m, _s
   _d = parseInt(time / 86400)
@@ -72,8 +89,24 @@ const minutesAndSeconds = (time, symbols) => {
     tiems: { d: _d, h: _h, m: _m, s: _s }
   }
 }
-//某个时间距离当前时间转换
-const distanceTime = (time) => {
+/**
+ * 获取距离某个日期固定天数的日期
+ * @param { Number } days 距离的天数，默认为7天
+ * @param { String } ori_data 参照时间，默认为当日
+ * @returns 距离某个日期固定天数的详细日期数据
+ */
+ const getDistance = (days = 7, ori_data) => {
+  if (ori_data) ori_data = ori_data.replace(/-/g, "/")
+  let date = ori_data ? new Date(ori_data) : new Date()
+  date.setDate(date.getDate() + days)
+  return { year: date.getFullYear(), month: date.getMonth() + 1, date: date.getDate(), dates: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() }
+}
+/**
+ * 指定时间距离当前时间转换
+ * @param { String } time 指定时间
+ * @returns 转换后的新时间
+ */
+const distanceTime = time => {
   time = time.replace(/-/g, '/')
   let _str
   let _date = new Date().getTime()
@@ -94,16 +127,21 @@ const distanceTime = (time) => {
   }
   return _str
 }
-//判断屏幕方向
+/**
+ * 判断屏幕方向
+ * @returns 屏幕方向
+ */
 const getScreenOrientation = () => {
-  if (window.orientation === 180 || window.orientation === 0) { 
+  if (window.orientation === 180 || window.orientation === 0) {
     return ('竖屏状态')
-  } 
-  if (window.orientation==90 || window.orientation==-90) {
-    return("横屏状态")
+  }
+  if (window.orientation == 90 || window.orientation == -90) {
+    return ("横屏状态")
   }
 }
-//陀螺仪
+/**
+ * 打开手机陀螺仪
+ */
 const openGyroscope = () => {
   return new Promise(resolve => {
     if (window.DeviceOrientationEvent && window.DeviceOrientationEvent.requestPermission) {
@@ -121,26 +159,38 @@ const openGyroscope = () => {
     }
   })
 }
-//生成随机字符串
-const randomString = len => {
-　len = len || 32
-　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'  /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-　var maxPos = $chars.length
-　var pwd = ''
-　for (let i = 0; i < len; i++) {
-　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
-　}
-　return pwd
+/**
+ * 生成随机字符串
+ * @param { Number } len 待生成字符串的长度，默认为32位
+ * @returns 指定长度的随机字符串
+ */
+const randomString = (len = 32) => {
+  var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'  /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+  var maxPos = $chars.length
+  var pwd = ''
+  for (let i = 0; i < len; i++) {
+    pwd += $chars.charAt(Math.floor(Math.random() * maxPos))
+  }
+  return pwd
 }
-//生成随机数
+/**
+ * 生成随机数
+ * @param { Number } min 生成范围下限
+ * @param { Number } max 生成范围上限
+ * @returns 指定范围内的随机数
+ */
 const getRandomNum = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
-//获取图片旋转信息 返回值& 0°：1、顺时针90°：6、逆时针90°：8、180°：3
+/**
+ * 获取图片旋转信息
+ * @param { Object } file 图片file对象
+ * @returns 图片旋转信息（0°：1、顺时针90°：6、逆时针90°：8、180°：3）
+ */
 const getOrientation = file => {
   return new Promise(resolve => {
     var reader = new FileReader()
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       var view = new DataView(e.target.result)
       if (view.getUint16(0, false) != 0xFFD8) resolve(-2)
       var length = view.byteLength, offset = 2
@@ -155,7 +205,7 @@ const getOrientation = file => {
           offset += 2
           for (var i = 0; i < tags; i++)
             if (view.getUint16(offset + (i * 12), little) == 0x0112)
-            resolve(view.getUint16(offset + (i * 12) + 8, little))
+              resolve(view.getUint16(offset + (i * 12) + 8, little))
         }
         else if ((marker & 0xFF00) != 0xFF00) break
         else offset += view.getUint16(offset, false)
@@ -165,7 +215,11 @@ const getOrientation = file => {
     reader.readAsArrayBuffer(file)
   })
 }
-//数组洗牌打乱
+/**
+ * 数组洗牌打乱
+ * @param { Array } arr 待打乱的数组
+ * @returns 打乱后的数组
+ */
 const shuffle = arr => {
   let _arr = arr.slice()
   for (let i = 0; i < _arr.length; i++) {
@@ -179,7 +233,12 @@ const shuffle = arr => {
   }
   return _arr
 }
-/*两个数组之间的交集、差集、补集、并集 */
+/**
+ * 两个数组之间的交集、差集、补集、并集
+ * @param { Array } arr2 数组2
+ * @param { Array } arr1 数组1
+ * @returns 两个数组之间各种集合
+ */
 const getArrGather = (arr1, arr2) => {
   let sa = new Set(arr1), sb = new Set(arr2)
   let intersect = arr1.filter(x => sb.has(x))// 交集
@@ -188,27 +247,41 @@ const getArrGather = (arr1, arr2) => {
   let unionSet = Array.from(new Set([...arr1, ...arr2]))// 并集
   return { intersect, minus, complement, unionSet }
 }
-//设置页面滚动高度
+/**
+ * 设置页面滚动距离
+ * @param { Number } scrollTop 指定页面滚动距离
+ */
 const setPageScrollTop = scrollTop => {
   window.scrollTo(0, scrollTop)
   window.pageYOffset = scrollTop
   document.body.scrollTop = scrollTop
   document.documentElement.scrollTop = scrollTop
 }
-//获取界面宽高
+/**
+ * 获取界面宽高
+ * @returns 当前界面的宽高
+ */
 const getScreenWidthHeight = () => {
   return new Promise(resolve => {
     resolve({ width: document.body.clientWidth || document.documentElement.clientWidth, height: document.body.clientHeight || document.documentElement.clientHeight })
   })
 }
-//获取dom距离页面x、y方向的距离
+/**
+ * 获取dom距离页面x、y方向的距离
+ * @param { Object } dom 指定原生dom
+ * @returns dom距离页面x、y方向的距离
+ */
 const getDomPageDistance = dom => {
   return new Promise(resolve => {
     resolve({ left: dom.offsetLeft, top: dom.offsetTop })
   })
 }
-//创建script标签并加载
-const loadScript = (src, callback) => {
+/**
+ * 创建script标签并加载
+ * @param { String } src js脚本地址
+ * @returns Promise回调
+ */
+const loadScript = src => {
   return new Promise((resolve, reject) => {
     let _script = document.createElement("script")
     _script.async = false
@@ -222,32 +295,28 @@ const loadScript = (src, callback) => {
     }
     evtName = "load"
     evtListener = logic
-    // if (!-[1,]) {
-    //   evtName = "readystatechange"
-    //   evtListener = function () {
-    //     (this.readyState == "loaded" || this.readyState == "complete") && logic()
-    //   }
-    // } else {
-    //   evtName = "load"
-    //   evtListener = logic
-    // }
     _script.addEventListener(evtName, evtListener, false)
     document.body.appendChild(_script)
-
   })
 }
-//加载字体文件
+/**
+ * 加载特殊字体文件
+ * @param { String } fontName 特殊字体名称
+ * @param { String } fontUrl 特殊字体的地址
+ * @returns Promise回调详细特殊字体信息
+ */
 const loadFonts = (fontName, fontUrl) => {
-  return new Promise(async(resolve) => {
+  return new Promise(async (resolve) => {
     let font = new FontFace(fontName, `url(${fontUrl})`)
     await font.load()
-    // setTimeout(() => {
-      document.fonts.add(font)
-      resolve(font)
-    // }, 500)
+    document.fonts.add(font)
+    resolve(font)
   })
 }
-//判断当前浏览器环境
+/**
+ * 判断当前浏览器环境
+ * @returns 当前浏览器环境信息
+ */
 const getBrowserEnvironment = () => {
   return new Promise(resolve => {
     let u = navigator.userAgent.toLowerCase(), environment
@@ -264,23 +333,15 @@ const getBrowserEnvironment = () => {
     } else {
       environment = { status: 6, name: "其它浏览器" }
     }
-    Object.assign(environment, { isweChat: u.includes('micromessenger')|| u.includes('MicroMessenger') })
+    Object.assign(environment, { isweChat: u.includes('micromessenger') || u.includes('MicroMessenger') })
     resolve(environment)
   })
 }
-//浏览器环境
-const getIsWxClient = () => {
-  return new Promise(resolve => {
-    let ua = navigator.userAgent.toLowerCase()
-    if (ua.match(/MicroMessenger/i) == "micromessenger") {
-      resolve(true)
-    } else {
-      resolve(false)
-    }
-  })
-}
-//判断当前手机系统（Android/ios） 
-const isSystem = callback => {
+/**
+ * 判断当前手机系统（Android/ios）
+ * @returns 当前手机系统信息
+ */ 
+const isSystem = () => {
   return new Promise(resolve => {
     let u = navigator.userAgent
     let isWx = (u.toLowerCase().match(/MicroMessenger/i) == "micromessenger")
@@ -293,10 +354,15 @@ const isSystem = callback => {
     let isX = isIphone && pixelRatio && pixelRatio === 3 && windowW === 375 && windowH === 812
     let isXsMax = isIphone && pixelRatio && pixelRatio === 3 && windowW === 414 && windowH === 896
     let isXR = isIphone && pixelRatio && pixelRatio === 2 && windowW === 414 && windowH === 896
-    resolve({ isAndroid: isAndroid, isiOS: isiOS, system: u, isWx, isX: { isX: isX || isXsMax || isXR, X: isX,XsMax: isXsMax, XR: isXR } })
+    resolve({ isAndroid: isAndroid, isiOS: isiOS, system: u, isWx, isX: { isX: isX || isXsMax || isXR, X: isX, XsMax: isXsMax, XR: isXR } })
   })
 }
-//audioContext播放音乐
+/**
+ * audioContext播放音乐
+ * @param { String } mp3Url 音乐文件地址
+ * @param { String } clickEle 控制按钮的id值
+ * @param { Function } callback 回调函数
+ */
 const audioContextMusic = (mp3Url, clickEle, callback) => {
   let audioContext
   let audioBufferSourceNode
@@ -311,40 +377,44 @@ const audioContextMusic = (mp3Url, clickEle, callback) => {
     let xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
     xhr.responseType = 'arraybuffer'
-    xhr.onload = function(e) {
+    xhr.onload = function (e) {
       decodecFile(this.response)
     }
     xhr.send()
   }
   function decodecFile(fileContent) {
-    audioContext.decodeAudioData(fileContent, function(buffer) {
+    audioContext.decodeAudioData(fileContent, function (buffer) {
       start(buffer)
     })
   }
   function start(buffer) {
-    if(audioBufferSourceNode) { audioBufferSourceNode.stop() }
+    if (audioBufferSourceNode) { audioBufferSourceNode.stop() }
     audioBufferSourceNode = audioContext.createBufferSource()
     audioBufferSourceNode.connect(analyser)
     analyser.connect(audioContext.destination)
     audioBufferSourceNode.buffer = buffer
     audioBufferSourceNode.loop = true
     audioBufferSourceNode.start(0)
-    callback({status: 1})
+    callback({ status: 1 })
   }
-  clickBtn.onclick=function(){
+  clickBtn.onclick = function () {
     if (audioContext.state === "suspended") {
       audioContext.resume()
-      callback({status: 1})
+      callback({ status: 1 })
     } else if (audioContext.state === "running") {
       audioContext.suspend()
-      callback({status: 2})
+      callback({ status: 2 })
     }
   }
 }
-//保留n位小数
-const retainedDecimal = (x, n, math) => {
-  n = n || 2
-  math = math || 'round'
+/**
+ * 保留指定位数小数
+ * @param { Number } x 原数字
+ * @param { Number } n 指定小数位，默认为2
+ * @param { String } math 保留方式（none：取整保留、round：四舍五入保留、floor：向下保留）
+ * @returns 保留指定位数小数后的数字
+ */
+const retainedDecimal = (x, n = 2, math = 'round') => {
   let f_x = parseFloat(x)
   if (isNaN(f_x)) {
     return 0
@@ -372,11 +442,12 @@ const retainedDecimal = (x, n, math) => {
   }
   return s_x
 }
-//图片base64路径处理
-const base64Switch = base64 => {
-  return "data:image/jpg;base64," + base64.slice(base64.indexOf("/9j"))
-}
-//js浮点数精度--两数相加
+/**
+ * js浮点数精度--两数相加
+ * @param { Number } num1 数字1
+ * @param { Number } num2 数字2
+ * @returns 两数之和
+ */
 const accAdd = (num1, num2) => {
   let r1, r2, m
   try {
@@ -392,7 +463,12 @@ const accAdd = (num1, num2) => {
   m = Math.pow(10, Math.max(r1, r2))
   return Math.round(num1 * m + num2 * m) / m
 }
-//js浮点数精度--两数相减
+/**
+ * js浮点数精度--两数相减
+ * @param { Number } num1 数字1
+ * @param { Number } num2 数字2
+ * @returns 两数之差
+ */
 const accSub = (num1, num2) => {
   let r1, r2, m, n
   try {
@@ -409,14 +485,24 @@ const accSub = (num1, num2) => {
   n = (r1 >= r2) ? r1 : r2
   return (Math.round(num1 * m - num2 * m) / m).toFixed(n)
 }
-//js浮点数精度--两数相乘 
+/**
+ * js浮点数精度--两数相乘
+ * @param { Number } num1 数字1
+ * @param { Number } num2 数字2
+ * @returns 两数之积
+ */
 const accMul = (num1, num2) => {
   let m = 0, s1 = num1.toString(), s2 = num2.toString()
   try { m += s1.split(".")[1].length } catch (e) { }
   try { m += s2.split(".")[1].length } catch (e) { }
   return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
 }
-//js浮点数精度--两数相除
+/**
+ * js浮点数精度--两数相除
+ * @param { Number } num1 数字1
+ * @param { Number } num2 数字2
+ * @returns 两数之商
+ */
 const accDiv = (num1, num2) => {
   let t1, t2, r1, r2
   try {
@@ -433,7 +519,14 @@ const accDiv = (num1, num2) => {
   r2 = Number(num2.toString().replace(".", ""))
   return (r1 / r2) * Math.pow(10, t2 - t1)
 }
-//事件触发
+/**
+ * js触发事件
+ * @param { Object } dom 指定原生dom
+ * @param { String } eventName 事件名称
+ * @param { Boolean } canbubble 是否可以冒泡
+ * @param { Boolean } cancelable 是否可以阻止事件默认行为
+ * @returns Promise回调
+ */
 const triggerEvent = (dom, eventName = 'click', canbubble = false, cancelable = true) => {
   return new Promise((resolve, reject) => {
     let _event = document.createEvent("MouseEvents")
@@ -443,12 +536,16 @@ const triggerEvent = (dom, eventName = 'click', canbubble = false, cancelable = 
       reject({ status: 1, message: 'dom传入有误，请传正确dom或正确dom的id值。' })
     } else {
       dom.dispatchEvent(_event)
-      resolve({ status: 0, message: `${eventName}事件触发成功。` }) 
+      resolve({ status: 0, message: `${eventName}事件触发成功。` })
     }
   })
 }
-/*h5生成图片*/
-const canvasImg = (options) => {
+/**
+ * 生成海报图片
+ * @param { Object } options 绘制图片参数
+ * @returns 生成海报图片的base64地址
+ */
+const canvasImg = options => {
   return new Promise(resolve => {
     let PSD_W = options.posterSize[0], PSD_H = options.posterSize[1], canvas = document.createElement('canvas'), devicePixelRatio = window.devicePixelRatio || 1
     let ctx = canvas.getContext("2d")
@@ -482,132 +579,133 @@ const canvasImg = (options) => {
       })
     })()
     function handleBorderRect(ctx, x, y, w, h, r, color) {
-        ctx.beginPath();
-        // 左上角
-        ctx.arc(x + r, y + r, r, Math.PI, 1.5 * Math.PI);
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.lineTo(x + w, y + r);
-        // 右上角
-        ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.lineTo(x + w - r, y + h);
-        // 右下角
-        ctx.arc(x + w - r, y + h - r, r, 0, 0.5 * Math.PI);
-        ctx.lineTo(x + r, y + h);
-        ctx.lineTo(x, y + h - r);
-        // 左下角
-        ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, Math.PI);
-        ctx.lineTo(x, y + r);
-        ctx.lineTo(x + r, y);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.closePath();
+      ctx.beginPath();
+      // 左上角
+      ctx.arc(x + r, y + r, r, Math.PI, 1.5 * Math.PI);
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.lineTo(x + w, y + r);
+      // 右上角
+      ctx.arc(x + w - r, y + r, r, 1.5 * Math.PI, 2 * Math.PI);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.lineTo(x + w - r, y + h);
+      // 右下角
+      ctx.arc(x + w - r, y + h - r, r, 0, 0.5 * Math.PI);
+      ctx.lineTo(x + r, y + h);
+      ctx.lineTo(x, y + h - r);
+      // 左下角
+      ctx.arc(x + r, y + h - r, r, 0.5 * Math.PI, Math.PI);
+      ctx.lineTo(x, y + r);
+      ctx.lineTo(x + r, y);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.closePath();
     }
-      function startDraw() {
-        //绘制图片
-        for (var n in options.imgList) {
-          let _rotate = options.imgList[n].rotate
-          if (!options.imgList[n].radius) {
-            drawImg()
-          } else if (options.imgList[n].radius == "50%") {
-            ctx.save()
-            let r = options.imgList[n].imgW * 0.5
-            ctx.arc(options.imgList[n].imgX + r, options.imgList[n].imgY + r, r, 0, 2 * Math.PI)
-            ctx.clip()
-            ctx.fill()
-            drawImg(true)
-            ctx.restore()
-          } else {
-            ctx.save()
-            handleBorderRect(ctx, options.imgList[n].imgX, options.imgList[n].imgY, options.imgList[n].imgW, options.imgList[n].imgH, options.imgList[n].radius, '#ccc');
-            ctx.clip();
-            drawImg()
-            ctx.restore()
+    function startDraw() {
+      //绘制图片
+      for (var n in options.imgList) {
+        let _rotate = options.imgList[n].rotate
+        if (!options.imgList[n].radius) {
+          drawImg()
+        } else if (options.imgList[n].radius == "50%") {
+          ctx.save()
+          let r = options.imgList[n].imgW * 0.5
+          ctx.arc(options.imgList[n].imgX + r, options.imgList[n].imgY + r, r, 0, 2 * Math.PI)
+          ctx.clip()
+          ctx.fill()
+          drawImg(true)
+          ctx.restore()
+        } else {
+          ctx.save()
+          handleBorderRect(ctx, options.imgList[n].imgX, options.imgList[n].imgY, options.imgList[n].imgW, options.imgList[n].imgH, options.imgList[n].radius, '#ccc');
+          ctx.clip();
+          drawImg()
+          ctx.restore()
+        }
+        function drawImg(arc) {
+          ctx.beginPath()
+          let _scale = 1, _curimg = options.imgList[n]
+          let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0, rx = options.imgList[n].imgW * 0.5, ry = options.imgList[n].imgH * 0.5
+          if (_curimg.imgW) {
+            _scale = Math.min(_curimg.width / _curimg.imgW, _curimg.height / _curimg.imgH)
+            if (_curimg.width / _curimg.imgW > _curimg.height / _curimg.imgH) {
+              scaleType = 1
+            } else if (_curimg.width / _curimg.imgW < _curimg.height / _curimg.imgH) {
+              scaleType = 2
+            }
+            _drawW = _curimg.width * _scale
+            _drawH = _curimg.height * _scale
           }
-          function drawImg(arc) {
-            ctx.beginPath()
-            let _scale = 1, _curimg = options.imgList[n]
-            let _drawW = _curimg.imgW, _drawH = _curimg.imgH, scaleType = 0, rx = options.imgList[n].imgW * 0.5, ry = options.imgList[n].imgH * 0.5
-            if (_curimg.imgW) {
-              _scale = Math.min(_curimg.width / _curimg.imgW, _curimg.height / _curimg.imgH)
-              if (_curimg.width / _curimg.imgW > _curimg.height / _curimg.imgH) {
-                scaleType = 1
-              } else if (_curimg.width / _curimg.imgW < _curimg.height / _curimg.imgH) {
-                scaleType = 2
-              }
-              _drawW = _curimg.width * _scale
-              _drawH = _curimg.height * _scale
-            }
-            if (_rotate) {
-              ctx.translate(options.imgList[n].imgX + rx, options.imgList[n].imgY + ry)
-              ctx.rotate(_rotate * Math.PI / 180)
-            }
-            ctx.drawImage(
-              _curimg.newImg,
-              // vars["newImg" + n],
-              scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
-              scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
-              scaleType == 1 ? _curimg.imgW * _scale : _curimg.width,
-              scaleType == 1 ? _curimg.height : _curimg.imgH * _scale,
-              _rotate ? 0 - rx : options.imgList[n].imgX,
-              _rotate ? 0 - ry : options.imgList[n].imgY,
-              _curimg.imgW || _drawW,
-              _curimg.imgH || _drawH
-            )
-            if (_rotate) {
-              ctx.rotate(_rotate * Math.PI * -1 / 180)
-              ctx.translate((options.imgList[n].imgX + rx) * -1, (options.imgList[n].imgY + ry) * -1)
-            }
+          if (_rotate) {
+            ctx.translate(options.imgList[n].imgX + rx, options.imgList[n].imgY + ry)
+            ctx.rotate(_rotate * Math.PI / 180)
+          }
+          ctx.drawImage(
+            _curimg.newImg,
+            // vars["newImg" + n],
+            scaleType == 1 ? (_curimg.width - _curimg.imgW * _scale) / 2 : 0,
+            scaleType != 2 ? 0 : (_curimg.height - _curimg.imgH * _scale) / 2,
+            scaleType == 1 ? _curimg.imgW * _scale : _curimg.width,
+            scaleType == 1 ? _curimg.height : _curimg.imgH * _scale,
+            _rotate ? 0 - rx : options.imgList[n].imgX,
+            _rotate ? 0 - ry : options.imgList[n].imgY,
+            _curimg.imgW || _drawW,
+            _curimg.imgH || _drawH
+          )
+          if (_rotate) {
+            ctx.rotate(_rotate * Math.PI * -1 / 180)
+            ctx.translate((options.imgList[n].imgX + rx) * -1, (options.imgList[n].imgY + ry) * -1)
           }
         }
-        //绘制文字
-        function drawFont() {
-          let fonts = options.textList
-          if (!fonts) return
-          for (let i = 0; i < fonts.length; i++) {
-            let _wrap = fonts[i].wrap
-            let _h = fonts[i].textY
-            let _string = fonts[i].string
-            if ((_string.length > _wrap) && !fonts[i].isWrap) {
-              let _arrText = []
-              _arrText = [(_string).replace(/\s+/g,"")]
-              let _x = 0
-              let _this = this
-              calcImgText(_x)
-              function calcImgText(x) {
-                let res = [], str = '', nums = 0
-                for (var k = 0; k <= _arrText[x].length; k++) {
-                  if (nums < _wrap && !(k == _arrText[x].length)) {
-                    (/[0-9a-ln-z.]/.test(_arrText[x][k])) ? nums += 0.5 : nums++
-                    str += _arrText[x][k] 
-                  } else {
-                    res.push(str)
-                    let _item = cloneObj(fonts[i])
-                    _item.string = str
-                    _item.textY = _h
-                    if (_item.string.length > _wrap) _item.isWrap = true
-                    fonts.push(_item)
-                    _h += _item.lineHeight
-                    str = _arrText[x][k]
-                    nums = 1
-                  }
+      }
+      //绘制文字
+      function drawFont() {
+        let fonts = options.textList
+        if (!fonts) return
+        for (let i = 0; i < fonts.length; i++) {
+          let _wrap = fonts[i].wrap
+          let _h = fonts[i].textY
+          let _string = fonts[i].string
+          if ((_string.length > _wrap) && !fonts[i].isWrap) {
+            let _arrText = []
+            _arrText = [(_string).replace(/\s+/g, "")]
+            let _x = 0
+            let _this = this
+            calcImgText(_x)
+            function calcImgText(x) {
+              let res = [], str = '', nums = 0
+              for (var k = 0; k <= _arrText[x].length; k++) {
+                if (nums < _wrap && !(k == _arrText[x].length)) {
+                  (/[0-9a-ln-z.]/.test(_arrText[x][k])) ? nums += 0.5 : nums++
+                  str += _arrText[x][k]
+                } else {
+                  res.push(str)
+                  let _item = cloneObj(fonts[i])
+                  _item.string = str
+                  _item.textY = _h
+                  // _item.textX = fonts[i].textX - 30 * k 
+                  if (_item.string.length > _wrap) _item.isWrap = true
+                  fonts.push(_item)
+                  _h += _item.lineHeight
+                  str = _arrText[x][k]
+                  nums = 1
                 }
               }
-              function cloneObj(obj) {
-                let newObj = {};
-                if (obj instanceof Array) {
-                  newObj = [];
-                }
-                for (let key in obj) {
-                  let val = obj[key];
-                  newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
-                }
-                return newObj;
-              }
-              fonts.splice(i, 1)
             }
+            function cloneObj(obj) {
+              let newObj = {};
+              if (obj instanceof Array) {
+                newObj = [];
+              }
+              for (let key in obj) {
+                let val = obj[key];
+                newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
+              }
+              return newObj;
+            }
+            fonts.splice(i, 1)
           }
+        }
         for (let k in fonts) {
           let _rotate = fonts[k].rotate
           if (_rotate) {
@@ -619,19 +717,20 @@ const canvasImg = (options) => {
           ctx.textBaseline = "hanging"
           ctx.textAlign = fonts[k].textAlign ? fonts[k].textAlign : "start"
           isSystem(res => {
-            res.isiOS ? fonts[k].textY -= 10 : fonts[k].textY -= 6
+            res.isiOS ? fonts[k].textY -= 6 : fonts[k].textY -= 2
           })
           if (fonts[k].vel) {
             for (let z in fonts[k].string) {
               ctx.fillText(
                 fonts[k].string[z],
                 fonts[k].textX,
-                fonts[k].textY +
-                z * (parseInt(fonts[k].fontSize) + fonts[k].vel)
+                fonts[k].textY + z * (parseInt(fonts[k].fontSize) + fonts[k].vel)
               )
             }
           } else {
-            ctx.fillText(fonts[k].string, _rotate ? 0 : fonts[k].textX, _rotate ? 0 : fonts[k].textY)
+            console.log("k", k, fonts[k].correctX, _rotate ? 0 : fonts[k].textY)
+            // ctx.fillText(fonts[k].string, _rotate ? 0 : fonts[k].textX, _rotate ? 0 : fonts[k].textY)
+            ctx.fillText(fonts[k].string, (_rotate && !fonts[k].wrap) ? 0 : fonts[k].textX - (fonts[k].correctX ? fonts[k].correctX * k : 0), (_rotate && !fonts[k].wrap) ? 0 : fonts[k].textY)
           }
           if (_rotate) {
             ctx.rotate(_rotate * -1 * Math.PI / 180)
@@ -650,7 +749,19 @@ const canvasImg = (options) => {
     }
   })
 }
-//获取图片信息
+/**
+ * 图片base64路径处理
+ * @param { String } base64 待处理base64字符串
+ * @returns 处理后的base64字符串
+ */
+const base64Switch = base64 => {
+  return "data:image/jpg;base64," + base64.slice(base64.indexOf("/9j"))
+}
+/**
+ * 获取图片信息
+ * @param { String } imgUrl 图片地址
+ * @returns 图片信息
+ */
 const getImageInfo = imgUrl => {
   return new Promise(resolve => {
     let _curImg = new Image()
@@ -661,10 +772,14 @@ const getImageInfo = imgUrl => {
     }
   })
 }
-//获取input[file]详细信息
+/**
+ * 获取file文件的详细信息
+ * @param { Object } file file文件
+ * @returns file文件的详细信息
+ */
 const getFileData = file => {
   return new Promise(resolve => {
-    var reader = new FileReader(), _blobUrl = null 
+    var reader = new FileReader(), _blobUrl = null
     if (window.createObjectURL != undefined) {
       _blobUrl = window.createObjectURL(file)
     } else if (window.URL != undefined) {
@@ -679,16 +794,20 @@ const getFileData = file => {
       img.onload = () => {
         resolve({
           name: file.name,
-          size: { bit: file.size, Kilobyte: Number((file.size/1024).toFixed(2)), MByte: Number((file.size/1024/1024).toFixed(2)), width: img.width, height: img.height },
+          size: { bit: file.size, Kilobyte: Number((file.size / 1024).toFixed(2)), MByte: Number((file.size / 1024 / 1024).toFixed(2)), width: img.width, height: img.height },
           file: file,
-          blob: _blobUrl, 
-          base64: reader.result 
+          blob: _blobUrl,
+          base64: reader.result
         })
       }
     }
   })
 }
-//获取base64图片大小
+/**
+ * 获取base64图片大小
+ * @param { String } base64Url 图片base64地址
+ * @returns base64图片大小
+ */
 const getBase64Size = base64Url => {
   let equalIndex = base64Url.indexOf('='), base64Size = 0
   if (equalIndex > 0) {
@@ -701,20 +820,29 @@ const getBase64Size = base64Url => {
     let fileLength = strLength - (strLength / 8) * 2
     base64Size = Math.floor(fileLength)
   }
-  return { bit: base64Size, Kilobyte: Number((base64Size/1024).toFixed(2)), MByte: Number((base64Size/1024/1024).toFixed(2)) }
+  return { bit: base64Size, Kilobyte: Number((base64Size / 1024).toFixed(2)), MByte: Number((base64Size / 1024 / 1024).toFixed(2)) }
 }
-//获取网络图片信息
+/**
+ * 获取网络图片信息
+ * @param { String } img 网络图片地址
+ * @returns 网络图片信息
+ */
 const getNetWorkImg = img => {
   let imgElems = document.getElementById(img)
   let url = imgElems.src
   let varperformance = window.performance || window.msPerformance || window.webkitPerformance
   let iTime = varperformance.getEntriesByName(url)[0]
   let imgSize = iTime.decodedBodySize || iTime.encodedBodySize
-  return { bit: imgSize, Kilobyte: Number((imgSize/1024).toFixed(2)), MByte: Number((imgSize/1024/1024).toFixed(2)) }
-} 
-//base64转文件流
-const base64toFile = (dataurl, filename = 'file') => {
-  let arr = dataurl.split(',')
+  return { bit: imgSize, Kilobyte: Number((imgSize / 1024).toFixed(2)), MByte: Number((imgSize / 1024 / 1024).toFixed(2)) }
+}
+/**
+ * base64转文件流
+ * @param { String } base64 待处理base64字符串
+ * @param { String } filename file名称
+ * @returns 转换得到的file文件
+ */
+const base64toFile = (base64, filename = 'file') => {
+  let arr = base64.split(',')
   let mime = arr[0].match(/:(.*?);/)[1]
   let suffix = mime.split('/')[1]
   let bstr = atob(arr[1])
@@ -727,11 +855,17 @@ const base64toFile = (dataurl, filename = 'file') => {
     type: mime
   })
 }
-//压缩图片
+/**
+ * 压缩图片
+ * @param { Object } file 图片file对象
+ * @param { Number } scale 缩放大小
+ * @param { Number } quality 压缩品质大小
+ * @returns 压缩后的图片
+ */
 const compressImg = (file, scale = 1, quality) => {
   return new Promise(resolve => {
     if (file.size && typeof file == 'object') {
-      let fileSize = parseFloat(parseInt(file['size'])/1024/1024).toFixed(2)
+      let fileSize = parseFloat(parseInt(file['size']) / 1024 / 1024).toFixed(2)
       let read = new FileReader()
       read.readAsDataURL(file)
       read.onload = () => {
@@ -773,6 +907,81 @@ const compressImg = (file, scale = 1, quality) => {
     }
   })
 }
+/**
+ * js防抖
+ * @param { Function } fn 待防抖方法
+ * @param { Number } delay 防抖时间间隔，默认为2000毫秒
+ * @returns 防抖方法
+ */
+const DEBOUNCE = (fn, delay = 2000) => {
+  let timer
+  return () => {
+    let th = this, args = arguments
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      timer = null
+      fn.apply(th, args)
+    }, delay)
+  }
+}
+/**
+ * js节流
+ * @param { Function } fn 待节流方法
+ * @param { Number } delay 防抖时间间隔，默认为2000毫秒
+ * @returns 节流方法
+ */
+const THROTTLE = (fn, delay = 2000) => {
+  let last, timer
+  return () => {
+    let th = this, args = arguments, now = +new Date()
+    if (last && now - last < delay) {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        last = now
+        fn.apply(th, args)
+      }, delay)
+    } else {
+      last = now
+      fn.apply(th, args)
+    }
+  }
+}
+/**
+ * v2支付
+ * @param { Object } paymentData 支付所需参数
+ */
+ const weChatPayV2 = paymentData => {
+  return new Promise((resolve, reject) => {
+    if (typeof WeixinJSBridge == "undefined") {
+      if (document.addEventListener) {
+        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
+      } else if (document.attachEvent) {
+        document.attachEvent('WeixinJSBridgeReady', onBridgeReady)
+        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady)
+      }
+    } else {
+      onBridgeReady()
+    }
+    function onBridgeReady() {
+      WeixinJSBridge.invoke('getBrandWCPayRequest', paymentData, res => {
+        resolve(res)
+      })
+    }
+  })
+}
+/**
+ * v3支付
+ * @param { Object } paymentData 支付所需参数
+ */
+const weChatPayV3 = paymentData => {
+  return new Promise((resolve, reject) => {
+    wx.chooseWXPay({
+      ...paymentData,
+      success(res) { resolve(res) },
+      fail(err) { reject(err) }
+    })
+  })  
+}
 
 export {
   getQueryString,
@@ -803,7 +1012,6 @@ export {
   audioContextMusic,
   retainedDecimal,
   base64Switch,
-  getIsWxClient,
   accAdd,
   accSub,
   accMul,
@@ -811,5 +1019,9 @@ export {
   getFileData,
   getImageInfo,
   canvasImg,
-  triggerEvent
+  triggerEvent,
+  DEBOUNCE,
+  THROTTLE,
+  weChatPayV2,
+  weChatPayV3
 }

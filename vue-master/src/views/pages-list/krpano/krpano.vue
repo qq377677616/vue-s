@@ -11,6 +11,7 @@
         <button @click="showHideHot(2)">第二批热点</button>
         <button @click="getOpenGyroAuth(1)">开启陀螺仪</button>
         <button @click="getOpenGyroAuth(0)">关闭陀螺仪</button>
+        <button @click="setAutorotates()">开关自动旋转</button>
         <button @click="playPauseVideos(1)">播放视频</button>
         <button @click="playPauseVideos(0)">暂停视频</button>
       </div>
@@ -29,19 +30,21 @@ export default {
   name: "",
   mixins: [krpanoApi],
   data() {
-    return {
+    return { 
       pageTitle: "krpano全景",//网页标题
       krpanoPage: null,//krpano页面
       hotspotList1: [//热点组1
         { hotName: "hot1", x: '0', y: '2', w: '112', h: '100', imgSrc:'images/img_01.png', text: '西安市第一', isShow: true, animation: '', click: "switchScene(0)" },
-        { hotName: "hot2", x: '300', y: '0', w: '80', h: '80', imgSrc:'images/points_01.png', text: '去餐厅2', isShow: true, animation: '64,64,50', click: "switchScene(1)" },
-        { hotName: "hot5", x: '100', y: '0', w: '80', h: '80', imgSrc:'images/points_05.png', text: '这些文字2', isShow: true, animation: '200,200,10', click: "switchScene(1)" }
+        { hotName: "hot2", x: '300', y: '0', w: '80', h: '80', imgSrc:'images/points_01.png', text: '去餐厅', isShow: true, animation: '64,64,50', click: "switchScene(1)" },
+        { hotName: "hot6", x: '20', y: '0', w: '100', h: '100', imgSrc:'images/points_06s.png', text: '去阳台', isShow: true, isDistorted: true, animation: '250,250,50', click: "switchScene(1)" },
+        { hotName: "hot5", x: '100', y: '0', w: '80', h: '80', imgSrc:'images/points_05.png', text: '去天台', isShow: true, animation: '200,200,10', click: "switchScene(1)" }
       ],
       hotspotList2: [//热点组2
-        { hotName: "hot3", x: '0', y: '30', w: '50', h: '50', imgSrc:'images/btn4.png', text: '去阳台', isShow: false, animation: '', click: "switchScene(2)" },
+        { hotName: "hot3", x: '0', y: '30', w: '50', h: '50', imgSrc:'images/btn4.png', text: '去主卧', isShow: false, animation: '', click: "switchScene(2)" },
         { hotName: "hot4", x: '200', y: '30', w: '100', h: '100', imgSrc:'images/points_02.png', text: '去卫生间', isShow: false, animation: '100,100,50', click: "switchScene(3)" }
       ],
-      currentAngle: 0//当前全景旋转角度
+      currentAngle: 0,//当前全景旋转角度
+      isAutorotates: true,//自动旋转场景
     }
   },
   mounted() {
@@ -78,6 +81,11 @@ export default {
     //切换场景
     switchScene(e) {
       this.krpanoLoadscene(e.data, 'elliptic + zoom')
+    },
+    //打开/关闭自动旋转
+    setAutorotates() {
+      this.setAutorotate(this.isAutorotates)
+      this.isAutorotates = !this.isAutorotates
     },
     /**
      * ***常用方法

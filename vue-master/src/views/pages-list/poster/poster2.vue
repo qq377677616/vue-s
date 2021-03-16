@@ -36,11 +36,11 @@ export default {
           { url: "https://img.vrupup.com/web/szq/images/img_04.jpg", imgW: 186, imgH: 186, imgX: 20, imgY: 20, radius: 30}
         ],
         textList: [
-          { string: "恭喜发财", color: "#C24C4C", style: "bold 40px Arial", textX: 375, textY: 80, textAlign: "center"},
+          { string: "恭喜发财恭喜发财恭喜发财恭喜发财恭喜发财恭喜发财恭喜发财", color: "#C24C4C", style: "bold 40px Arial", textX: 400, textY: -100, rotate: 90, textAlign: "left", wrap: 5, lineHeight: 50, correctX: 52},
           { string: "“除”去烦恼，吃得香又睡得饱", color: "#52341C", style: "bold 26px fzxkjw", textX: 400, textY: 928, textAlign: "center", rotate: -7 },
-          { string: "“除”去烦恼，吃得香又睡得饱", color: "#52341C", style: "bold 26px fzxkjw", textX: 410, textY: 972, textAlign: "center", rotate: -7 },
-          { string: "“除”去烦恼，吃得香又睡得饱", color: "#52341C", style: "bold 26px fzxkjw", textX: 420, textY: 1016, textAlign: "center", rotate: -7 },
-          { string: "建设银行", color: "#52341C", style: "bold 34px Arial", textX: 570, textY: 1080, textAlign: "left", rotate: -6.5 }
+          { string: "“除”去烦恼，吃得香又睡得饱", color: "#52341C", style: "bold 26px fzxkjw", textX: 410, textY: 962, textAlign: "center", rotate: -7 },
+          { string: "“除”去烦恼，吃得香又睡得饱", color: "#52341C", style: "bold 26px fzxkjw", textX: 420, textY: 1006, textAlign: "center", rotate: -7 },
+          { string: "建设银行", color: "#52341C", style: "bold 34px Arial", textX: 570, textY: 1075, textAlign: "left", rotate: -6.5 }
         ] 
       }
       canvasImg(options).then(res => {

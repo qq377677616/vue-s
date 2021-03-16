@@ -224,6 +224,21 @@ const routes = [
     component: resolve => require(['../views/pages-list/compress/CompressImg.vue'], resolve)
   },
   {
+    path:'/shake_throttle',
+    name: 'shakeThrottle.vue',
+    component: resolve => require(['../views/pages-list/ShakeThrottle.vue'], resolve)
+  },
+  {
+    path:'/jump_weapp',
+    name: 'jumpWeapp.vue',
+    component: resolve => require(['../views/pages-list/JumpWeapp.vue'], resolve)
+  },
+  {
+    path:'/wechat_payment',
+    name: 'wechatPayment.vue',
+    component: resolve => require(['../views/pages-list/WechatPayment.vue'], resolve)
+  },
+  {
     path:'/test',
     name: 'test',
     component: resolve => require(['../views/pages-list/test.vue'], resolve)

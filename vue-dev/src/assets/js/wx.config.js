@@ -1,9 +1,10 @@
 import wx from 'weixin-js-sdk'
-import { getQueryString, getIsWxClient, loadScript } from 'assets/js/util'
-import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL } from 'api/project.config'
+import { getQueryString, getBrowserEnvironment, loadScript } from 'assets/js/util'
+import { PROJECT_CONFIG, PROJECT_CONFIG_CODE, WXCONFIG_SCRIPT_URL, SHARECONFIG, AUTH_URL, WXCONFIG_URL } from 'api/project.config'
 import { getProjectConfig, getWxConfig, getUserInfos, setDataShare, setDataDuration } from 'api/api.config'
 let vueThis = null, NUM_RE_REQUEST = 0, NUM_RETRIES = 0
-
+//检测用户唯一标识
+if (PROJECT_CONFIG.is_testing_user_id && process.env.NODE_ENV == 'production' && !(localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) || sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response))) window.location.replace(AUTH_URL)
 //获取微信配置参数信息
 if (!PROJECT_CONFIG_CODE) {
   setTimeout(() => { _openDebugging() }, 500) 
@@ -13,7 +14,7 @@ if (!PROJECT_CONFIG_CODE) {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime() 
   if (PROJECT_CONFIG.wx_jssdk_type) {
     getWxConfig().then(res => {
-      _getPageConfig(PROJECT_CONFIG.wx_jssdk_field == 4 ? res.data.result : res.data)
+      _getPageConfig(WXCONFIG_URL[PROJECT_CONFIG.wx_jssdk_field].includes('java') ? res.data.result : res.data)
     }).catch(err => {
       console.log("【微信注册信息4个参数获取失败】", err)
       if (NUM_RE_REQUEST == 0) _openDebugging()
@@ -48,7 +49,7 @@ function _getPageConfig(config) {
   } else {
     getProjectConfig().then(res => {
       let _data = JSON.parse(decodeURIComponent(res.data.data.content.info))
-      let _whiteLists = _data.custom.w ? _data.custom.w.val.split("、") : ['111', '222']
+      let _whiteLists = _data.custom.w ? _data.custom.w.val.split("、") : []
       console.log("【获取核弹配置信息成功】", _data)
       localStorage.setItem("music", _data.res_music)
       document.title = _data.docTitle
@@ -69,7 +70,6 @@ function _getPageConfig(config) {
 async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
   let _is_go_online = true
   if (onlineDate && offlinedate) {
-    console.log("onlineDate, offlinedate", onlineDate, offlinedate)
     let _curTime = new Date().getTime(), _onlineDate = new Date(onlineDate.replace(/-/g, '/')).getTime(), _offlinedate = new Date(offlinedate.replace(/-/g, '/')).getTime()
     if (onlineDate && (_curTime - _onlineDate > 0) && (offlinedate && (_curTime - _offlinedate < 0))) _is_go_online = false
     if ( PROJECT_CONFIG.is_offline_sign_out && process.env.NODE_ENV == 'production' && _curTime - _offlinedate > 0) {
@@ -77,14 +77,12 @@ async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
       wx.closeWindow()
     }
   }
-  let isWx =  await getIsWxClient(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
-  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
-    // _vconsole.style.bottom = '100'
+  let isWx =  await getBrowserEnvironment(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
+  if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx.isweChat) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx.isweChat && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
     if (PROJECT_CONFIG) _vconsole.innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     if (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid)) _vconsole.classList.add('special')
     _vconsole.setAttribute("style", "display: flex !important")
   } else {
-    // _vconsole.setAttribute("style", "display: none !important")
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfo()
 }

@@ -24,7 +24,7 @@ import vshare from 'vshare'
 import { VueJsonp } from 'vue-jsonp'
 Vue.use(vshare)
 FastClick.attach(document.body)
-Vue.prototype.$echarts = echarts 
+Vue.prototype.$echarts = echarts
 Vue.component('vue-drag-resize', VueDragResize)
 Vue.config.productionTip = false
 Vue.use(VueI18n)
@@ -47,11 +47,8 @@ const i18n = new VueI18n({
   silentTranslationWarn: true
 })
 Vue.use(clipper)
-// router.beforeEach((form, to, next) => {
-//   console.log("form", form)
-//   console.log("to", to)
-//   console.log("next", next)
-// })
+//路由钩子
+router.beforeEach((form, to, next) => {next()})
 export default new Vue({
   router,
   store,

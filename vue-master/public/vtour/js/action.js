@@ -25,8 +25,8 @@ function xmlcomplete(isLittleplanetintro) {
   krpano.set("skin_settings.littleplanetintro", true)
 }
 //设置自动旋转
-function setAutoRotate(type = true) {
-  krpano.set("autorotate.enabled", type)
+function setAutoRotate(isOpen = true) {
+  krpano.set("autorotate.enabled", isOpen)
 }
 //切换到指定缩放视角
 function setFov(fov) {
@@ -84,7 +84,7 @@ function loadscene(sceneName, blend) {
  * imgurl：热点资源路径
  * imgclick：点击事件 具体执行示例imgclick = 'imgclick(({"ispop":true,"data":11}))';
 */
-function AddHotspot(spotname = "addhotspot", hlookat = 0.000, vlookat = 0.000, _width = 90, _height = 90, imgurl = "../vtour/img/img.jpg", text = "", imgclick = "false") {
+function AddHotspot(spotname = "addhotspot", hlookat = 0.000, vlookat = 0.000, _width = 90, _height = 90, isDistorted = false, imgurl = "../vtour/img/img.jpg", text = "", imgclick = "false") {
   krpano.call("addhotspot(" + spotname + ");");
   krpano.call("set(hotspot[" + spotname + "].url," + imgurl + ");");
   krpano.call("set(hotspot[" + spotname + "].text," + text + ");");
@@ -92,12 +92,13 @@ function AddHotspot(spotname = "addhotspot", hlookat = 0.000, vlookat = 0.000, _
   krpano.call("set(hotspot[" + spotname + "].ath," + hlookat + ");");
   krpano.call("set(hotspot[" + spotname + "].atv," + vlookat + ");");
   krpano.call("set(hotspot[" + spotname + "].css," + "font-weight:bold;" + ");");
-  // krpano.call("set(hotspot[" + spotname + "].rotateY," + 50 + ");");
+  // krpano.call("set(hotspot[" + spotname + "].rotate," + 500 + ");");
   // set(plugin[get(tooltipname)].css,'text-align:center; color:#ffffff; font-family:Arial; font-weight:bold; font-size:20px;');
 
+  krpano.call("set(hotspot[" + spotname + "].distorted," + isDistorted + ");");
   // krpano.call("set(hotspot[" + spotname + "].rx," + hlookat + ");");
   // krpano.call("set(hotspot[" + spotname + "].ry," + vlookat + ");");
-  // krpano.call("set(hotspot[" + spotname + "].rz," + 100 + ");");
+  // krpano.call("set(hotspot[" + spotname + "].rz," + 0 + ");");
 
   // krpano.call("set(hotspot[" + spotname + "].ox," + hlookat + ");");
   // krpano.call("set(hotspot[" + spotname + "].oy," + vlookat + ");");
@@ -106,7 +107,6 @@ function AddHotspot(spotname = "addhotspot", hlookat = 0.000, vlookat = 0.000, _
   krpano.call("set(hotspot[" + spotname + "].height," + _height + ");");
   krpano.call("set(hotspot[" + spotname + "].zoom," + false + ");");
   krpano.call("set(hotspot[" + spotname + "].scale," + 1 + ");");
-  krpano.call("set(hotspot[" + spotname + "].distorted," + true + ");");
   krpano.call("set(hotspot[" + spotname + "].inverserotation," + false + ");");
   krpano.call("set(hotspot[" + spotname + "].scalechildren," + false + ");");
   krpano.call("set(hotspot[" + spotname + "].ondown,draghotspot(););");

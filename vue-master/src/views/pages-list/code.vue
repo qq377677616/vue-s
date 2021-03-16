@@ -16,7 +16,7 @@ export default {
     return {
       pageTitle: "生成二维码",
       downloadData: {
-        url: "https://www.baidu.com",//链接地址
+        url: "https://game.vrupup.com?a=6df4sa65f45sd",//链接地址
         size: 200,//二维码大小，单位px
         margin: 10,//二维码外边距
         colorDark: "#000",//主色

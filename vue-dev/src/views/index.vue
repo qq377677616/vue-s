@@ -1,6 +1,6 @@
 <template>
   <div class="body index">
-    <div class="con flex-cen"><p>vue</p><span>0206</span></div>
+    <div class="con flex-cen"><p>vue</p><span>0316</span></div>
     <tab></tab> 
   </div>
 </template>

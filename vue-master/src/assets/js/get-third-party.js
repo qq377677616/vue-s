@@ -3,7 +3,11 @@ import { SECRETKEY } from 'api/project.config'
 import { api } from 'api/request.js'
 
 /****************************************获取当前位置信息****************************************/
-//获取当前位置信息----腾讯(可传type:0、1)
+/**
+ * 获取当前位置信息（腾讯）
+ * @param { Number } type 获取方式
+ * @returns 当前位置信息
+ */
 const getLocation_qq = (type = 0) => { 
   const getLocationQq = (data, url = `https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${SECRETKEY.secretkey_qq_map}`, type = 'jsonp') => { return api(url, data, type, true, 0) }
   const geocoderQq = (data, url = `https://apis.map.qq.com/ws/geocoder/v1/?output=jsonp&key=${SECRETKEY.secretkey_qq_map}`, type = 'jsonp') => { return api(url, data, type, true, 0) }
@@ -22,7 +26,11 @@ const getLocation_qq = (type = 0) => {
     }
   })
 }
-//获取当前位置信息----百度(可传type:0、1)
+/**
+ * 获取当前位置信息（百度）
+ * @param { Number } type 获取方式
+ * @returns 当前位置信息
+ */
 const getLocation_baidu = (type = 0) => {
   loadScript(`https://api.map.baidu.com/api?v=2.0&ak=${SECRETKEY.secretkey_baidu_map}&s=1&callback=onBMapCallback`)
   return new Promise((resolve, reject) => {
@@ -46,7 +54,10 @@ const getLocation_baidu = (type = 0) => {
     }
   })
 }
-//获取当前位置信息----高德（前端需要https域名且国内网络访问较慢） 
+/**
+ * 获取当前位置信息（高德）[前端需要https域名且国内网络访问较慢]
+ * @returns 当前位置信息
+ */
 const getLocation_amap = () => {
   return new Promise((resolve, reject) => {
     loadScript(`https://webapi.amap.com/maps?v=1.3&key=${SECRETKEY.secretkey_amap_map}`).then(res => {
@@ -82,14 +93,30 @@ const getLocation_amap = () => {
     })
   })
 }
-/****************************************获取手机号归属地（传入手机号，字段为phone）****************************************/
-//手机号归属地1----[来自聚合数据]
+/****************************************获取手机号归属地****************************************/
+/**
+ * 手机号归属地（来自聚合数据）
+ * @param { Number } data 手机号
+ * @returns 手机号归属地信息
+ */
 const getIpLocation_juhe = (data, url = `http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/test/test`, type = 'post') => { return api(url, Object.assign({key: SECRETKEY.secretkey_juhe_phone_region }, data), type, true, 0) }
-//手机号归属地2----[来源极速数据]
+/**
+ * 手机号归属地（来源极速数据）
+ * @param { Number } data 手机号
+ * @returns 手机号归属地信息
+ */
 const getIpLocation_jisu = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/test/test2', type = 'post') => { return api(url, Object.assign({key: SECRETKEY.secretkey_jisu_phone_region }, data), type, true, 0) }
-//手机号归属地3----[来源百度数据]
+/**
+ * 手机号归属地（来源百度数据）
+ * @param { Number } data 手机号
+ * @returns 手机号归属地信息
+ */
 const getIpLocation_baidu = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/test/test3', type = 'post') => { return api(url, data, type, true, 0) }
-//手机号归属地4----[来自api.k780数据]
+/**
+ * 手机号归属地（来自api.k780数据）
+ * @param { Number } data 手机号
+ * @returns 手机号归属地信息
+ */
 const getIpLocation_k780 = (data, url = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/yyt_quan/public/index.php/api/test/test4', type = 'post') => { return api(url, data, type, true, 0) }
 
 export {

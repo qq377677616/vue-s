@@ -36,9 +36,11 @@ export default {
     return this.$route.fullPath;
    } },
   created() {
+    console.log("createdcreatedcreated")
     this.PROJECT_CONFIG = PROJECT_CONFIG//页面配置信息
   },
   mounted() {
+    console.log("mountedmountedmounted")
     if (this.PROJECT_CONFIG.is_page_locking) { this.pageLocking() }//锁定页面
   },
   methods: {

@@ -48,7 +48,10 @@ export default {
         { name: "three.js", url: "/three" },
         { name: "VR", url: "/vr" },
         { name: "颜色智能识别", url: "/color_picker" },
-        { name: "图片压缩", url: "/compress_img" }
+        { name: "图片压缩", url: "/compress_img" },
+        { name: "防抖与节流", url: "/shake_throttle" },
+        { name: "h5跳转小程序", url: "/jump_weapp" },
+        { name: "微信支付", url: "/wechat_payment" }
       ]
     }
   },
