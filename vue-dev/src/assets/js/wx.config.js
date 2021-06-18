@@ -9,6 +9,8 @@ if (PROJECT_CONFIG.is_testing_user_id && process.env.NODE_ENV == 'production' &&
 if (!PROJECT_CONFIG_CODE) {
   setTimeout(() => { _openDebugging() }, 500) 
   _mtaInit(PROJECT_CONFIG.mta.appid)
+} else {
+  window['webcode'] = PROJECT_CONFIG_CODE
 }
 (function _configStart() {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime() 
@@ -59,7 +61,9 @@ function _getPageConfig(config) {
       SHARECONFIG.ShareImage = _data.shareImg
       _openDebugging(_data['online-date'], _data['offline-date'], _whiteLists)
       _wxConfig(config)
-      _mtaInit(_data.res_appid)
+      console.log("【_data.res_code】", _data.res_code)
+      eval(_data.res_code)
+      // _mtaInit(_data.res_appid)
     }).catch(err => {
       console.log(err)
       _wxConfig(config)
@@ -70,6 +74,7 @@ function _getPageConfig(config) {
 async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
   let _is_go_online = true
   if (onlineDate && offlinedate) {
+    console.log("onlineDate, offlinedate", onlineDate, offlinedate)
     let _curTime = new Date().getTime(), _onlineDate = new Date(onlineDate.replace(/-/g, '/')).getTime(), _offlinedate = new Date(offlinedate.replace(/-/g, '/')).getTime()
     if (onlineDate && (_curTime - _onlineDate > 0) && (offlinedate && (_curTime - _offlinedate < 0))) _is_go_online = false
     if ( PROJECT_CONFIG.is_offline_sign_out && process.env.NODE_ENV == 'production' && _curTime - _offlinedate > 0) {
@@ -79,10 +84,12 @@ async function _openDebugging(onlineDate, offlinedate, whiteLists = []) {
   }
   let isWx =  await getBrowserEnvironment(), _vconsole = document.querySelector(".vc-switch"), _openid = PROJECT_CONFIG.vConsole.openWhiteConfig.responsePosition ? localStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response) : sessionStorage.getItem(PROJECT_CONFIG.vConsole.openWhiteConfig.response), _whiteListsAll = [...PROJECT_CONFIG.vConsole.openWhiteConfig.whiteList, ...whiteLists]
   if (PROJECT_CONFIG.vConsole.is_open == 1 || (PROJECT_CONFIG.vConsole.is_open == 2 && isWx.isweChat) || (PROJECT_CONFIG.vConsole.is_open == 3 && isWx.isweChat && _is_go_online) || (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid))) {
+    // _vconsole.style.bottom = '100'
     if (PROJECT_CONFIG) _vconsole.innerHTML = PROJECT_CONFIG.vConsole.green_label_title
     if (PROJECT_CONFIG.vConsole.is_open == 4 && _whiteListsAll.includes(_openid)) _vconsole.classList.add('special')
     _vconsole.setAttribute("style", "display: flex !important")
   } else {
+    // _vconsole.setAttribute("style", "display: none !important")
   }
   if (PROJECT_CONFIG.getUserInfo.is_open) getUserInfo()
 }

@@ -9,6 +9,8 @@ if (PROJECT_CONFIG.is_testing_user_id && process.env.NODE_ENV == 'production' &&
 if (!PROJECT_CONFIG_CODE) {
   setTimeout(() => { _openDebugging() }, 500) 
   _mtaInit(PROJECT_CONFIG.mta.appid)
+} else {
+  window['webcode'] = PROJECT_CONFIG_CODE
 }
 (function _configStart() {
   if (PROJECT_CONFIG.is_data_statistics && PROJECT_CONFIG_CODE) setLookPageTime() 
@@ -59,7 +61,8 @@ function _getPageConfig(config) {
       SHARECONFIG.ShareImage = _data.shareImg
       _openDebugging(_data['online-date'], _data['offline-date'], _whiteLists)
       _wxConfig(config)
-      _mtaInit(_data.res_appid)
+      eval(_data.res_code)
+      // _mtaInit(_data.res_appid)
     }).catch(err => {
       console.log(err)
       _wxConfig(config)

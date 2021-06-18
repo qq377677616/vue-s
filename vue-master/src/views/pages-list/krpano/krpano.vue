@@ -19,12 +19,12 @@
         <div><span class="iconfont icon-ziyuanldpi" :style="{transform: 'rotate('+currentAngle+'deg)'}"></span></div>
       </div>
     </div> 
-  </div>
+  </div> 
 </template>
 
 <script type="text/ecmascript-6">
 import MyHeader from "components/header.vue"
-import { krpanoApi } from 'assets/js/krpano'
+import { krpanoApi } from 'assets/js/krpano' 
 import { getScreenOrientation, openGyroscope } from 'assets/js/util'
 export default {
   name: "",

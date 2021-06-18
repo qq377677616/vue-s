@@ -20,7 +20,8 @@ export default {
         { title: "圆盘抽奖(针转)", url: "/prize/prize1", name: 'prize1'},
         { title: "圆盘抽奖(盘转)", url: "/prize/prize2", name: 'prize2'},
         { title: "跑马灯抽奖", url: "/prize/prize3", name: 'prize3'},
-        { title: "刮刮乐", url: "/prize/prize4", name: 'prize4'}
+        { title: "刮刮乐", url: "/prize/prize4", name: 'prize4'},
+        { title: "老虎机", url: "/prize/prize5", name: 'prize5'}
       ]
     }
   },

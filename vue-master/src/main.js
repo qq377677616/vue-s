@@ -22,6 +22,11 @@ import VueBus from 'vue-bus'
 import FastClick from 'fastclick'
 import vshare from 'vshare'
 import { VueJsonp } from 'vue-jsonp'
+import Vuelidate from 'vuelidate'
+import Point from 'assets/js/burying-point'
+
+Vue.use(Point)
+Vue.use(Vuelidate)
 Vue.use(vshare)
 FastClick.attach(document.body)
 Vue.prototype.$echarts = echarts

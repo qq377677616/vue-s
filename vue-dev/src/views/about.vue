@@ -6,13 +6,21 @@
 </template>
 
 <script type="text/ecmascript-6">
+import Baes64 from "assets/js/Base64.js"
+console.log("Baes64", Baes64)
 import Tab from 'components/tab.vue'
+import api from 'api/api'
 export default {
   name: "",
   data() {
     return {
       
     }
+  },
+  created() {
+    // api.getPostTest({ code: 'dsf4asdf465asd' }).then(res => {
+    //   console.log("[请求成功]", res)
+    // })
   },
   components: {
     Tab

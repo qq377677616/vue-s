@@ -1,5 +1,6 @@
 import wx from 'weixin-js-sdk'
-
+import Baes64 from "./Base64.js"
+import CryptoJS from 'crypto-js'
 /**
  * 从地址栏获取传参
  * @param { String } name 参数名
@@ -95,7 +96,7 @@ const minutesAndSeconds = (time, symbols) => {
  * @param { String } ori_data 参照时间，默认为当日
  * @returns 距离某个日期固定天数的详细日期数据
  */
- const getDistance = (days = 7, ori_data) => {
+const getDistance = (days = 7, ori_data) => {
   if (ori_data) ori_data = ori_data.replace(/-/g, "/")
   let date = ori_data ? new Date(ori_data) : new Date()
   date.setDate(date.getDate() + days)
@@ -234,6 +235,71 @@ const shuffle = arr => {
   return _arr
 }
 /**
+ * 深度拷贝对象
+ * @param { Object } originalObj 待拷贝的原对象
+ * @returns  拷贝出来的新对象
+ */
+const cloneObject = originalObj => {
+  let d
+  if (typeof originalObj === "object") {
+    if (originalObj == null) {
+      d = null
+    } else {
+      if (originalObj.constructor === Array) {
+        d = []
+        for (let i in originalObj) {
+          d.push(cloneObject(originalObj[i]))
+        }
+      } else {
+        d = {}
+        for (let i in originalObj) {
+          d[i] = cloneObject(originalObj[i])
+        }
+      }
+    }
+  } else {
+    d = originalObj
+  }
+  return d
+}
+/**
+ * 删除对象的指定键名
+ * @param { Object } obj 待处理的对象
+ * @param { String } key 要删除的键名 
+ * @returns 处理后的对象
+ */
+const deleteObjectKey = (obj, key, level = 0) => {
+  let _obj = cloneObject(obj)
+  if (!level) {
+    delete _obj[key]
+  } else {
+    for (let k in _obj) {
+      delete _obj[k][key]
+    }
+  }
+  return _obj
+}
+/**
+ * 
+ * @param { Object } _this 组件实例this
+ * @returns 表单验证结果
+ */
+const verification = (_this) => {
+  return new Promise((resolve, reject) => {
+    if (_this.$v.$invalid) {
+      Object.keys(_this.validation).forEach(item => {
+        Object.keys(deleteObjectKey(_this.validation, 'msg', 1)[item]).forEach(items => {
+          if (!_this.$v[item][items]) {
+            reject({ status: false, msg: _this.validation[item].msg[items] })
+          }
+        })
+      })
+    } else {
+      resolve({ status: true, msg: '验证通过' })
+    }
+  })
+}
+/**
  * 两个数组之间的交集、差集、补集、并集
  * @param { Array } arr2 数组2
  * @param { Array } arr1 数组1
@@ -340,7 +406,7 @@ const getBrowserEnvironment = () => {
 /**
  * 判断当前手机系统（Android/ios）
  * @returns 当前手机系统信息
- */ 
+ */
 const isSystem = () => {
   return new Promise(resolve => {
     let u = navigator.userAgent
@@ -950,7 +1016,7 @@ const THROTTLE = (fn, delay = 2000) => {
  * v2支付
  * @param { Object } paymentData 支付所需参数
  */
- const weChatPayV2 = paymentData => {
+const weChatPayV2 = paymentData => {
   return new Promise((resolve, reject) => {
     if (typeof WeixinJSBridge == "undefined") {
       if (document.addEventListener) {
@@ -980,7 +1046,26 @@ const weChatPayV3 = paymentData => {
       success(res) { resolve(res) },
       fail(err) { reject(err) }
     })
-  })  
+  })
+}
+/**
+ * CryptoJS AES加密
+ * @param { String } text 加密数据
+ * @param { String } key 加密秘钥
+ * @param { String } iv 加密16位初始向量
+ * @param { Boolean } isEncodeURI 加密数据
+ */
+ const cryptoJSAesEncrypt = (text, key, iv, isEncodeURI = true) => {
+  key = Baes64.decode(key)
+  iv = Baes64.decode(iv)
+  var _key = CryptoJS.enc.Latin1.parse(key); //为了避免补位，直接用16位的秘钥
+  var _iv = CryptoJS.enc.Latin1.parse(iv); //16位初始向量
+  var encrypted = CryptoJS.AES.encrypt(text, _key, {
+    iv: _iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.ZeroPadding,
+  })
+  return isEncodeURI ? encodeURIComponent(encrypted.toString()) : encrypted.toString()
 }
 
 export {
@@ -993,6 +1078,9 @@ export {
   distanceTime,
   getOrientation,
   shuffle,
+  cloneObject,
+  deleteObjectKey,
+  verification,
   getArrGather,
   setPageScrollTop,
   getScreenWidthHeight,
@@ -1023,5 +1111,6 @@ export {
   DEBOUNCE,
   THROTTLE,
   weChatPayV2,
-  weChatPayV3
+  weChatPayV3,
+  cryptoJSAesEncrypt
 }

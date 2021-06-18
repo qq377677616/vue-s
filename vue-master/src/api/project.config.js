@@ -24,7 +24,7 @@ const GET_USER_INFO_URL = 'http://game.flyh5.cn/game/wx7c3ed56f7f792d84/rdl_test
 //本地请求代理请求地址
 const REQUEST_PROXY_URL = '/api'
 //核弹系统接口请求地址短码code[如果是转移服务器项目，把此项设置为空]
-const PROJECT_CONFIG_CODE = 'tJ4GXH2P2luArDVm0u9'
+const PROJECT_CONFIG_CODE = 'Y5deOJi4aOdYo9lvYeN'
 //静态资源地址(cdn)
 const ASSETS_URL = 'https://img.vrupup.com/web/szq/ylzhennong/'
 /**

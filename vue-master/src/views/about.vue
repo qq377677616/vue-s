@@ -3,7 +3,7 @@
     <div id="song">这是一个</div>
     <van-button type="primary" @click="getPhp">点击请求</van-button>
     <!-- 跳转小程序[gh_ad14cc81048f, gh_3547ec19af8c] -->
-    <wx-open-launch-weapp
+    <!-- <wx-open-launch-weapp
       id="launch-btn"
       username="gh_3547ec19af8c"
       path="pages/index/index?id=123456"
@@ -12,13 +12,13 @@
         <style>.btn{ width:200px;height:50px; }</style>
         <button class="btn">跳转小程序</button>
       </script>
-    </wx-open-launch-weapp>
+    </wx-open-launch-weapp> -->
     <p>隔开</p>
-    <wx-open-launch-weapp
+    <!-- <wx-open-launch-weapp
       id="launch-btn"
       username="gh_3547ec19af8c"
       path="pages/index/index?id=123456"
-    >
+    > -->
       <script type="text/wxtag-template">
         <style>.btn{ width:200px;height:50px; }</style>
         <button class="btn">跳转小程序2</button>
@@ -129,6 +129,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import md5 from 'js-md5'
 import Shake from "shake.js";
 import wx from "weixin-js-sdk";
 import Scroll from "base/scroll/scroll.vue";
@@ -145,6 +146,7 @@ import {
   getOrientation,
   showHidePopup,
   getFileData,
+  cryptoJSAesEncrypt
 } from "assets/js/util";
 import {
   getLocation_qq,
@@ -193,18 +195,31 @@ export default {
       isSelect: false,
       fnScroll: () => {},
       count: 0,
-    };
+    }
   },
   created() {
-    console.log("getQueryString('code')", getQueryString("code"));
+    //  md5.update(password).digest('hex')
+    // console.log("md5md5md5", md5('holle'))
+    // console.log('8888', md5.update('song').digest('hex'))
+    // console.log('md5.update', md5.update)
+    // console.log('md5.digest', md5.digest)
+    // console.log("getQueryString('code')", getQueryString("code"))
     getLocation_qq().then((res) => {
       console.log("【用户当前位置信息】", res);
     });
     this.fnScroll = this.fnThrottle(this.fnHandleScroll, 1000, 2000); //刚创建时执行
     console.log("typeof getPhp", typeof this.getPhp)
+    api.getKeyApi({ openid: 'o48Zb59-KVk0WhzAQpzxDuvrljUE'}).then(res => {
+      console.log("【获取到加密的密钥】", res)
+    })
+    let aaa = cryptoJSAesEncrypt('111', 'aaa', 'bbb')
+    console.log("加密后的数据", aaa)
   },
   destroyed() {},
   mounted() {
+    setTimeout(() => { 
+      this.$point.setPoint({ a: 1, b: 2, c: 3 })
+    }, 2000)
     let song = document.getElementById('song')
     console.log("song", song)
     console.log("typeof song", typeof song)

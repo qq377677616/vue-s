@@ -4,7 +4,7 @@ function resolve(dir) {
 }
 module.exports = {
   // 基本路径
-  publicPath: process.env.NODE_ENV === 'production' ? '/resources/web/szq/vue-s-dev/' : '/',//新路径//http://game.vrupup.com
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',//新路径//http://game.vrupup.com
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
   // eslint-loader 是否在保存的时候检查

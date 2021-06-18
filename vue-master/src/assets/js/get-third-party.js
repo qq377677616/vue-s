@@ -13,6 +13,7 @@ const getLocation_qq = (type = 0) => {
   const geocoderQq = (data, url = `https://apis.map.qq.com/ws/geocoder/v1/?output=jsonp&key=${SECRETKEY.secretkey_qq_map}`, type = 'jsonp') => { return api(url, data, type, true, 0) }
   return new Promise((resolve, reject) => {
     getLocationQq().then(res => {
+      console.log("res8888888", res)
       if (type == '1') {
         resolve(res)
       } else { 

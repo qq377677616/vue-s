@@ -42,4 +42,7 @@ export default {
   getVideo: (data, url = 'https://api.elloworld.cn/sanyuan/api/index/rendervideo', method = 'post') => { return api(url, data, method, false, 0) },
   getPosition: (data, url = 'https://apis.map.qq.com/ws/geocoder/v1?&poi_options=address_format=short&get_poi=1', method = 'jsonp') => { return api(url, data, method, true, 0) },
   getPosition: (data, url = 'https://apis.map.qq.com/ws/geocoder/v1?&poi_options=address_format=short&get_poi=1', method = 'jsonp') => { return api(url, data, method, true, 0) },
+  setPoint: (data, url = 'https://game.vrupup.com/sanguo/suyuanen/h5/demei/public/api/Live/live_list', method = 'post') => { return api(url, data, method, true, 0) },
+  // 获取秘钥
+  getKeyApi: (data, url = 'https://code.haoqithink.com/kcss/public/index.php/api/question/get_key', method = 'post') => { return api(url, data, method, true, 0) },
 }

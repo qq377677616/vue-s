@@ -5,12 +5,10 @@
       <div class="full-screen flex-cen-col">
         <div class="prizeBox">
           <div class="prize_box">
-            <div class="box">
-              <div class="ul">
-                <div class="li" :class="{ 'cur': curIndex == index }" v-for="(item, index) in prize" :key="'item' + index"><span>{{item.name}}</span></div>
-              </div> 
-              <div class="start" :class="{ 'on': isPrize }" @click="start"><span>{{isPrize ? '开始': '好运来...'}}</span></div>
+            <div class="ul">
+              <div class="li" :class="{ 'cur': curIndex == index }" v-for="(item, index) in prizeList" :key="'item' + index"><span>{{item.name}}</span></div>
             </div>
+            <div class="start" :class="{ 'on': isPrize }" @click="start"><span>{{isPrize ? '开始': '好运来...'}}</span></div>
           </div>  
         </div>
       </div>
@@ -20,12 +18,14 @@
 
 <script type="span/ecmascript-6">
 import MyHeader from 'components/header.vue'
+import luckDraw from 'assets/js/luck-draw'
 export default {
-  name: "",
+ name: "",
   data() {
     return {
-      pageTitle: "圆盘抽奖(针转)",
-      prize: [
+      pageTitle: "圆盘抽奖(盘转)",//页面标题
+      //奖品池列表[这里是示例，开发时由接口返回]
+      prizeList: [
         { id: 1, name: "5元话费券" },
         { id: 2, name: "iphone X" },
         { id: 3, name: "50元现金红包" },
@@ -33,75 +33,41 @@ export default {
         { id: 5, name: "100元代金券" },
         { id: 6, name: "50积分" },
         { id: 7, name: "1000理财金" },
-        { id: 8, name: "2积分" },
+        { id: 8, name: "2积分" }
       ],
-      prize_cur: [
-        { num: 3, name: "谢谢参与" },
-        { num: 7, name: "2积分" },
-        { num: 5, name: "50积分" },
-        { num: 6, name: "1000理财金" },
-        { num: 3, name: "谢谢参与" },
-        { num: 7, name: "2积分" },
-        { num: 5, name: "50积分" },
-        { num: 2, name: "50元现金红包" },
-        { num: 0, name: "5元话费券" },
-        { num: 4, name: "100元代金券" },
-        { num: 2, name: "50元现金红包" },
-        { num: 7, name: "2积分" },
-        { num: 1, name: "iphone X" },
-        { num: 5, name: "50积分" },
-        { num: 6, name: "1000理财金" },
-        { num: 7, name: "2积分" }
-      ],
-      step: 8 * 5,
-      curIndex: 1,
-      speed: 260,
-      start_num: 6,
-      isPrize: true
+      isPrize: true,//当前是否在抽奖中
+      curIndex: 1//当前抽奖索引
     }
   },
   created() {
-
+    this.prizeInit()
   },
   methods: {
-    //点击抽奖
+    //转盘初始化
+    prizeInit() {
+      this.luckDraw = new luckDraw(this, {
+        type: 3,//抽奖类型，1：转盘针转、2：转盘盘转、3为九宫格，默认为1[非必填]
+        prizeList: this.prizeList,//奖品池列表[必填项]
+        duration: 4000,//转动时间，默认为5000[非必填项]
+        id: "id"//奖品池列表、抽奖的奖品id字段，默认为'id'[非必填项]
+      })
+      this.luckDraw.init()
+    },
+    //点击开始抽奖
     start() {
-      let _this = this
-      if (this.isPrize) {
-        var _curIndex = this.curIndex
-        var _speed = this.speed
-        //var prize_num = Math.floor(Math.random() * 8 + 40)
-        var _num = Math.floor(Math.random() * this.prize_cur.length)
-        console.log("【" + this.prize_cur[_num].name + "】")
-        var prize_num = this.prize_cur[_num].num + this.step - _curIndex - 1
-        var _prize_num = 0
-        var _auto = setTimeout(auto_prize, _speed)
-        this.isPrize = false
-      }
-      function auto_prize() {
-        clearInterval(_auto)
-        if (_prize_num <= prize_num) {
-          _prize_num++
-          _curIndex++
-          _curIndex = (_curIndex) % 8
-          if (_prize_num < _this.start_num) {
-            _speed -= 40
-          } else if (_prize_num == _this.start_num) {
-            _speed = 25
-          } else if (_prize_num >= _this.start_num && _prize_num < _this.start_num * 4) {
-            _speed += 6
-          } else {
-            _speed += 16
-          }
-          _auto = setInterval(auto_prize, _speed)
-          _this.curIndex = _curIndex
-        } else {
-          setTimeout(function () {
-            _this.$dialog.alert({ title: '中奖结果', message: _this.prize_cur[_num].name})
-            _this.isPrize = true
-          }, 300)
+      if (!this.isPrize) return
+      let randomNum = Math.floor(Math.random() * this.prizeList.length)//这里模拟抽奖：随机从奖品池中一个奖品[开发中请求接口获取中奖id]
+      let prizeId = this.prizeList[randomNum].id
+      console.log(`中【${this.prizeList[randomNum].name}】`)
+      this.luckDraw.start(prizeId).then(res => {
+        if (res.status == 1) {
+          this.$dialog.alert({ title: '中奖结果', message: this.prizeList[randomNum].name})
+        } else if (res.status == 0) {
+          this.$dialog.alert("您手速太快了~")
+        } else if (res.status == -1) {
+          this.$dialog.alert({ title: '抽奖异常', message: '抽奖异常,请检查抽奖传入的id字段和奖品池id字段是否匹配'})
         }
-      }
+      })
     }
   },
   components: {

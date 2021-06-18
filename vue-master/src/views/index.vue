@@ -51,7 +51,8 @@ export default {
         { name: "图片压缩", url: "/compress_img" },
         { name: "防抖与节流", url: "/shake_throttle" },
         { name: "h5跳转小程序", url: "/jump_weapp" },
-        { name: "微信支付", url: "/wechat_payment" }
+        { name: "微信支付", url: "/wechat_payment" },
+        { name: "表单验证", url: "/validator_form" }
       ]
     }
   },

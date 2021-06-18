@@ -124,6 +124,11 @@ const routes = [
     component: resolve => require(['../views/pages-list/prize/prize4.vue'], resolve)    
   },
   {
+    path:'/prize/prize5',
+    name: 'prize5',
+    component: resolve => require(['../views/pages-list/prize/prize5.vue'], resolve)    
+  },
+  {
     path:'/vue_event',
     name: 'vueEvent',
     component: resolve => require(['../views/pages-list/vue-event.vue'], resolve)    
@@ -237,6 +242,11 @@ const routes = [
     path:'/wechat_payment',
     name: 'wechatPayment.vue',
     component: resolve => require(['../views/pages-list/WechatPayment.vue'], resolve)
+  },
+  {
+    path:'/validator_form',
+    name: 'validatorForm.vue.vue',
+    component: resolve => require(['../views/pages-list/ValidatorForm.vue'], resolve)
   },
   {
     path:'/test',
